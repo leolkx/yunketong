@@ -24,8 +24,6 @@ import com.louis.kitty.backup.util.HttpResult;
 /**
  * 系统数据备份还原
  * 采用MYSQL备份还原命令
- * @author Louis
- * @date Sep 20, 2018
  */
 @RestController
 @RequestMapping("/backup")

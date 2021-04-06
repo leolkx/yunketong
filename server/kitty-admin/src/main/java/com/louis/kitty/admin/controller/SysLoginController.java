@@ -29,8 +29,6 @@ import com.louis.kitty.core.http.HttpResult;
 
 /**
  * 登录控制器
- * @author Louis
- * @date Oct 29, 2018
  */
 @RestController
 public class SysLoginController {
