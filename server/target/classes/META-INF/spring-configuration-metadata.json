@@ -1,0 +1,22 @@
+{
+  "groups": [
+    {
+      "name": "student2",
+      "type": "org.fzu.cs03.daoyun.StudentProperties",
+      "sourceType": "org.fzu.cs03.daoyun.StudentProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "student2.age",
+      "type": "java.lang.Integer",
+      "sourceType": "org.fzu.cs03.daoyun.StudentProperties"
+    },
+    {
+      "name": "student2.name",
+      "type": "java.lang.String",
+      "sourceType": "org.fzu.cs03.daoyun.StudentProperties"
+    }
+  ],
+  "hints": []
+}
