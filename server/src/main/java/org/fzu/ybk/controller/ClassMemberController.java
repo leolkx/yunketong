@@ -13,11 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
-/**
- * @description:
- * @author: Mu.xx
- * @date: 2020/4/9 16:07
- */
+
 
 
 /**
@@ -26,7 +22,6 @@ import javax.servlet.http.HttpServletRequest;
  * 若需要验证，后台做最好是加kafka，当然也可以直接再spring里验证
  *
  *
- * @author: Mu.xx
  * @date: 2020/4/9 17:30
  * @param: null
  * @return:

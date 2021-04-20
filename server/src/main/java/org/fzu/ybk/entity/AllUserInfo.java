@@ -1,23 +1,12 @@
 package org.fzu.ybk.entity;
 
-/**
- * @description:
- * @author: Mu.xx
- * @date: 2020/4/15 14:46
- */
+
 
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-/**
- * @description: 该实体描述了返回一个用户所有允许被查看的信息
- * @author: Mu.xx
- * @date: 2020/4/15 14:46
- * @param: null
- * @return:
- */
 
 @Data
 @AllArgsConstructor
