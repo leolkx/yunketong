@@ -73,7 +73,7 @@ public class CloudClassService {
         classMemberService.addUserToClass(userId,orgId);
 
 
-
+        //懒得改了……直接这样加在屁股后面……(为了结构性，增加三个参数school_id,college_id,major_id)
         Long lastId = orgnizationMapper.getLastOrgId();
         Orgnization orgnization = orgnizationMapper.selectById(lastId);
         orgnization.setSchoolId(cloudClass.getSchoolId());
@@ -86,7 +86,7 @@ public class CloudClassService {
 
     public String getOrgInfoByOrgCode(Long orgCode, HttpServletRequest request) throws Exception{
         if ( ! orgnizationMapper.OrgExistByOrgCode(orgCode)){
-            throw new OrgnizationException("未找到对应班级");
+            throw new OrgnizationException("未找到对应组织");
         }
         Orgnization orgnization = orgnizationMapper.getOrgInfoByOrgCode(orgCode);
         JSONObject jsonObject = richTextService.objectPlusRichText(orgnization,"classCloud");
@@ -111,6 +111,18 @@ public class CloudClassService {
         Long richTextId = orgnizationMapper.geRichTextIdByOrgCode(orgCode);
         richTextService.updateRichText(richTextId,updateInfo);
 
+//        String classInfo = richTextService.getRichText(richTextId);
+//        JSONObject readJsonObject = JSON.parseObject(classInfo);
+//        JSONObject updateJsonObject = (JSONObject) JSON.toJSON(updateInfo);
+//
+//        for(Map.Entry<String, Object> entry: updateJsonObject.entrySet()){
+//            if (entry.getValue() != null)
+//                readJsonObject.put(entry.getKey(),entry.getValue());
+//        }
+//        richTextMapper.updateText(orgInfoId,JSON.toJSONString(readJsonObject));
+
+
+        //懒得改了……直接这样加在屁股后面……(为了结构性，增加三个参数school_id,college_id,major_id)
         Orgnization orgnization = orgnizationMapper.selectById(orgId);
         orgnization.setSchoolId(updateInfo.getSchoolId());
         orgnization.setCollegeId(updateInfo.getCollegeId());

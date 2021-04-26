@@ -1,5 +1,10 @@
 package org.fzu.ybk.entity;
 
+/**
+ * @description:
+ * @author: Mu.xx
+ * @date: 2020/4/9 22:48
+ */
 public class ClassMember {
     private Long userId;
     private String userName;

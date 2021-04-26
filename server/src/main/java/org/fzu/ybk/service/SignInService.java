@@ -20,6 +20,8 @@ import org.springframework.stereotype.Component;
 
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Component
@@ -34,6 +36,8 @@ public class SignInService {
     @Autowired
     private TokenMapUtils tokenMapUtils;
 
+    @Autowired
+    private PhoneService phoneService;
     @Autowired
     private VerificationCodeService verificationCodeService;
 
@@ -52,12 +56,12 @@ public class SignInService {
         if (username!= null && isPhoneNumber(username)) {
             username = userMapper.getUserNameByPhone(username);
             if (username == null){
-                throw new SignInException("无法搜索到手机号对应的用户名");
+                throw new SignInException("Unable to search the user name corresponding to the mobile phone number");
             }
         }
 
-        if (username == null || password == null) throw new SignInException("用户名或密码为空");
-        if (! userMapper.userExist(username)) throw new SignInException("用户不存在");
+        if (username == null || password == null) throw new SignInException("username or password is empyt");
+        if (! userMapper.userExist(username)) throw new SignInException("user not exist");
         //if (! userMapper.getUserPassword(username).equals(password)) throw new SignInException("密码不正确");
 
 
@@ -71,9 +75,10 @@ public class SignInService {
 
 
         //验证码认证
-        verificationCodeService.verify(new Date(),user.getVerificationCode(),request.getSession());
+//        verificationCodeService.verify(new Date(),user.getVerificationCode(),request.getSession());
 
          userId = userMapper.getUserIdByUserName(username);
+//         phoneService.verify(new Date(),user.getPhone(),user.getVerificationCode(),request.getSession());
 
 //        String oldUserName ;
 //        Object obj = request.getSession().getAttribute("userName");
@@ -98,19 +103,101 @@ public class SignInService {
         //shiro进行身份验证
         try{
             //验证身份和登陆
+            System.out.println("username");
+            System.out.println(username);
+            System.out.println("password");
+            System.out.println(password);
             Subject subject = SecurityUtils.getSubject();
+            UsernamePasswordToken token = new UsernamePasswordToken(username,password);
+
+            //进行登录操作
+            subject.login(token);
+        }catch (IncorrectCredentialsException e) {
+            return responseService.responseFactory(StatusCode.RESPONSE_ERR,"The user does not exist or the password is wrong");
+        } catch (LockedAccountException e) {
+            return responseService.responseFactory(StatusCode.RESPONSE_ERR,"Login failed. The user has been frozen");
+        } catch (AuthenticationException e) {
+            e.printStackTrace();
+            return responseService.responseFactory(StatusCode.RESPONSE_ERR,"The user does not exist");
+        } catch (Exception e) {
+            return responseService.responseFactory(StatusCode.RESPONSE_ERR,"Unknown exception");
+        }
+
+
+        //设置shiroSession的过期时间，token是sessionid，也就是过期时间 24 * 60 * 60 * 1000 。好像有异常，先关了
+        //SecurityUtils.getSubject().getSession().setTimeout(GlobalConstant.tokenExpiryTime);
+        //SecurityUtils.getSubject().getSession().setTimeout(10 * 60 * 1000);
+
+
+
+
+
+
+
+
+
+        //String token = request.getSession().getId();
+        String token = ShiroUtils.getSession().getId().toString();//shiro的sessionid
+        JSONObject loginResult = new JSONObject();
+        loginResult.put("id", userId);
+        loginResult.put("token", token);
+        loginResult.put("username", username);
+
+        tokenMapUtils.updateToken(userId,token, request);
+
+        return responseService.responseFactory(StatusCode.RESPONSE_OK,"登录成功",loginResult);
+    }
+
+    public String signInbyphone(User user, HttpServletRequest request) throws Exception{
+        String username = user.getUsername();
+        String password = user.getPassword();
+//        password = "123456";
+        Long userId;
+
+        // 若当前用户登录为手机号，则找到对应用户名
+        if (username!= null && isPhoneNumber(username)) {
+            username = userMapper.getUserNameByPhone(username);
+            if (username == null){
+                throw new SignInException("Unable to search the user name corresponding to the mobile phone number");
+            }
+        }
+
+        if (username == null) throw new SignInException("username is empyt");
+        if (! userMapper.userExist(username)) throw new SignInException("user not exist");
+
+
+        userId = userMapper.getUserIdByUserName(username);
+
+        Date date = new Date();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String dateStr = format.format(date);
+        HttpSession session = request.getSession();
+        phoneService.verify(date, user.getPhone(), user.getVerificationCode(), session);
+
+
+
+
+        //shiro进行身份验证
+        try{
+            //验证身份和登陆
+            System.out.println("username");
+            System.out.println(username);
+            System.out.println("password");
+            System.out.println(password);
+            Subject subject = SecurityUtils.getSubject();
+            if(password==null)password="123456";
             UsernamePasswordToken token = new UsernamePasswordToken(username,password);
             //进行登录操作
             subject.login(token);
         }catch (IncorrectCredentialsException e) {
-            return responseService.responseFactory(StatusCode.RESPONSE_ERR,"用户不存在或者密码错误");
+            return responseService.responseFactory(StatusCode.RESPONSE_ERR,"The user does not exist or the password is wrong");
         } catch (LockedAccountException e) {
-            return responseService.responseFactory(StatusCode.RESPONSE_ERR,"登录失败，该用户已被冻结");
+            return responseService.responseFactory(StatusCode.RESPONSE_ERR,"Login failed. The user has been frozen");
         } catch (AuthenticationException e) {
             e.printStackTrace();
-            return responseService.responseFactory(StatusCode.RESPONSE_ERR,"该用户不存在");
+            return responseService.responseFactory(StatusCode.RESPONSE_ERR,"The user does not exist");
         } catch (Exception e) {
-            return responseService.responseFactory(StatusCode.RESPONSE_ERR,"未知异常");
+            return responseService.responseFactory(StatusCode.RESPONSE_ERR,"Unknown exception");
         }
 
 

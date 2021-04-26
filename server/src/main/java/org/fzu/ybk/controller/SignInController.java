@@ -23,11 +23,22 @@ public class SignInController {
     private final Logger logger = LoggerFactory.getLogger(SignInController.class);
 
     @PostMapping(value = "/signin")
-    public String createAccount(@RequestBody User user, HttpServletRequest request){
+    public String singnIn(@RequestBody User user, HttpServletRequest request){
         try{
 //            String info = "用户: " + request.getSession().getId() + "， 欲访问: "+request.getRequestURI()
 //            logger.info(info);
             return signInService.signIn(user,request);
+        } catch (Exception e) {
+//            e.printStackTrace();
+            return responseService.responseFactory(StatusCode.RESPONSE_ERR,e.toString());
+        }
+    }
+    @PostMapping(value = "/signinbyphone")
+    public String signinByphone(@RequestBody User user, HttpServletRequest request){
+        try{
+//            String info = "用户: " + request.getSession().getId() + "， 欲访问: "+request.getRequestURI()
+//            logger.info(info);
+            return signInService.signInbyphone(user,request);
         } catch (Exception e) {
 //            e.printStackTrace();
             return responseService.responseFactory(StatusCode.RESPONSE_ERR,e.toString());

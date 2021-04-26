@@ -1,5 +1,10 @@
 package org.fzu.ybk.entity;
 
+/**
+ * @description:
+ * @author: Mu.xx
+ * @date: 2020/4/9 23:04
+ */
 public class ClassMemberUpdate {
 
     private String userClassName;

@@ -14,14 +14,13 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 
 
-
-
 /**
  * @description:
  * 该类的加入、退出班课皆无验证机制，并不安全orz
  * 若需要验证，后台做最好是加kafka，当然也可以直接再spring里验证
  *
  *
+ * @author: Mu.xx
  * @date: 2020/4/9 17:30
  * @param: null
  * @return:

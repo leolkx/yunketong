@@ -47,6 +47,24 @@ public class SignUpController {
         }
 
     }
+    @PostMapping(value = "/fastsignup")
+    public String fastcreateAccount(@RequestBody User user, HttpServletRequest request){
+        try{
+//            System.out.println("用户: " + request.getSession().getId() + "， 欲访问: "+request.getRequestURI());
+            return signUpService.fastsignUp(user,request.getSession());
+        } catch (Exception e) {
+//            e.printStackTrace();
+            return responseService.responseFactory(StatusCode.RESPONSE_ERR,e.toString());
+        }
+    }
+//    @PostMapping(value = "/mytest")
+//    public String mytest(@RequestBody User user, HttpServletRequest request){
+//        return request.getSession().getId();
+//    }
+//    @PostMapping(value = "/histest")
+//    public String histest(@RequestBody User user, HttpServletRequest request){
+//        return request.getSession().getId();
+//    }
 
 
 }

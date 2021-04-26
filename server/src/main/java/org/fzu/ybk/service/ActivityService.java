@@ -5,7 +5,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-
+//import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.fzu.ybk.StatusCode;
 
 import org.fzu.ybk.entity.*;
@@ -26,7 +26,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-
+/**
+ * @description:
+ * @author: Mu.xx
+ * @date: 2020/5/12 20:00
+ */
 
 @Service
 public class ActivityService {
@@ -383,6 +387,22 @@ public class ActivityService {
         AttendActivity result =  activityMapper.selectOne(wrapper);
 
         AttendActivity attendActivity1 = new AttendActivity();
+
+        if (result.getActivityTypeId() != 2 &&
+                (attendActivity.getSubmitFileName() != null || attendActivity.getSubmitFileUrl()!=null)){
+            return responseService.responseFactory(StatusCode.RESPONSE_ERR,"非任务类型活动不支持修改上传文件");
+        }
+        else if (result.getActivityTypeId() == 2 && !timeout){
+            attendActivity1.setSubmitFileUrl(attendActivity.getSubmitFileUrl());
+            attendActivity1.setSubmitFileName(attendActivity.getSubmitFileName());
+        }
+
+//        if (attendActivity.getSubmitFileName() == null || attendActivity.getSubmitFileUrl() == null){
+//            return responseService.responseFactory(StatusCode.RESPONSE_ERR,"任务文件不能为空");
+//        }
+
+//        logger.info(String.valueOf(attendActivity.getActivityId()));
+//        logger.info(String.valueOf(attendActivity.getScore()));
 
         attendActivity1.setId(p_activityId);
 

@@ -13,12 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
-/**
- * @description:
- * @author: Mu.xx
- * @date: 2020/4/9 16:40
- */
-
 
 @RestController
 @CrossOrigin
