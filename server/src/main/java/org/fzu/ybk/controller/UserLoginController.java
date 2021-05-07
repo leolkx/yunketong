@@ -19,11 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.*;
 
-/**
- * @Description 用户登录
- * @Author Sans
- * @CreateTime 2019/6/17 15:21
- */
+
 @RestController
 @RequestMapping("/userLogin")
 public class UserLoginController {

@@ -11,11 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
-/**
- * @description:
- * @author: Mu.xx
- * @date: 2020/5/16 15:29
- */
+
 @RestController
 @CrossOrigin
 public class RoleController  {

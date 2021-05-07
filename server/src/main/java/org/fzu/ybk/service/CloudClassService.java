@@ -55,7 +55,7 @@ public class CloudClassService {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String dateStr = format.format(date);
         String creator = SystemParams.username;
-        String orgName = creator + " 创建的组织";
+        String orgName = creator + " 创建的班级";
 
         Long userId = userMapper.getUserIdByUserName(creator);
         if (userId == null)
