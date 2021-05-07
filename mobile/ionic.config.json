@@ -1,0 +1,7 @@
+{
+  "name": "presentCloudApp",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}

@@ -1,0 +1,51 @@
+ 
+<ion-content>
+  <ion-list class="inp" style="margin-top:30px auto;">
+    <ion-item padding >
+      <ion-label>课程名</ion-label>
+      <ion-input type="text"  readonly [(ngModel)]="course.className" ></ion-input>  
+    </ion-item> 
+     <ion-item padding  >
+      <ion-label>班课号</ion-label>
+      <ion-input type="text"  readonly [(ngModel)]="course.orgCode"></ion-input>  
+    </ion-item> 
+    <ion-item padding >
+      <ion-label>教师</ion-label>
+      <ion-input type="text" readonly [(ngModel)]="course.teacherName" ></ion-input> 
+    </ion-item>  
+    <ion-item padding >
+      <ion-label>年级</ion-label>
+      <ion-input type="text" readonly [(ngModel)]="course.grade" ></ion-input> 
+     </ion-item>
+    <ion-item padding >
+      <ion-label>教材</ion-label>
+      <ion-input type="text" readonly [(ngModel)]="course.teachingMateria"  ></ion-input> 
+   
+    </ion-item>
+    <ion-item padding >
+      <ion-label>学校</ion-label> 
+      <ion-input type="text" readonly [(ngModel)]="course.school"  ></ion-input> 
+    </ion-item> 
+    <ion-item padding >
+      <ion-label>学院</ion-label> 
+      <ion-input type="text" readonly [(ngModel)]="course.college"  ></ion-input> 
+    </ion-item>
+    <ion-item padding >
+      <ion-label>开课时间</ion-label> 
+      <ion-input type="text" readonly [(ngModel)]="course.lessonStartDate"  ></ion-input> 
+    </ion-item>
+    <ion-item padding >
+      <ion-label>结课时间</ion-label>
+      <ion-input type="text" readonly [(ngModel)]="course.lessonEndDate"  ></ion-input> 
+    </ion-item>
+    <ion-item padding >
+      <ion-label>介绍</ion-label>
+      <ion-textarea readonly  [(ngModel)]="course.introduction" ></ion-textarea>  
+    </ion-item> 
+  </ion-list>
+  <ion-button (click)="goout(course.orgCode)"   color="primary" expand="block" style="height:40px;width:60%;margin:40px auto;font-size:20px"  shape="round">
+    退出班课
+  </ion-button>  
+
+</ion-content> 
+

@@ -1,0 +1,70 @@
+<ion-header >
+  <ion-toolbar >
+    <ion-title style="text-align: center;">创建班课</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+ 
+<ion-content>
+    <ion-list class="inp" style="margin-top:30px auto;">
+      <ion-item padding >
+        <ion-label>课程名</ion-label>
+        <ion-input type="text"   [(ngModel)]="course.className"></ion-input>
+      </ion-item> 
+      <ion-item padding >
+        <ion-label>教师</ion-label>
+        <ion-input type="text" [(ngModel)]="course.teacherName"></ion-input>
+      </ion-item>  
+      <ion-item padding >
+        <ion-label>年级</ion-label>
+        <ion-datetime displayFormat="YYYY" min="2015-03-14"  [(ngModel)]="course.grade" max="2030-12-09" value="2020-09-23T15:03:46.789"></ion-datetime>
+      </ion-item>
+      <ion-item padding >
+        <ion-label>教材</ion-label>
+        <ion-input type="text"  [(ngModel)]="course.teachingMateria"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>所属学校</ion-label>
+        <ion-select [(ngModel)]="course.school" (ngModelChange)="findsiid()">
+          <ion-select-option slot="end" *ngFor="let item of schoolslist" [value]="item.schoolName" >{{item.schoolName}}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label>所属学院</ion-label>
+        <ion-select [(ngModel)]="college1" (ngModelChange)="findciid()">
+          <ion-select-option slot="end" *ngFor="let item of collegeslist" [value]="item.collegeName" >{{item.collegeName}}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label>专业名</ion-label>
+        <ion-select [(ngModel)]="course.college">
+          <ion-select-option slot="end" *ngFor="let item of majorslist" [value]="item.majorName" >{{item.majorName}}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+      <!-- <ion-item padding  (click)="presentPopover()">
+        <ion-label>学校-院系</ion-label>
+       
+      </ion-item>  -->
+      <ion-item padding >
+        <ion-label>开课时间</ion-label>
+        <ion-datetime displayFormat="YYYY/MM/DD" [(ngModel)]="course.lessonStartDate" min="2015-03-14" max="2030-12-09" value="2020-09-23T15:03:46.789"></ion-datetime>
+      </ion-item>
+      <ion-item padding >
+        <ion-label>结课时间</ion-label>
+        <ion-datetime displayFormat="YYYY/MM/DD" [(ngModel)]="course.lessonEndDate" min="2015-03-14" max="2030-12-09" value="2020-09-23T15:03:46.789"></ion-datetime>
+      </ion-item>
+      <ion-item padding >
+        <ion-label>介绍</ion-label>
+        <ion-textarea [(ngModel)]="course.introduction"></ion-textarea>
+      </ion-item> 
+    </ion-list>
+    <ion-button (click)="createcourse()" color="primary" expand="block" style="height:40px;width:60%;margin:40px auto;font-size:20px"  shape="round">
+      确&nbsp;认&nbsp;创&nbsp;建
+    </ion-button>  
+</ion-content> 
+

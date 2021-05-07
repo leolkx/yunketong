@@ -1,0 +1,46 @@
+ 
+<ion-header>
+  <ion-toolbar>
+    <ion-title  style=text-align:center>加入班课</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button>77</ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-list class="inp" *ngIf="type==1" >
+  <ion-item>
+    <ion-label>班课号</ion-label>
+    <ion-input type="text" placeholder="请输入班课号" [(ngModel)]="orgCode"></ion-input>
+  </ion-item>
+</ion-list>
+ <ion-list *ngIf="type==2"> 
+  <img src="../../../../assets/icon/favicon.png" style="display: block;height:30%;margin: 10px auto;"/>
+  <ion-item>
+    <ion-label>课程名</ion-label>
+    <ion-label>{{coursemsg.className}}</ion-label>
+  </ion-item> 
+    <ion-item>
+      <ion-label>教师</ion-label>
+      <ion-label>{{coursemsg.teacherName}}</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>学校</ion-label>
+      <ion-label>{{coursemsg.school}}</ion-label>
+    </ion-item> 
+    <ion-item>
+      <ion-label>介绍</ion-label>
+      <ion-label>{{coursemsg.introduction}}</ion-label>
+    </ion-item> 
+</ion-list>
+<ion-button (click)="nextadd()" *ngIf="type==1" color="primary" expand="block" style="height:30px;width:60%;margin:10px auto;font-size:17px"  shape="round">
+  下&nbsp;&nbsp;一&nbsp;&nbsp;步
+</ion-button>
+<ion-button (click)="addcourse()" *ngIf="type==2" color="primary" expand="block" style="height:30px;width:60%;margin:5px auto;font-size:17px"  shape="round">
+  确认加入
+</ion-button>
+<ion-button (click)="concel()"  color="primary" expand="block" style="height:30px;width:60%;margin:0 auto;font-size:17px"  shape="round">
+  取&nbsp;&nbsp;&nbsp;&nbsp;消
+</ion-button>
+
+

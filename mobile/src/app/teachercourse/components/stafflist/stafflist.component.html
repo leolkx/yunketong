@@ -1,0 +1,41 @@
+
+<ion-card style="text-align: center;">
+  <h1>课程号：{{orgCode}}</h1>
+</ion-card>
+<ion-item>
+  <ion-button (click)="gorecord(0)" style="width:30%;"  shape="round">
+    查看签到
+  </ion-button>
+  <ion-button (click)="gorecord(2)" style="width:30%;"  shape="round">
+    发起签到
+  </ion-button>
+</ion-item>
+<ion-list >
+  <ion-item >
+    <ion-label> 
+      成员数量
+    </ion-label>
+    <ion-label style="float:right;"> 
+      {{size}}人
+    </ion-label>
+  </ion-item>
+</ion-list>
+<ion-list>
+  <ion-item  *ngFor="let item of members">
+    <ion-avatar slot="start">
+      <img src="../../../../assets/icon/favicon.png">
+    </ion-avatar>
+    <ion-label>
+      <h2>{{item.username}}</h2>
+      <h3>{{item.studentId}}</h3> 
+    </ion-label>
+    <ion-label>
+      <h2>{{item.sumScore}}分</h2> 
+    </ion-label> 
+    <!-- <ion-label>
+      <ion-icon name="arrow-forward-outline"></ion-icon>
+    </ion-label>  -->
+  </ion-item>
+   
+ 
+</ion-list>

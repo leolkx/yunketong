@@ -1,0 +1,33 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>发布作业</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+
+</ion-header> 
+<ion-content  >
+  <ion-item> 
+    <ion-label>作业名</ion-label>
+    <ion-input type="text"  [(ngModel)]="activity.activityName"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label>作业要求</ion-label>
+    <ion-textarea [(ngModel)]="activity.activityDescription"></ion-textarea>
+  </ion-item>  
+  <ion-item padding >
+    <ion-label>结束时间</ion-label>
+    <ion-datetime displayFormat="YYYY/MM/DD hh:mm"  [(ngModel)]="activity.endDate" min="2015-03-14" max="2030-12-09" value="2020-09-23T15:03:46.789"></ion-datetime>
+  </ion-item> 
+  <ion-item padding >
+    <ion-label>作业分</ion-label>
+    <ion-input type="text" placeholder="请输入本次作业得分" [(ngModel)]="activity.maxscore"></ion-input>
+  </ion-item> 
+<ion-button (click)="creatactive(1)" color="primary"  shape="round">
+ 创&nbsp;&nbsp;建
+</ion-button>
+<ion-button (click)="creatactive(2)" color="primary"  shape="round">
+ 取&nbsp;&nbsp;消
+</ion-button>
+</ion-content> 

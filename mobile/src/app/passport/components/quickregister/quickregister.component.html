@@ -1,0 +1,58 @@
+<ion-header>
+  <ion-toolbar>
+    <a (click)="dismiss()"> 《返回 </a> 
+    <ion-title style="text-align: center;">注册</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-list class="inp" style="margin-top:30px auto;">
+  <form #phoneForm="ngForm" novalidate style="width:100%">
+    <ion-item padding>
+      <ion-label>手机</ion-label>
+      <ion-input type="text" name="phone" placeholder="请输入手机号" pattern="^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(18[0,3,5-9]))\d{8}$" [(ngModel)]="user.phone" #phone="ngModel" ></ion-input>
+    </ion-item>
+    <ion-text class="ion-text-left" color="danger" *ngIf="phone.invalid && phone.touched">
+      <p [hidden]="!phone.errors?.required" class="padding-start">请输入手机号码</p>
+      <p [hidden]="!phone.errors?.pattern" class="padding-start">您输入的手机号格式不正确</p>
+    </ion-text>
+  </form>
+  <!-- <form #passwordForm="ngForm" novalidate style="width:100%">
+    <ion-item padding>
+      <ion-label>密码</ion-label>
+      <ion-input type="password" placeholder="请输入密码" [(ngModel)]="user.password" name="password" required
+        pattern="^[a-zA-Z0-9]{6,18}$" #password="ngModel"></ion-input>
+    </ion-item>
+    <div class="signup_warn">
+      <ion-text text-left color="danger" *ngIf="(password.invalid && password.touched) || submited">
+        <p class="warn" [hidden]="!password.errors?.required" padding-start>请输入密码</p>
+        <p class="warn" [hidden]="!password.errors?.pattern" padding-start>格式不正确，请输入6至18位密码包含数字或字母且不包含特殊字符的密码</p>
+      </ion-text>
+    </div>
+  </form> -->
+  
+  <form #codeForm="ngForm" novalidate style="width:100%">
+    <ion-item>
+      <ion-input type="text" name="code" placeholder="请输入验证码" [(ngModel)]="user.verificationCode" required
+        pattern="^\d{4}$" #code="ngModel"></ion-input>
+      <ion-button (click)="get_check_code()" expand="block" style="height:30px" *ngIf="flag">
+        获取验证码
+      </ion-button>
+      <ion-button expand="block" color="success" style="height:30px" *ngIf="!flag">
+        获取中,{{timelimit}}s
+      </ion-button>
+    </ion-item>
+    <div class="signup_warn">
+      <ion-text text-left color="danger" *ngIf="code.invalid && code.touched">
+        <p class="warn" [hidden]="!code.errors?.required" padding-start>请输入验证码</p>
+        <p class="warn" [hidden]="!code.errors?.pattern" padding-start>请输入4位数字验证码</p>
+      </ion-text>
+    </div>
+  </form>
+
+</ion-list>
+
+<ion-button (click)="register()" color="primary" expand="block"
+  style="height:40px;width:60%;margin:40px auto;font-size:20px"
+  [disabled]="codeForm.invalid || phoneForm.invalid"
+  shape="round">
+  快&nbsp;&nbsp;速&nbsp;&nbsp;注&nbsp;&nbsp;册
+</ion-button>

@@ -1,0 +1,81 @@
+<ion-header >
+  <ion-toolbar >
+    <ion-title style="text-align: center;">填写用户信息</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+    <ion-list class="inp" style="margin-top:30px auto;">
+      <ion-item padding >
+        <ion-label>姓名</ion-label>
+        <ion-input type="text"   [(ngModel)]="user.phone"></ion-input>
+      </ion-item> 
+      <ion-item padding >
+        <ion-label>昵称</ion-label>
+        <ion-input type="text"  [(ngModel)]="user.phone"></ion-input>
+      </ion-item> 
+      <ion-item padding >
+       <ion-label>选择性别</ion-label>
+        <ion-radio-group allow-empty-selection value="anchovies">
+          <ion-item style="display: inline-block;">
+            <ion-label>男</ion-label>
+            <ion-radio slot="end" color="primary" value="beef"></ion-radio>
+          </ion-item>
+          <ion-item style="display: inline-block;border:0;">
+            <ion-label>女</ion-label>
+            <ion-radio slot="end" color="secondary" value="anchovies"></ion-radio>
+          </ion-item>
+        </ion-radio-group>
+      </ion-item>
+      <ion-item padding >
+        <ion-label>出生日期</ion-label>
+        <ion-datetime displayFormat="YYYY/MM/DD" min="1994-03-14" max="2012-12-09" value="2002-09-23T15:03:46.789"></ion-datetime>
+      </ion-item>
+      <ion-item padding >
+        <ion-label>选择身份</ion-label>
+        <ion-radio-group allow-empty-selection value="anchovies">
+          <ion-item >
+            <ion-label>教师</ion-label>
+            <ion-radio slot="end" color="primary" value="beef"></ion-radio>
+          </ion-item>
+          <ion-item >
+            <ion-label>学生</ion-label>
+            <ion-radio slot="end" color="secondary" value="anchovies"></ion-radio>
+          </ion-item>
+          <ion-item >
+            <ion-label>其他</ion-label>
+            <ion-radio slot="end" color="secondary" value="11"></ion-radio>
+          </ion-item>
+        </ion-radio-group>
+      </ion-item>
+      <ion-item padding >
+        <ion-label>学校-专业</ion-label>
+        <ion-select value="brown" okText="Okay" cancelText="Dismiss">
+          <ion-select-option value="brown">福州大学</ion-select-option>
+          <ion-select-option value="blonde"></ion-select-option>
+          <ion-select-option value="black">Black</ion-select-option>
+          <ion-select-option value="red">Red</ion-select-option>
+        </ion-select>
+      </ion-item> 
+      <ion-item padding >
+        <ion-label>年级</ion-label>
+        <ion-input type="text"   [(ngModel)]="user.password"></ion-input>
+      </ion-item> 
+      <ion-item padding >
+        <ion-label>学号/工号</ion-label>
+        <ion-input type="text"  [(ngModel)]="user.password"></ion-input>
+      </ion-item> 
+      <ion-item>
+        <ion-label>密码</ion-label>
+        <ion-input type="password" placeholder="请输入密码" [(ngModel)]="user.password"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>确认密码</ion-label>
+        <ion-input type="password" placeholder="请输入密码" [(ngModel)]="user.password"></ion-input>
+      </ion-item>
+    </ion-list>
+    <ion-button (click)="register()" color="primary" expand="block" style="height:40px;width:60%;margin:40px auto;font-size:20px"  shape="round">
+      注 &nbsp;&nbsp;&nbsp;册
+    </ion-button> 
+
+</ion-content> 
+

@@ -1,0 +1,38 @@
+
+<ion-header>
+  <ion-toolbar>
+    <a (click)="login()"> 《返回 </a> 
+    <ion-title style="text-align: center;">找回密码</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-list class="inp" style="margin-top:30px auto;" *ngIf="type==1">
+  <ion-item padding >
+    <ion-label>手机号</ion-label>
+    <ion-input type="text" placeholder="请输入手机号" [(ngModel)]="user.phone"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-input type="password" placeholder="请输入验证码" [(ngModel)]="user.checkcode"></ion-input>
+    <ion-button (click)="get_check_code()" expand="block" style="height:30px" *ngIf="flag">
+      获取验证码
+    </ion-button>
+    <ion-button   expand="block"  color="success" style="height:30px" *ngIf="!flag" >
+      获取中,{{timelimit}}s
+    </ion-button>
+  </ion-item> 
+  <ion-button (click)="newpass()" color="primary" expand="block" style="height:40px;width:60%;margin:40px auto;font-size:20px"  shape="round">
+    下&nbsp;&nbsp;一&nbsp;&nbsp;步
+  </ion-button>
+</ion-list>
+<ion-list class="inp" style="margin-top:30px auto;" *ngIf="type==2">
+  <ion-item>
+    <ion-label>新密码</ion-label>
+    <ion-input type="password" placeholder="请输入密码" [(ngModel)]="user.password"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label>确认密码</ion-label>
+    <ion-input type="password" placeholder="请输入密码" [(ngModel)]="user.password"></ion-input>
+  </ion-item>
+<ion-button (click)="changepass()" color="primary" expand="block" style="height:40px;width:60%;margin:40px auto;font-size:20px"  shape="round">
+  确&nbsp;认&nbsp;修&nbsp;改 
+</ion-button>
+</ion-list>

@@ -1,0 +1,67 @@
+
+<ion-header>
+  <ion-toolbar> 
+    <a style="padding:10px" (click)="typechang(1)"  [ngClass]="{active:type==1}" >我创建的</a>
+    <a style="padding:10px" (click)="typechang(2)" [ngClass]="{active:type==2}" > 我加入的</a> 
+    <a style="padding:10px" (click)="doBSFun()"  > 扫一扫</a>  
+    <ion-icon (click)="presentPopover(1)" style="float:right;padding-right:20px;font-size: 20px;" name="add-outline"></ion-icon>
+  </ion-toolbar>
+</ion-header>
+<ion-content> 
+   
+  <ion-list *ngIf="type==1" > 
+    <ion-item  *ngFor="let item of createlist"  >
+      <ion-avatar slot="start"  (click)="goteacher(item.orgCode,item.cloudClass.className)">
+        <img src="../../assets/icon/favicon.png">
+      </ion-avatar>
+      <ion-label  (click)="goteacher(item.orgCode,item.cloudClass.className)">
+        <h2>{{item.cloudClass.className}}</h2>
+        <h3>{{item.cloudClass.school}}</h3>
+        <p>{{item.cloudClass.grade}} {{item.orgCode}}</p>
+      </ion-label>
+      <ion-label (click)="createCode(item.orgCode)"><ion-button >生成二维码</ion-button></ion-label>
+    </ion-item> 
+  </ion-list>
+
+  
+  <ion-list *ngIf="type==2">
+    <ion-item  *ngFor="let item of addlist"  >
+      <ion-avatar slot="start"  (click)="coursedetail(item.orgCode,item.cloudClass.className)" >
+        <img src="../../assets/icon/favicon.png">
+      </ion-avatar>
+      <ion-label   (click)="coursedetail(item.orgCode,item.cloudClass.className)" >
+        <h2>{{item.cloudClass.className}}</h2>
+        <h3>{{item.cloudClass.teacherName}}</h3>
+        <p>{{item.cloudClass.grade}}</p>
+      </ion-label>
+      <ion-label (click)="createCode(item.orgCode)"><ion-button >生成二维码</ion-button></ion-label>
+    </ion-item> 
+   
+  </ion-list>
+
+  <!-- <ion-item> 
+    <ion-label>二维码内容</ion-label>
+    <ion-input type="text" style="text-align:right " slot="end" placeholder="内容" [(ngModel)]="cardId">
+    </ion-input>
+  </ion-item>
+  <ion-button (click)="createCode()">生成二维码</ion-button>
+  <ngx-qrcode [value]="Code"></ngx-qrcode>
+  <ion-button (click)="doBSFun()">扫一扫</ion-button>
+  <ion-label>{{text}}</ion-label> -->
+</ion-content>  
+<script>
+  var x = ''
+  function show(){
+    
+      if(navigator.geolocation){
+          navigator.geolocation.getCurrentPosition(showPosition)
+      }else{
+         alert( '你的浏览器不支持地理位置')
+      }
+  }
+  function showPosition(obj){
+      alert( '纬度：'+obj.coords.latitude+"<br/>经度："+obj.coords.longitude)
+  }
+  show()
+  
+</script>

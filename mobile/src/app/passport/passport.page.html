@@ -1,0 +1,11 @@
+
+
+<ion-content>
+<app-login *ngIf="type==1" (outer)="runParent($event)"></app-login>
+<app-register *ngIf="type==2" (outer)="runParent($event)"></app-register>
+<app-get-pass *ngIf="type==3"  (outer)="runParent($event)"></app-get-pass>
+<app-reg-usermsg *ngIf="type==4" (outer)="runParent($event)"></app-reg-usermsg>
+<app-quickregister *ngIf="type==5" (outer)="runParent($event)"></app-quickregister>
+
+<app-copyright [bottom]="'20px'"></app-copyright>
+</ion-content>

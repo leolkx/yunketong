@@ -1,0 +1,81 @@
+<ion-header >
+  <ion-toolbar >
+    <ion-title style="text-align: center;">登录</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-segment  [(ngModel)]="tab">
+    <ion-segment-button value="tab1" (click)="clear()">
+      <ion-label>用户名登录</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="tab2" (click)="clear()">
+      <ion-label>手机登录</ion-label>
+    </ion-segment-button>
+  </ion-segment> 
+  <div [ngSwitch]="tab" style="margin:30px auto;">
+    <div *ngSwitchCase="'tab1'">
+      <ion-list class="inp" style="margin-top:30px auto;">
+        <ion-item padding >
+          <ion-label>用户名</ion-label>
+          <ion-input type="text" placeholder="请输入账号" [(ngModel)]="user.username"></ion-input>
+        </ion-item> 
+        <ion-item>
+          <ion-label>密码</ion-label>
+          <ion-input type="password" placeholder="请输入密码" [(ngModel)]="user.password"></ion-input>
+        </ion-item>  
+      </ion-list>
+    </div>
+  
+    <div *ngSwitchCase="'tab2'">
+      <ion-list class="inp" style="margin-top:30px auto;">
+        <form #phoneForm="ngForm" novalidate style="width:100%">
+          <ion-item padding >
+            <ion-label>手机</ion-label>
+            <ion-input type="text" name="phone" placeholder="请输入手机号" required  pattern="^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(18[0,3,5-9]))\d{8}$" [(ngModel)]="userPhone.username" #phone="ngModel"></ion-input>
+          </ion-item>
+          <ion-text class="ion-text-left" color="danger" *ngIf="phone.invalid && phone.touched">
+            <p [hidden]="!phone.errors?.required" class="padding-start">请输入手机号码</p>
+            <p [hidden]="!phone.errors?.pattern" class="padding-start">您输入的手机号格式不正确</p>
+          </ion-text>
+        </form>
+        <!-- <ion-item>
+          <ion-label>密码</ion-label>
+          <ion-input type="password"  placeholder="请输入密码" [(ngModel)]="userPhone.password"></ion-input> 
+        </ion-item> --> 
+        <form #codeForm="ngForm" novalidate style="width:100%">
+          <ion-item>
+            <ion-input type="text" name="code" placeholder="请输入验证码" [(ngModel)]="userPhone.verificationCode" required
+              pattern="^\d{4}$" #code="ngModel"></ion-input>
+            <ion-button (click)="get_check_code()" expand="block" style="height:30px" *ngIf="flag">
+              获取验证码
+            </ion-button>
+            <ion-button expand="block" color="success" style="height:30px" *ngIf="!flag">
+              获取中,{{timelimit}}s
+            </ion-button>
+          </ion-item>
+          <div class="signup_warn">
+            <ion-text text-left color="danger" *ngIf="code.invalid && code.touched">
+              <p class="warn" [hidden]="!code.errors?.required" padding-start>请输入验证码</p>
+              <p class="warn" [hidden]="!code.errors?.pattern" padding-start>请输入4位数字验证码</p>
+            </ion-text>
+          </div>
+        </form>
+      </ion-list>
+    </div>
+    <!-- <ion-item>
+      <ion-input type="text" placeholder="请输入验证码" [(ngModel)]="verificationCode"></ion-input>
+      <img id="vericode" (click)="newcode()"/>
+    </ion-item> --> 
+    <div style="margin:8px auto;">
+      <a (click)="forgetPass()" style="float:left;width:20%;text-align: center;text-decoration: none;" >忘记密码</a>
+      <a (click)="register()"  style="float:right;width:20%;text-align: center;text-decoration: none;">注册</a>
+    </div>
+  <ion-button (click)="login()" color="primary" expand="block" 
+    style="height:40px;width:60%;margin:40px auto;font-size:20px" 
+    shape="round">
+    登 &nbsp;&nbsp;&nbsp;录
+  </ion-button>
+  </div>
+      <p *ngIf="wrong==1" style="text-align: center;">{{wrongMsg}}</p>
+</ion-content> 
+

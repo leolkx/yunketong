@@ -1,0 +1,48 @@
+<!-- <ion-tabs>
+
+  <ion-tab-bar slot="bottom">
+    <ion-tab-button tab="staff">
+      <ion-icon name="triangle"></ion-icon>
+      <ion-label>成员</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="active">
+      <ion-icon name="ellipse"></ion-icon>
+      <ion-label>活动</ion-label>
+    </ion-tab-button> 
+    <ion-tab-button tab="coures">
+      <ion-icon name="ellipse"></ion-icon>
+      <ion-label>课程</ion-label>
+    </ion-tab-button> 
+  </ion-tab-bar> 
+</ion-tabs>
+
+ -->
+ <ion-header>
+   <ion-toolbar>
+     <ion-buttons slot="start">
+       <ion-back-button></ion-back-button>
+     </ion-buttons>
+    <!-- <a [routerLink]="['/tabs/coures']"  style="text-decoration-line: none;" > 《返回 </a> -->
+     <ion-title>{{orgName}}</ion-title>
+   </ion-toolbar>
+ </ion-header>
+<!-- Segment with default selection -->
+<!--有没有ion-content 查非常多 需要的-->
+<ion-content> 
+  
+  <app-stafflist *ngIf="type==1" ></app-stafflist>
+  <app-activity  *ngIf="type==2"></app-activity>
+  <app-coursemsg  *ngIf="type==3"></app-coursemsg>
+</ion-content>
+<ion-segment   [(ngModel)]="show">
+  <ion-segment-button value="staff" (click)=" changetype(1)">
+    <ion-label>成员</ion-label>
+  </ion-segment-button>
+  <ion-segment-button value="activity" (click)=" changetype(2)">
+    <ion-label>活动</ion-label>
+  </ion-segment-button>
+  <ion-segment-button value="detail" (click)=" changetype(3)">
+    <ion-label>详情</ion-label>
+  </ion-segment-button>
+</ion-segment>

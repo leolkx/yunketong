@@ -1,0 +1,92 @@
+<ion-header>
+  <ion-toolbar>
+    <a (click)="dismiss()"> 《返回 </a> 
+    <ion-title style="text-align: center;">注册</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-list class="inp" style="margin-top:30px auto;">
+  <form #userNameForm="ngForm" novalidate style="width:100%">
+    <ion-item padding>
+      <ion-label>用户名</ion-label>
+      <ion-input type="text" name="userName" placeholder="请输入用户名" [(ngModel)]="user.username" required
+        pattern="^[a-zA-Z0-9_-]{4,16}$" #userName="ngModel"></ion-input>
+    </ion-item>
+    <div class="signup_warn">
+      <ion-text text-left color="danger" *ngIf="(userName.invalid && userName.touched) || submited">
+        <p class="warn" [hidden]="!userName.errors?.required" padding-start>请输入用户名</p>
+        <p class="warn" [hidden]="!userName.errors?.pattern" padding-start>格式不正确，请输入4-16位数字或字母组成的用户名</p>
+      </ion-text>
+    </div>
+  </form>
+  <form #passwordForm="ngForm" novalidate style="width:100%">
+    <ion-item padding>
+      <ion-label>密码</ion-label>
+      <ion-input type="password" placeholder="请输入密码" [(ngModel)]="user.password" name="password" required
+        pattern="^[a-zA-Z0-9]{6,18}$" #password="ngModel"></ion-input>
+    </ion-item>
+    <div class="signup_warn">
+      <ion-text text-left color="danger" *ngIf="(password.invalid && password.touched) || submited">
+        <p class="warn" [hidden]="!password.errors?.required" padding-start>请输入密码</p>
+        <p class="warn" [hidden]="!password.errors?.pattern" padding-start>格式不正确，请输入6至18位密码包含数字或字母且不包含特殊字符的密码</p>
+      </ion-text>
+    </div>
+  </form>
+  
+  <ion-item padding>
+    <ion-label>手机</ion-label>
+    <ion-input type="text" placeholder="请输入手机" [(ngModel)]="user.phone" ></ion-input>
+  </ion-item>
+  <form #emailForm="ngForm" novalidate style="width:100%">
+    <ion-item padding>
+      <ion-label>邮箱</ion-label>
+      <ion-input type="text" placeholder="请输入邮箱" [(ngModel)]="user.email" name="email" required
+        pattern="^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$" #email="ngModel"></ion-input>
+    </ion-item>
+    <div class="signup_warn">
+      <ion-text text-left color="danger" *ngIf="(email.invalid && email.touched) || submited">
+        <p class="warn" [hidden]="!email.errors?.required" padding-start>请输入邮箱</p>
+        <p class="warn" [hidden]="!email.errors?.pattern" padding-start>格式不正确，请输入正确格式的邮箱</p>
+      </ion-text>
+    </div>
+  </form>
+  <form #codeForm="ngForm" novalidate style="width:100%">
+    <ion-item>
+      <ion-input type="text" name="code" placeholder="请输入验证码" [(ngModel)]="user.verificationCode" required
+        pattern="^\d{4}$" #code="ngModel"></ion-input>
+      <ion-button (click)="get_check_code()" expand="block" style="height:30px" *ngIf="flag">
+        获取验证码
+      </ion-button>
+      <ion-button expand="block" color="success" style="height:30px" *ngIf="!flag">
+        获取中,{{timelimit}}s
+      </ion-button>
+    </ion-item>
+    <div class="signup_warn">
+      <ion-text text-left color="danger" *ngIf="code.invalid && code.touched">
+        <p class="warn" [hidden]="!code.errors?.required" padding-start>请输入验证码</p>
+        <p class="warn" [hidden]="!code.errors?.pattern" padding-start>请输入4位数字验证码</p>
+      </ion-text>
+    </div>
+  </form>
+  <!-- <form #vcodeForm="ngForm" novalidate style="width:100%">
+    <ion-item padding>
+      <ion-input type="text" placeholder="请输入验证码" [(ngModel)]="user.verificationCode" name="vcode" required
+        pattern="^[a-zA-Z0-9]{4}$" #vcode="ngModel"></ion-input>
+      <img id="vericode" (click)="newcode()" />
+    </ion-item>
+    <div class="signup_warn">
+      <ion-text text-left color="danger" *ngIf="(vcode.invalid && vcode.touched) || submited">
+        <p class="warn" [hidden]="!vcode.errors?.required" padding-start>请输入验证码</p>
+        <p class="warn" [hidden]="!vcode.errors?.pattern" padding-start>验证码格式不正确</p>
+      </ion-text>
+    </div>
+  </form> -->
+</ion-list>
+<div style="margin:8px auto;">
+  <a (click)="quickregister()"  style="float:right;width:20%;text-align: center;text-decoration: none;">快速注册</a>
+</div>
+<ion-button (click)="register()" color="primary" expand="block"
+  style="height:40px;width:60%;margin:40px auto;font-size:20px"
+  [disabled]="userNameForm.invalid||passwordForm.invalid||emailForm.invalid||codeForm.invalid"
+  shape="round">
+  注&nbsp;&nbsp;册
+</ion-button>
