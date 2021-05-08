@@ -1,0 +1,15 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title  style=text-align:center>输入手势密码</ion-title>
+  <ion-back-button slot="start"></ion-back-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <div class="gestureLockBox">
+      <div class="gestureTitle" text-center [ngStyle]="{'color':textColor}">{{titleMes}}</div>
+      <canvas #canvas [ngStyle]="{'height.px':height,'width.px':width}"></canvas> 
+    </div>
+  </ion-card>
+</ion-content>

@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title  style=text-align:center>签到记录</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item  *ngFor="let item of addlist"  (click)="recorddetail(item.orgCode)" ><!--用href的话 动态可能就要动态拼接url了-->
+    <ion-avatar slot="start" >
+      <img src="../../assets/icon/favicon.png">
+    </ion-avatar>
+    <ion-label>
+      <h2>{{item.cloudClass.className}}</h2>
+      <h3>{{item.cloudClass.teacherName}}</h3>
+      <p>{{item.cloudClass.grade}}</p>
+    </ion-label>
+    <ion-label style="text-align:right " slot="end">
+      <h2>{{item.s}}/{{item.l}}</h2>
+    </ion-label>
+  </ion-item> 
+</ion-content>

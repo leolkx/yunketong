@@ -1,0 +1,54 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title style="text-align: center;">修改密码</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list class="inp" style="margin-top:30px auto;">
+    <ion-item padding lines="full">
+      <ion-label>旧密码</ion-label>
+      <ion-input type="text" placeholder="请输入旧密码" [(ngModel)]="userpassword.oldPassword"></ion-input>
+    </ion-item>
+    <form #passwordForm="ngForm" novalidate style="width:100%">
+      <ion-item padding lines="full">
+        <ion-label>新密码</ion-label>
+        <ion-input type="password" placeholder="请输入新密码" [(ngModel)]="userpassword.newPassword" name="password" required
+          pattern="^[a-zA-Z0-9]{6,18}$" #password="ngModel"></ion-input>
+      </ion-item>
+      <div class="signup_warn">
+        <ion-text style="text-align:right " color="danger" *ngIf="(password.invalid && password.touched) || submited">
+          <p class="warn" [hidden]="!password.errors?.required" >请输入新密码</p>
+          <p class="warn" [hidden]="!password.errors?.pattern" >格式不正确，请输入6至18位密码不包含特殊字符的密码</p>
+        </ion-text>
+      </div>
+    </form>
+  </ion-list>
+  <ion-item padding lines="full">
+    <ion-label>请使用关联邮箱{{getusermsg.email}}进行验证</ion-label>
+  </ion-item>
+  <form #codeForm="ngForm" novalidate style="width:100%">
+    <ion-item padding lines="full">
+      <ion-input type="text" name="code" placeholder="请输入验证码" [(ngModel)]="userpassword.mailVerificationCode" required
+        pattern="^\d{6}$" #code="ngModel"></ion-input>
+      <ion-button (click)="get_check_code()" expand="block" style="height:30px" *ngIf="flag" > 
+        获取验证码
+      </ion-button>
+      <ion-button expand="block" color="success" style="height:30px" *ngIf="!flag">
+        获取中,{{timelimit}}s
+      </ion-button>
+    </ion-item>
+    <div class="signup_warn">
+      <ion-text  style="text-align:right " text-left color="danger" *ngIf="code.invalid && code.touched">
+        <p class="warn" [hidden]="!code.errors?.required" padding-start>请输入验证码</p>
+        <p class="warn" [hidden]="!code.errors?.pattern" padding-start>请输入6位数字验证码</p>
+      </ion-text>
+    </div>
+  </form>
+  <ion-button color="primary" expand="block" style="height:40px;width:60%;margin:40px auto;font-size:20px"  shape="round" (click)="presentAlertConfirm()">
+    保&nbsp;&nbsp;存 
+  </ion-button>
+</ion-content>

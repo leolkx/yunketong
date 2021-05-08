@@ -1,0 +1,48 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title style=text-align:center>成绩详情</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item>
+    <ion-avatar slot="start">
+      <img src="../../assets/icon/favicon.png">
+    </ion-avatar>
+    <ion-label>
+      <h2>{{orgmsg.className}}</h2>
+      <h3>{{orgmsg.teacherName}}</h3>
+      <p>{{orgmsg.grade}}</p>
+    </ion-label>
+    <ion-label style="text-align:center ">
+      <h3>{{orgmsg.school}}</h3>
+      <p>{{orgmsg.college}}</p>
+    </ion-label>
+    <ion-label style="text-align:right " >
+      {{sumscore}}
+    </ion-label>
+  </ion-item>
+  <ion-item>
+    <ion-label style="text-align:right ">
+      <h3>课程开始时间： {{orgmsg.lessonStartDate}}</h3>
+      <h3>课程结束时间： {{orgmsg.lessonEndDate}}</h3>
+    </ion-label>
+  </ion-item>
+  <ion-item-divider>
+    <ion-label> 课程参与情况 </ion-label>
+  </ion-item-divider>
+  <ion-item *ngFor="let item of List">
+    <ion-avatar slot="start">
+      <img src="../../assets/icon/favicon.png">
+    </ion-avatar>
+    <ion-label>
+      <h2>{{item.itemN}}</h2>
+    </ion-label>
+    <ion-label style="text-align:right " slot="end">
+      <h2>{{item.getscore}}/{{item.sumscore}}</h2>
+    </ion-label>
+  </ion-item>
+</ion-content>

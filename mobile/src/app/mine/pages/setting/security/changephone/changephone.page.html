@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title style="text-align: center;">修改关联手机</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-list class="inp" style="margin-top:30px auto;">
+    <ion-item padding >
+      <ion-input type="text" placeholder="请输入需关联手机号" [(ngModel)]="user.phone"></ion-input>
+    </ion-item>
+     <ion-item>
+      <ion-input type="text" placeholder="请输入验证码" [(ngModel)]="user.verificationCode"></ion-input>
+      <img id="vericode"/>
+    </ion-item> 
+  </ion-list>
+  <ion-button color="primary" expand="block" style="height:40px;width:60%;margin:40px auto;font-size:20px"  shape="round" [routerLink]="[ '/mine/setting' ]">
+    保&nbsp;&nbsp;存 
+  </ion-button>
+</ion-content>

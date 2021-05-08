@@ -1,0 +1,33 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title  style=text-align:center>设置</ion-title>
+    <ion-buttons slot="start" [routerLink]="[ '/tabs/mine' ]">
+      <ion-label color="danger">取消</ion-label>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list lines="full">
+    <ion-item [routerLink]="[ '/mine/setting/security' ]">
+      <ion-label>安全设置</ion-label>
+      <ion-icon slot="end" name="arrow-forward"></ion-icon>
+    </ion-item>
+    <ion-item [routerLink]="[ '/mine/userag' ]">
+      <ion-label>用户协议</ion-label>
+      <ion-icon slot="end" name="arrow-forward"></ion-icon>
+    </ion-item>
+    <ion-item [routerLink]="[ '/mine/setting/feedback' ]">
+      <ion-label>问题反馈</ion-label>
+      <ion-icon slot="end" name="arrow-forward"></ion-icon>
+    </ion-item><ion-item [routerLink]="[ '/mine/aboutus' ]">
+      <ion-label>关于我们</ion-label>
+      <ion-icon slot="end" name="arrow-forward"></ion-icon>
+    </ion-item>
+    <ion-item-divider>
+      <ion-label> </ion-label>
+    </ion-item-divider>
+    <ion-button color="danger" expand="full" fill="clear" size="large" (click)="presentAlertConfirm()"> 退出当前账号 </ion-button>
+  </ion-list>
+  <app-copyright [bottom]="'20px'"></app-copyright>
+</ion-content>

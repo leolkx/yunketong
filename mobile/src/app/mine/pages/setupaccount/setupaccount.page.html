@@ -1,0 +1,124 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title style=text-align:center>账户设置</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-button size="large" fill="clear" color="success" expand="full">
+    <ion-thumbnail slot="start">
+      <img src="{{picadd}}">
+    </ion-thumbnail>
+  </ion-button>
+  <ion-list lines="full">
+    <ion-item>
+      <ion-label>用户名</ion-label>
+      <ion-input slot="end" style="text-align:right ">{{getusermsg.username}}</ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>电子邮箱</ion-label>
+      <ion-label style="text-align:right ">
+        <h3>{{getusermsg.email}}</h3>
+      </ion-label>
+    </ion-item><ion-item>
+      <ion-label>手机号码</ion-label>
+      <ion-label style="text-align:right ">
+        <h3>{{getusermsg.phone}}</h3>
+      </ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>昵称</ion-label>
+      <ion-input type="text" style="text-align:right " slot="end" placeholder="昵称" [(ngModel)]="user.nickname">
+      </ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>生日</ion-label>
+      <ion-datetime displayFormat="YYYY/MM/DD" [(ngModel)]="user.birthDate" min="1900-01-01" max="2019-12-31">
+      </ion-datetime>
+    </ion-item>
+    <ion-item>
+      <ion-label>学历</ion-label>
+      <ion-select [(ngModel)]="user.education">
+        <ion-select-option slot="end" *ngFor="let item of List.eduList" [value]="item">{{item}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item-divider>
+      <ion-label> 性别 </ion-label>
+    </ion-item-divider>
+    <ion-radio-group [(ngModel)]="user.gender" (ngModelChange)="changepic()">
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <ion-item>
+              <ion-label>男</ion-label>
+              <ion-radio value='男' slot="end" expand="full"></ion-radio>
+            </ion-item>
+          </ion-col>
+          <ion-col>
+            <ion-item>
+              <ion-label>女</ion-label>
+              <ion-radio value='女' slot="end" expand="full"></ion-radio>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-radio-group>
+
+    <ion-item-divider>
+      <ion-label> 所属信息 </ion-label>
+    </ion-item-divider>
+    <ion-item>
+      <ion-label>所属学校</ion-label>
+      <ion-select [(ngModel)]="user.school" (ngModelChange)="findsiid()" placeholder="{{user.school}}">
+        <ion-select-option slot="end" *ngFor="let item of schoolslist" [value]="item.schoolName" >{{item.schoolName}}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label>所属学院</ion-label>
+      <ion-select [(ngModel)]="user.college" (ngModelChange)="findciid()" placeholder="{{user.college}}">
+        <ion-select-option slot="end" *ngFor="let item of collegeslist" [value]="item.collegeName" >{{item.collegeName}}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label>专业名</ion-label>
+      <ion-select [(ngModel)]="user.major" placeholder="{{user.major}}">
+        <ion-select-option slot="end" *ngFor="let item of majorslist" [value]="item.majorName" >{{item.majorName}}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label>学号/工号</ion-label>
+      <ion-input type="text" style="text-align:right " slot="end" placeholder="学号/工号" [(ngModel)]="user.studentId">
+      </ion-input>
+    </ion-item>
+    <ion-item-divider>
+      <ion-label> 地址 </ion-label>
+    </ion-item-divider>
+    <ion-item>
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <ion-input type="text" style="text-align:center " placeholder="国家" [(ngModel)]="user.nation"></ion-input>
+          </ion-col>
+          <ion-col>
+            <ion-input type="text" style="text-align:center " placeholder="省份" [(ngModel)]="user.province"></ion-input>
+          </ion-col>
+          <ion-col>
+            <ion-input type="text" style="text-align:center " placeholder="城市" [(ngModel)]="user.city"></ion-input>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
+    <ion-item>
+      <ion-label>详细地址</ion-label>
+      <ion-input type="text" style="text-align:right " slot="end" placeholder="地址" [(ngModel)]="user.address">
+      </ion-input>
+    </ion-item>
+  </ion-list>
+  <ion-button (click)="presentAlertConfirm()" color="primary" expand="block"> 保存 </ion-button>
+</ion-content>

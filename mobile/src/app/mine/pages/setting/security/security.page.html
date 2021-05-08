@@ -1,0 +1,18 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title  style=text-align:center>安全设置</ion-title>
+    <ion-buttons slot="start" [routerLink]="[ '/mine/setting' ]">
+      <ion-label color="danger">取消</ion-label>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list lines="full">
+    <ion-item [routerLink]="[ '/mine/setting/security/changepw' ]">
+      <ion-label>修改密码</ion-label>
+      <ion-icon slot="end" name="arrow-forward"></ion-icon>
+    </ion-item>
+  </ion-list>
+  <app-copyright [bottom]="'20px'"></app-copyright>
+</ion-content>

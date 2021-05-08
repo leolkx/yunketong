@@ -1,0 +1,24 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title  style=text-align:center>问题反馈</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item-divider>
+      <ion-label> 感谢您在线提交反馈、投诉与建议 </ion-label>
+    </ion-item-divider>
+    <ion-item>
+        <ion-textarea rows="6" placeholder="输入内容" [(ngModel)]="user.fbinfo"></ion-textarea>
+    </ion-item>
+    <ion-item-divider>
+      <ion-label> </ion-label>
+    </ion-item-divider>
+    <ion-button expand="full" (click)="submit()"> 确认提交 </ion-button>
+</ion-list>
+<app-copyright [bottom]="'20px'"></app-copyright>
+</ion-content>
