@@ -1,0 +1,24 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar color="favorite">
+    <ion-buttons slot="end">
+      <ion-button color="light" [hidden]="!showSkip" (click)="onSkip()">跳过</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content no-padding color="favorite">
+  <ion-slides #slides pager="false" (ionSlideWillChange)="onSlideWillChange($event)">
+    <ion-slide>
+      <img src="./assets/image/1.png" alt="">
+    </ion-slide>
+    <ion-slide>
+      <img src="./assets/image/2.png" alt="">
+    </ion-slide>
+    <ion-slide>
+      <img src="./assets/image/3.png" alt="">
+    </ion-slide>
+    <ion-slide>
+      <img src="./assets/image/4.png" alt="" (click)="onSkip()">
+    </ion-slide>
+  </ion-slides>
+</ion-content>
