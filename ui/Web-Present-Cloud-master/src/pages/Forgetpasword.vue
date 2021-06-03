@@ -67,7 +67,7 @@ export default {
         ],
         repeatpassword: [
           {
-            required: true, message: '重置密码不能为空', trigger: 'blur'
+            required: true, message: '确认密码不能为空', trigger: 'blur'
           }
         ]
       }
@@ -104,7 +104,7 @@ export default {
             clearInterval(timer)
           }
         }, 1000)
-        _this.$http.post('你的接口', qs.stringify(
+        _this.$http.post('phone', qs.stringify(
           {phoneNumber: _this.forgetpwdform.phone}
         )).then((res) => {
           _this.getCode = res
@@ -123,7 +123,7 @@ export default {
       _this.$refs['forgetpwdform'].validate(valid => {
         if (valid) {
           // eslint-disable-next-line eqeqeq
-          if (_this.forgetpwdform.code != _this.getCode) {
+          if (_this.forgetpwdform.code !== _this.getCode) {
             this.$message({
               type: 'error',
               message: '修改失败',

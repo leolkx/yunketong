@@ -1,27 +1,27 @@
 <template>
   <div class="login_container">
-  <form>
+  <el-form :model="registerform"  ref="registerformRef">
     <!--表单名称-->
     <div class="title">到云后台管理系统</div>
     <!--用户名-->
-    <input class="username" placeholder="User name" v-model="username"/>
+    <input class="username" placeholder="User name" v-model="registerform.username"/>
     <!--错误提示，下同-->
-    <div class="error">{{uError}}</div>
+    <div class="error">{{registerform.uError}}</div>
     <!--密码-->
-    <input class="password" placeholder="Password" v-model="userpwd"/>
-    <div class="error">{{pError}}</div>
+    <input class="password" placeholder="Password" v-model="registerform.userpwd"/>
+    <div class="error">{{registerform.pError}}</div>
     <!--确认密码-->
-    <input class="pwdagain" placeholder="Confirm Password" v-model="pwdagain"/>
-    <div class="error">{{aError}}</div>
+    <input class="pwdagain" placeholder="Confirm Password" v-model="registerform.pwdagain"/>
+    <div class="error">{{registerform.aError}}</div>
     <!--手机号-->
-    <input class="phone" placeholder="phone" v-model="phone"/>
+    <input class="phone" placeholder="phone" v-model="registerform.phone"/>
     <!--邮箱-->
-    <input class="email" placeholder="email" v-model="email"/>
+    <input class="email" placeholder="email" v-model="registerform.email"/>
     <!--注册按钮-->
     <button class="register-btn" @click="userRegister">注册</button>
     <!--这里我们用路由跳转到登陆组件-->
     <router-link to="/Login">已有账号，登陆</router-link>
-  </form>
+  </el-form>
   </div>
 </template>
 
@@ -29,17 +29,19 @@
 export default {
   // 这里是组件的名字，无影响
   name: 'Register',
-  data: function () {
+  data () {
     return {
       // 这里主要是初始化用户输入的信息，以及错误提示
-      username: '',
-      userpwd: '',
-      pwdagain: '',
-      phone: '',
-      email: '',
-      uError: '',
-      pError: '',
-      aError: ''
+      registerform: {
+        username: '',
+        userpwd: '',
+        pwdagain: '',
+        phone: '',
+        email: '',
+        uError: '',
+        pError: '',
+        aError: ''
+      }
     }
   },
   // methods 用于定义的函数。
@@ -48,29 +50,42 @@ export default {
     userRegister: function () {
       // 简单进行一下验证，判断是否为空
       // 正经项目肯定需要更多的验证规则，这里只是提供一个思路
-      if (this.username === '') {
-        this.uError = '用户名不能为空！'
+      if (this.registerform.username === '') {
+        this.registerform.uError = '用户名不能为空！'
       } else {
-        this.uError = ''
+        this.registerform.uError = ''
       }
-      if (this.userpwd === '') {
-        this.pError = '密码不能为空！'
+      if (this.registerform.userpwd === '') {
+        this.registerform.pError = '密码不能为空！'
       } else {
-        this.pError = ''
+        this.registerform.pError = ''
       }
       // eslint-disable-next-line eqeqeq
-      if (this.userpwd !== this.pwdagain) {
-        this.aError = '两次密码不一致！'
+      if (this.registerform.userpwd !== this.registerform.pwdagain) {
+        this.registerform.aError = '两次密码不一致！'
       } else {
-        this.aError = ''
+        this.registerform.aError = ''
       }
-      if (this.uError === '' && this.pError === '' && this.aError === '') {
+      if (this.registerform.uError === '' && this.registerform.pError === '' && this.registerform.aError === '') {
         //  验证通过后通过axios来完成ajax请求，将注册信息传到后端
         //  这里不涉及后端内容，仅提供思路
         //  this.$axios.get('路径?参数').then(res => ())
         //  this.$axios.post('路径',{参数}).then(res => ())
         //  默认注册成功，跳转到登陆页面
-        this.$router.push('/Login')
+        this.$refs.registerformRef.validate(async valid => {
+          if (!valid) return
+          this.registerform.param = true
+          const {data: res} = await this.$http.post('接口', this.registerform)
+          if (res.state !== 'success') return this.$message.error(res.msg)
+          this.$message.success('注册成功')
+          // window.localStorage.setItem('username', this.registerform.username)
+          // window.localStorage.setItem('token', res.result.token)
+          // this.$router.push({
+          //   path: '/welcome'
+          // })
+          console.log(this.registerform)
+          //this.$router.push('/Login')
+        })
       }
     }
   }
@@ -101,7 +116,7 @@ input {
   background-color: rgb(255, 255, 255);
   padding-left: 5px;
   border-radius: 5px;
-  color: #ffffff;
+  color: #130909;
 }
 button {
   width: 100px;

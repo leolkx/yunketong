@@ -12,7 +12,7 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 Vue.use(ElementUI)
 
-axios.defaults.baseURL = 'http://219.229.153.200:8081/'
+axios.defaults.baseURL = 'http://172.20.86.137:8081/'
 // axios.defaults.headers.common['Authorization'] = window.localStorage.getItem('token')
 axios.defaults.withCredentials = true
 Vue.prototype.$http = axios

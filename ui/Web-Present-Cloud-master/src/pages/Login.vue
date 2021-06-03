@@ -91,13 +91,13 @@
 import SocialSign from '@/components/SocialSignin/socialsignin.vue'
 export default {
   components: {SocialSign},
-  data() {
+  data () {
     return {
-      // imgCode: 'http://219.229.153.200:8081/verification/code',
+      // imgCode: 'http://172.20.86.137:8081/verification/code',
       // 登录表单数据绑定对象
       loginForm: {
         username: '',
-        password: '',
+        password: ''
         // verificationCode: ''
       },
       loginForm1: {
@@ -112,7 +112,7 @@ export default {
       loginFormRules: {
         username: [
           {required: true, message: '请输入账号', trigger: 'blur'},
-          {min: 2, max: 10, message: '长度在2-10个字符', trigger: 'blur'}
+          {min: 2, max: 12, message: '长度在2-12个字符', trigger: 'blur'}
         ],
         password: [
           {required: true, message: '请输入密码', trigger: 'blur'},
@@ -238,13 +238,6 @@ export default {
           this.loginForm1.param = true
           const {data: res} = await this.$http.post('signinbyphone', this.loginForm1)
           if (res.state !== 'success') return this.$message.error(res.msg)
-          this.$message.success('登录成功')
-          /*
-            1.将登录成功之后的token保存到客户端的sessionStorage中
-                项目中除了登录之外的其他API接口，必须在登录之后才能访问
-                token只应在当前网站打开期间有效，所以将token保存在sessionStorage中
-            2.通过编程式导航跳转到后台主页，路由地址是 /welcome
-        */
           window.localStorage.setItem('phone', this.loginForm1.username)
           window.localStorage.setItem('token', res.result.token)
           this.$router.push({
