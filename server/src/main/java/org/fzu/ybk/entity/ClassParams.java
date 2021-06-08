@@ -28,6 +28,8 @@ public class ClassParams {
     private Long paramCode;
     private String paramName;
     private String paramDesc;
+    private int experience;
+    private int distance;
 
     @TableField(exist = false)
     private Long orgCode;

@@ -2,7 +2,7 @@ package org.fzu.ybk.service;
 
 import org.fzu.ybk.exception.VerificationCodeException;
 import org.fzu.ybk.utils.DrawUtils;
-import org.fzu.ybk.utils.RandomCodeUtils;
+//import org.fzu.ybk.utils.RandomCodeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -29,7 +29,6 @@ public class VerificationCodeService {
     static public final String verificationCodeCreateDate = "verificationCodeCreateDate";
 
     private DrawUtils drawUtils = new DrawUtils();
-    private RandomCodeUtils randomCodeUtils = new RandomCodeUtils();
 
     private final Logger logger = LoggerFactory.getLogger(VerificationCodeService.class);
 
@@ -50,13 +49,13 @@ public class VerificationCodeService {
                 //将流的初始化放到这里就不需要手动关闭流
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ) {
-            String code = randomCodeUtils.randomString( VerificationCodeService.verificationCodeLength );
-            drawUtils.draw(code, imgWidth, imgHeight, baos);
+//            String code = randomCodeUtils.randomString( VerificationCodeService.verificationCodeLength );
+//            drawUtils.draw(code, imgWidth, imgHeight, baos);
 
-            imgBytes = baos.toByteArray();
+//            imgBytes = baos.toByteArray();
 
-            session.setAttribute(VerificationCodeService.verificationCode,code);
-            session.setAttribute(VerificationCodeService.verificationCodeCreateDate,date);
+//            session.setAttribute(VerificationCodeService.verificationCode,code);
+//            session.setAttribute(VerificationCodeService.verificationCodeCreateDate,date);
 
         } catch (IOException e) {
             logger.error(e.getMessage(), e);

@@ -5,10 +5,7 @@ import org.fzu.ybk.StatusCode;
 import org.fzu.ybk.service.ResponseService;
 import org.fzu.ybk.service.PhoneService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -20,7 +17,7 @@ public class PhoneController {
     @Autowired
     private ResponseService responseService;
 
-    @GetMapping("/phonecode")
+    @PostMapping("/phonecode")
     public String phoneCode(@RequestParam(value = "phone" ,required = true)String phone, HttpServletRequest request){
         try{
             return phoneService.generateVerificationCode(phone, request.getSession());

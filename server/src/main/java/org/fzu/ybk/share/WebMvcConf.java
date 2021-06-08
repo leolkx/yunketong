@@ -54,38 +54,6 @@ public class WebMvcConf implements WebMvcConfigurer {
 //        log.debug("跨域拦截器注册成功！");
     }
 
-//    但是使用此方法配置之后再使用自定义拦截器时跨域相关配置就会失效。
-//    原因是请求经过的先后顺序问题，当请求到来时会先进入拦截器中，而不是进入Mapping映射中，所以返回的头信息中并没有配置的跨域信息。浏览器就会报跨域异常。
-//
-//    正确的解决跨域问题的方法时使用CorsFilter过滤器。代码如下：
-
-    // @Override
-    // public void addCorsMappings(CorsRegistry registry) {
-        // registry.addMapping("/api/**")
-                // .allowedOrigins("*")
-                // .allowedMethods("GET", "POST", "OPTIONS","PUT","DELETE")
-                // .allowedHeaders("*")
-                // .allowCredentials(true)
-                // .maxAge(3600);
-    // }
-
-
-
-    // 自己添加转化器，不加bufferImg，
-    // 在AbstractMessageConverterMethodProcessor
-    /*
-
-            if (body != null) {
-                Set<MediaType> producibleMediaTypes = (Set)inputMessage.getServletRequest().getAttribute(HandlerMapping.PRODUCIBLE_MEDIA_TYPES_ATTRIBUTE);
-                if (!isContentTypePreset && CollectionUtils.isEmpty(producibleMediaTypes)) {
-                    throw new HttpMediaTypeNotAcceptableException(this.allSupportedMediaTypes);
-                }
-
-                throw new HttpMessageNotWritableException("No converter for [" + valueType + "] with preset Content-Type '" + contentType + "'");
-            }
-             找不到转化器
-    * */
-
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
 

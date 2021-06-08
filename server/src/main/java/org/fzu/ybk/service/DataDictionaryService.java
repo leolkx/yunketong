@@ -3,6 +3,7 @@ package org.fzu.ybk.service;
 import org.fzu.ybk.StatusCode;
 import org.fzu.ybk.entity.DataDictionary;
 import org.fzu.ybk.entity.DataDictionaryUpdate;
+import org.fzu.ybk.entity.MulDataDictionary;
 import org.fzu.ybk.exception.DataDictionaryException;
 import org.fzu.ybk.mapper.DataDictionaryMapper;
 import org.fzu.ybk.utils.DateFormater;
@@ -58,7 +59,31 @@ public class DataDictionaryService {
                 throw new DataDictionaryException("数据字典已存在此键");
         }
     }
+    public String insertData(DataDictionary dataDictionary) throws Exception{
 
+        if (dataDictionary.getDataName() == null || dataDictionary.getDictName() == null){
+            throw new DataDictionaryException("字典、数据Name不能为空！");
+        }
+        this.insertDictValue(dataDictionary.getDictName(),dataDictionary.getDataName());
+        return responseService.responseFactory(StatusCode.RESPONSE_OK,"插入成功");
+    }
+
+    public String insertTextData(DataDictionary dataDictionary) throws Exception{
+
+        if (dataDictionary.getDataName() == null || dataDictionary.getDictName() == null){
+            throw new DataDictionaryException("字典、数据Name不能为空！");
+        }
+        this.insertTextDictValue(dataDictionary);
+        return responseService.responseFactory(StatusCode.RESPONSE_OK,"插入成功");
+    }
+
+    public String insertAllTextData(MulDataDictionary mulDataDictionary) throws Exception{
+        DataDictionary[] mulDataDictionaryArray = mulDataDictionary.getDictionaries();
+        for(int i=0;i< mulDataDictionaryArray.length;i++)
+            insertTextData(mulDataDictionaryArray[i]);
+        return responseService.responseFactory(StatusCode.RESPONSE_OK,"插入成功");
+
+    }
 
     private void insertDictValue(String dictName, String dataName) throws DataDictionaryException{
         String dateStr = dateFormater.getDate();
@@ -68,17 +93,43 @@ public class DataDictionaryService {
             keyId = dataDictionaryMapper.getDictKeyByDictName(dictName);
         }
 
-        Long dataOrder = dataDictionaryMapper.getDictValueNumber(keyId) + 1;
 
         Long valueId = dataDictionaryMapper.
                 getDictValueByDictIdAndDataName(keyId,dataName);
 
         if (valueId == null){
-            dataDictionaryMapper.insertDictValue(keyId,dataName,
-                    dataOrder,dateStr,false);
+            dataDictionaryMapper.insertDictValue(keyId,dataName
+                    ,dateStr,false);
         }
         else
             throw new DataDictionaryException("数据字典该键下已存在此类型");
+    }
+
+    private void insertTextDictValue(DataDictionary dataDictionary) throws DataDictionaryException{
+        String dictName = dataDictionary.getDictName();
+        String dataName = dataDictionary.getDataName();
+        String dateStr = dateFormater.getDate();
+        String textValue = dataDictionary.getTextValue();
+        String textName = dataDictionary.getTextName();
+        String textDefault = dataDictionary.getTextDefault();
+
+        Long keyId = dataDictionaryMapper.getDictKeyByDictName(dictName);
+        if (keyId == null){
+            dataDictionaryMapper.insertDictKey(dictName,dateStr,false);
+            keyId = dataDictionaryMapper.getDictKeyByDictName(dictName);
+        }
+
+        Long valueId = dataDictionaryMapper.
+                getDictValueByDictIdAndDataName(keyId, dataName);
+
+//        if (valueId == null){
+//            dataDictionaryMapper.insertTextDictValue(keyId,dataName,
+//                    dataOrder, textValue, textName, textDefault, dateStr,false);
+//        }
+//        else
+//            throw new DataDictionaryException("数据字典该键下已存在此类型");
+        dataDictionaryMapper.insertTextDictValue(keyId,dataName
+                , textValue, textName, textDefault, dateStr,false);
     }
 
 
@@ -97,16 +148,15 @@ public class DataDictionaryService {
         else
             throw new DataDictionaryException("数据字典已存在被修改后的键");
 
-
     }
 
     private void updateDictValue(String dictName,String dataName, String newDataName) throws DataDictionaryException{
         Long keyId = dataDictionaryMapper.getDictKeyByDictName(dictName);
-        if (keyId == null )
+        if (keyId == null)
             throw new DataDictionaryException("数据字典无此键");
 
         Long valueId = dataDictionaryMapper.
-                getDictValueByDictIdAndDataName(keyId,dataName);
+                getDictValueByDictIdAndDataName(keyId, dataName);
         if (valueId == null )
             throw new DataDictionaryException("数据字典该键下无此类型");
 
@@ -121,9 +171,7 @@ public class DataDictionaryService {
             throw new DataDictionaryException("数据字典该键已存在此类型值");
     }
 
-    private void updateDictValueOrder(String dictName,String dataName, Long newOrder)
-            throws DataDictionaryException{
-
+    private void updateDictTextValue(String dictName,String dataName, String textValue, String textName,String textDefault) throws DataDictionaryException{
         Long keyId = dataDictionaryMapper.getDictKeyByDictName(dictName);
         if (keyId == null )
             throw new DataDictionaryException("数据字典无此键");
@@ -131,11 +179,27 @@ public class DataDictionaryService {
         Long valueId = dataDictionaryMapper.
                 getDictValueByDictIdAndDataName(keyId,dataName);
         if (valueId == null )
-            throw new DataDictionaryException("该键下无此类型");
+            throw new DataDictionaryException("数据字典该键下无此类型");
 
-        dataDictionaryMapper.updateDictValueOrderByDataId(valueId,newOrder);
+            dataDictionaryMapper.updateDictTextValueByDataId(valueId, textValue, textName, textDefault);
 
     }
+
+//    private void updateDictValueOrder(String dictName,String dataName, Long newOrder)
+//            throws DataDictionaryException{
+//
+//        Long keyId = dataDictionaryMapper.getDictKeyByDictName(dictName);
+//        if (keyId == null )
+//            throw new DataDictionaryException("数据字典无此键");
+//
+//        Long valueId = dataDictionaryMapper.
+//                getDictValueByDictIdAndDataName(keyId,dataName);
+//        if (valueId == null )
+//            throw new DataDictionaryException("该键下无此类型");
+//
+//        dataDictionaryMapper.updateDictValueOrderByDataId(valueId,newOrder);
+//
+//    }
 
     // delimiter of soft operation based on mapper
 
@@ -145,14 +209,7 @@ public class DataDictionaryService {
         return responseService.responseFactory(StatusCode.RESPONSE_OK,"删除成功");
     }
 
-    public String insertData(DataDictionary dataDictionary) throws Exception{
 
-        if (dataDictionary.getDataName() == null || dataDictionary.getDictName() == null){
-            throw new DataDictionaryException("字典、数据Name不能为空！");
-        }
-        this.insertDictValue(dataDictionary.getDictName(),dataDictionary.getDataName());
-        return responseService.responseFactory(StatusCode.RESPONSE_OK,"插入成功");
-    }
 
     public String updateKey(DataDictionaryUpdate dataDictionaryUpdate) throws Exception{
 
@@ -165,6 +222,7 @@ public class DataDictionaryService {
         return responseService.responseFactory(StatusCode.RESPONSE_OK,"更新成功");
     }
 
+
     public String updateValue(DataDictionaryUpdate dataDictionaryUpdate) throws Exception{
         String dictName = dataDictionaryUpdate.getDictName();
         String oldDataName = dataDictionaryUpdate.getDataName();
@@ -176,17 +234,31 @@ public class DataDictionaryService {
         return responseService.responseFactory(StatusCode.RESPONSE_OK,"更新成功");
     }
 
-    public String updateValueOrder(DataDictionaryUpdate dataDictionaryUpdate) throws Exception{
+    public String updateTextValue(DataDictionaryUpdate dataDictionaryUpdate) throws Exception{
         String dictName = dataDictionaryUpdate.getDictName();
         String dataName = dataDictionaryUpdate.getDataName();
-//        String newDataName = dataDictionaryUpdate.getNewDataName();
-        Long newOrder = dataDictionaryUpdate.getDataOrder();
-        if (dictName == null || dataName == null || newOrder == null){
-            throw new DataDictionaryException("字典名，数据名，新数据序不能为空");
+        String textValue = dataDictionaryUpdate.getTextValue();
+        String textName = dataDictionaryUpdate.getTextName();
+        String textDefault = dataDictionaryUpdate.getTextDefault();
+
+        if (dictName == null || dataName == null){
+            throw new DataDictionaryException("字典名，数据名，新数据名不能为空");
         }
-        this.updateDictValueOrder(dictName,dataName,newOrder);
+        this.updateDictTextValue(dictName,dataName,textValue,textName,textDefault);
         return responseService.responseFactory(StatusCode.RESPONSE_OK,"更新成功");
     }
+
+//    public String updateValueOrder(DataDictionaryUpdate dataDictionaryUpdate) throws Exception{
+//        String dictName = dataDictionaryUpdate.getDictName();
+//        String dataName = dataDictionaryUpdate.getDataName();
+////        String newDataName = dataDictionaryUpdate.getNewDataName();
+//        Long newOrder = dataDictionaryUpdate.getDataOrder();
+//        if (dictName == null || dataName == null || newOrder == null){
+//            throw new DataDictionaryException("字典名，数据名，新数据序不能为空");
+//        }
+//        this.updateDictValueOrder(dictName,dataName,newOrder);
+//        return responseService.responseFactory(StatusCode.RESPONSE_OK,"更新成功");
+//    }
 
 
     public String getAllData(Long page,Long pageSize) throws Exception{
@@ -198,8 +270,33 @@ public class DataDictionaryService {
         }
         return responseService.responseFactory(StatusCode.RESPONSE_OK,"",res);
     }
+    public String getAllTextData(Long page,Long pageSize) throws Exception{
+        Long offset = (page-1)*pageSize;
+
+        List<DataDictionary> res = dataDictionaryMapper.getAllTextDataFromDataDictionary(pageSize,offset);
+        if (res.size() == 0){
+            throw new DataDictionaryException("数字字典下无数据");
+        }
+        return responseService.responseFactory(StatusCode.RESPONSE_OK,"",res);
+    }
 
     public String getDataByDictName(String dictName,Long page,Long pageSize) throws Exception{
+        Long offset = (page-1)*pageSize;
+        Long keyId = dataDictionaryMapper.getDictKeyByDictName(dictName);
+        if (keyId == null )
+            throw new DataDictionaryException("数据字典无此键");
+        List<DataDictionary> res = dataDictionaryMapper.
+                getDictValuesByDictId(keyId,pageSize,offset);
+        if (res.size() == 0){
+            throw new DataDictionaryException("该键下无数据");
+        }
+        //为查询到的value赋key值
+        for (int i=0;i<res.size();++i){
+            res.get(i).setDictName(dictName);
+        }
+        return responseService.responseFactory(StatusCode.RESPONSE_OK,"",res);
+    }
+    public String getTextDataByDictName(String dictName,Long page,Long pageSize) throws Exception{
         Long offset = (page-1)*pageSize;
         Long keyId = dataDictionaryMapper.getDictKeyByDictName(dictName);
         if (keyId == null )
@@ -226,6 +323,24 @@ public class DataDictionaryService {
 
         List<DataDictionary> res = dataDictionaryMapper.
                 getDictValuesByDictIdAndDataNameLikely(keyId,dataName,pageSize,offset);
+        if (res.size() == 0){
+            throw new DataDictionaryException("该字典下未匹配到数据");
+        }
+        //为查询到的value赋key值
+        for (int i=0;i<res.size();++i){
+            res.get(i).setDictName(dictName);
+        }
+        return responseService.responseFactory(StatusCode.RESPONSE_OK,"",res);
+    }
+    public String getTextDataByDictNameAndDataName(String dictName, String dataName)
+            throws Exception{
+
+        Long keyId = dataDictionaryMapper.getDictKeyByDictName(dictName);
+        if (keyId == null )
+            throw new DataDictionaryException("数据字典无此键");
+
+        List<DataDictionary> res = dataDictionaryMapper.
+                getTextDictValuesByDictIdAndDataNameLikely(keyId,dataName);
         if (res.size() == 0){
             throw new DataDictionaryException("该字典下未匹配到数据");
         }

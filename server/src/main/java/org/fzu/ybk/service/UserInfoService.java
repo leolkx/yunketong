@@ -46,6 +46,8 @@ public class UserInfoService {
     private RichTextService richTextService;
     @Autowired
     private MailVerificationService mailVerificationService;
+    @Autowired
+    private PhoneService phoneService;
 
     private final Logger logger = LoggerFactory.getLogger(UserInfoService.class);
 
@@ -125,6 +127,8 @@ public class UserInfoService {
 
 
     public String updateUserPassword(UserPassword userPassword, HttpServletRequest request) throws Exception{
+        Date date = new Date();
+//        phoneService.verify(date, userPassword.getPhone(), userPassword.getVerificationCode(), request.getSession());
         if (userPassword == null){
             throw new UserInfoException("错误的参数提交(更新密码)");
         }
@@ -147,7 +151,7 @@ public class UserInfoService {
 //            throw new UserInfoException("请先获取邮箱验证码");
 //        }
 
-        Date date = new Date();
+
 //        mailVerificationService.verify(date,userPassword.getEmail(),userPassword.getMailVerificationCode(),request.getSession());
 //        if (userPassword.getOldPassword() is not legal)
 //            throw new UserInfoException("新密码不符合要求");

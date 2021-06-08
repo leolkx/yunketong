@@ -9,6 +9,9 @@ public class DataDictionary {
     private String dataName;
     private Long dataOrder;
     private Boolean deleted;
+    private String textValue;
+    private String textDefault;
+    private String textName;
 
     public void setId(Long id) {
         this.id = id;
@@ -30,6 +33,13 @@ public class DataDictionary {
         this.deleted = deleted;
     }
 
+    public void setTextValue(String textValue) { this.textValue = textValue; }
+
+    public void setTextName(String textName) { this.textName = textName; }
+
+    public void setTextDefault(String textDefault) { this.textDefault = textDefault; }
+
+
     public Long getId() {
         return id;
     }
@@ -49,4 +59,11 @@ public class DataDictionary {
     public Boolean getDeleted() {
         return deleted;
     }
+
+    public String getTextValue() { return textValue; }
+
+    public String  getTextName() { return textName; }
+
+    public String getTextDefault() { return textDefault; }
+
 }

@@ -9,39 +9,6 @@ import java.util.List;
 @Component
 @Mapper
 public interface DataDictionaryMapper {
-
-// 空格:字段实体映射
-//    @Insert("INSERT INTO user (role_id, username, password, email, creation_date, is_active, is_deleted) VALUES (#{roleId},#{userName}, #{password}, #{email}, #{createDate}, #{isActive}, #{isDeleted} )")
-
-//    @Select("SELECT username FROM user where email = #{email}")
-
-
-
-
-//
-//    @Insert("INSERT INTO data_dictionary (dict_code, dict_name, data_code, data_name, creation_date, is_deleted) VALUES (#{dictCode},#{dictName}, #{dataCode}, #{dataName}, #{createDate}, #{isDeleted} )")
-//    void insertData(Long dictCode, String dictName, Long dataCode, String dataName, String createDate, boolean isDeleted);
-//
-//    @Select("SELECT dict_code, dict_name, data_code, data_name FROM data_dictionary WHERE dict_code = #{dictCode} and is_deleted = 0 ")
-//    List<DataDictionary> getDataDictionaryByDictCode(Long dictCode);
-//
-//    @Delete("DELETE FROM data_dictionary WHERE dict_code = #{dictCode} AND data_code = #{dataCode} ")
-//    void deleteData(Long dictCode, Long dataCode);
-//
-//    @Select("SELECT * FROM (SELECT dict_code, dict_name, data_code, data_name FROM data_dictionary where dict_code = #{dictCode} ) as tmp WHERE tmp.data_name like '%${dataName}%' and tmp.is_deleted = 0")
-//    List<DataDictionary> getDataDictionaryByDataName(Long dictCode, String dataName);
-//
-//    // 存在性的判定都不考虑is_deleted的属性， (软)删除/(软)插入/(软)更新在service写逻辑，
-//    @Select("SELECT COUNT(1) FROM data_dictionary WHERE dict_code = #{dictCode} AND data_code = #{dataCode}")
-//    boolean existDataDictionary(Long dictCode,Long dataCode);
-//
-//    @Select( "SELECT data_order FROM data_dictionary order by data_order DESC limit 1" )
-//    Long getLastDataOrder(Long dictCode, Long dataCode);
-//
-//    void updateDataDictionary(Long dictCode, Long dataCode, )
-
-    //注意参数不用@Param("obj") List<Object> objs注解的话顺序要对应.????到底需要吗？？？待测试
-
     @Insert("INSERT INTO data_dictionary_key " +
             "(dict_name, creation_date, is_deleted) " +
             "VALUES (#{dictName}, #{createDate}, #{isDeleted} )")
@@ -70,11 +37,15 @@ public interface DataDictionaryMapper {
 
 //-------- delimeter of key and value
 
+    @Insert("INSERT INTO data_dictionary_value " +
+            "(dict_id, data_name, creation_date, is_deleted) " +
+            "VALUES (#{dictId},#{dataName}, #{createDate}, #{isDeleted} )")
+    void insertDictValue(Long dictId, String dataName, String createDate, boolean isDeleted);
 
     @Insert("INSERT INTO data_dictionary_value " +
-            "(dict_id, data_name, data_order, creation_date, is_deleted) " +
-            "VALUES (#{dictId},#{dataName}, #{dataOrder}, #{createDate}, #{isDeleted} )")
-    void insertDictValue(Long dictId, String dataName, Long dataOrder, String createDate, boolean isDeleted);
+            "(dict_id, data_name, textValue, textName, textDefault, creation_date, is_deleted) " +
+            "VALUES (#{dictId},#{dataName}, #{textValue}, #{textName}, #{textDefault}, #{createDate}, #{isDeleted} )")
+    void insertTextDictValue(Long dictId, String dataName, String textValue, String textName, String textDefault, String createDate, boolean isDeleted);
 
     @Select("SELECT id " +
             "FROM data_dictionary_value " +
@@ -89,9 +60,16 @@ public interface DataDictionaryMapper {
     @Select("SELECT k.dict_name, v.data_name " +
             "FROM data_dictionary_key AS k INNER JOIN data_dictionary_value AS v " +
             "ON k.id = v.dict_id AND k.is_deleted = 0 AND v.is_deleted = 0 " +
-            "ORDER BY k.id,v.data_order ASC " +
+            "ORDER BY k.id ASC " +
             "LIMIT #{size} OFFSET #{offset}  ")
     List<DataDictionary> getAllDataFromDataDictionary(Long size, Long offset);
+
+    @Select("SELECT v.textValue, v.textName, v.textDefault " +
+            "FROM data_dictionary_key AS k INNER JOIN data_dictionary_value AS v " +
+            "ON k.id = v.dict_id AND k.is_deleted = 0 AND v.is_deleted = 0 " +
+            "ORDER BY k.id ASC " +
+            "LIMIT #{size} OFFSET #{offset}  ")
+    List<DataDictionary> getAllTextDataFromDataDictionary(Long size, Long offset);
 
     @Select("SELECT data_name " +
             "FROM data_dictionary_value " +
@@ -99,18 +77,22 @@ public interface DataDictionaryMapper {
             "LIMIT #{size} OFFSET #{offset}")
     List<DataDictionary> getDictValuesByDictId(Long dictId,Long size, Long offset);
 
-    @Select("SELECT tmp.data_name FROM (SELECT data_name, is_deleted, data_order " +
+    @Select("SELECT tmp.data_name FROM (SELECT data_name, is_deleted " +
             "FROM data_dictionary_value WHERE dict_id = #{dictId} ) AS tmp " +
             "WHERE tmp.data_name like '%${dataName}%' AND tmp.is_deleted = 0 " +
-            "ORDER BY tmp.data_order ASC " +
             "LIMIT #{size} OFFSET #{offset}")
     List<DataDictionary> getDictValuesByDictIdAndDataNameLikely(Long dictId, String dataName,Long size, Long offset);
+
+    @Select("SELECT tmp.textValue, tmp.textName, tmp.textDefault FROM (SELECT * " +
+            "FROM data_dictionary_value WHERE dict_id = #{dictId} ) AS tmp " +
+            "WHERE tmp.data_name like '%${dataName}%' AND tmp.is_deleted = 0 ")
+    List<DataDictionary> getTextDictValuesByDictIdAndDataNameLikely(Long dictId, String dataName);
 
     @Select("SELECT k.dict_name, v.data_name " +
             "FROM data_dictionary_key AS k INNER JOIN data_dictionary_value AS v " +
             "ON k.id = v.dict_id AND k.is_deleted = 0 AND v.is_deleted = 0 " +
             "WHERE v.data_name LIKE '%${dataName}%' " +
-            "ORDER BY k.id,v.data_order ASC " +
+            "ORDER BY k.id ASC " +
             "LIMIT #{size} OFFSET #{offset}")
     List<DataDictionary> getDictValuesByDataNameLikely(String dataName,Long size, Long offset);
 
@@ -119,7 +101,7 @@ public interface DataDictionaryMapper {
             "ON k.id = v.dict_id AND k.is_deleted = 0 AND v.is_deleted = 0 " +
             "WHERE k.dict_name LIKE '%${dictName}%' " +
             "AND v.data_name LIKE '%${dataName}%' " +
-            "ORDER BY k.id,v.data_order ASC " +
+            "ORDER BY k.id ASC " +
             "LIMIT #{size} OFFSET #{offset}")
     List<DataDictionary> getDictValuesByDictNameLikelyAndDataNameLikely(String dictName, String dataName,Long size, Long offset);
 
@@ -127,7 +109,7 @@ public interface DataDictionaryMapper {
             "FROM data_dictionary_key AS k INNER JOIN data_dictionary_value AS v " +
             "ON k.id = v.dict_id AND k.is_deleted = 0 AND v.is_deleted = 0 " +
             "WHERE v.data_name = #{dataName} " +
-            "ORDER BY k.id,v.data_order ASC " +
+            "ORDER BY k.id ASC " +
             "LIMIT #{size} OFFSET #{offset}")
     List<DataDictionary> getDictValuesByDataName(String dataName,Long size, Long offset);
 
@@ -136,7 +118,7 @@ public interface DataDictionaryMapper {
             "ON k.id = v.dict_id AND k.is_deleted = 0 AND v.is_deleted = 0 " +
             "WHERE k.dict_name = #{dictName} " +
             "AND v.data_name = #{dataName} " +
-            "ORDER BY k.id,v.data_order ASC " +
+            "ORDER BY k.id ASC " +
             "LIMIT #{size} OFFSET #{offset}")
     List<DataDictionary> getDictValuesByDictNameLikelyAndDataName(String dictName, String dataName,Long size, Long offset);
 
@@ -149,9 +131,13 @@ public interface DataDictionaryMapper {
     void updateDictValueByDataId(Long dataId, String newDataName);
 
     @Update("UPDATE data_dictionary_value " +
-            "SET data_order = #{order} " +
+            "SET textValue = #{textValue} " +
+            ", textName = #{textName} " +
+            ", textDefault = #{textDefault} " +
             "WHERE id = #{dataId} ")
-    void updateDictValueOrderByDataId(@Param("dataId") Long dataId, @Param("order") Long order);
+//    void updateDictValueByDataId(@Param("dataId") Long dataId, @Param("newDataName") String newDataName);
+    void updateDictTextValueByDataId(Long dataId, String textValue, String textName, String textDefault);
+
 
     @Update("UPDATE data_dictionary_value " +
             "SET is_deleted = 1 " +
