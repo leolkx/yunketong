@@ -23,10 +23,10 @@
         </el-col>
         <el-table :data="dataDictionaryList" stripe>
           <el-table-column label="#" type="index" fixed></el-table-column>
-          <el-table-column label="DictName" prop="dictName"></el-table-column>
-          <el-table-column label="DataName" prop="dataName"></el-table-column>
+          <el-table-column label="DictName" prop="dictDescription"></el-table-column>
+          <el-table-column label="DataName" prop="dictName"></el-table-column>
           <el-table-column label="备注"></el-table-column>
-          <el-table-column label="操作" width="150" fixed="right">
+          <el-table-column label="操作" width="200" fixed="right">
             <template slot-scope="scope">
               <!-- 编辑数据字典按钮 -->
               <el-button
@@ -37,11 +37,19 @@
               ></el-button>
               <!-- 删除数据字典按钮 -->
               <el-button
+              type="danger"
+              icon="el-icon-delete"
+              size="mini"
+              @click="removeDD(scope.row)"
+            ></el-button>
+              <!-- 查看数据项 -->
+              <el-button
                 type="danger"
-                icon="el-icon-delete"
+                icon="el-icon-more"
                 size="mini"
-                @click="removeDD(scope.row)"
+                @click="getText(scope.row)"
               ></el-button>
+<!--              <router-link :to="{name:'/data-dict-edit',query:{itemname: scope.row.dataName,idemname: scope.row.dictName}}">跳转数据项</router-link>-->
             </template>
           </el-table-column>
         </el-table>
@@ -95,6 +103,7 @@ export default {
   data () {
     return {
       total: 0,
+      itemname: '',
       // 详情页显示与隐藏
       editDialogVisible: false,
       queryInfo: {
@@ -207,6 +216,16 @@ export default {
       if (res.state !== 'success') return this.$message.error('删除数据字典失败！')
       this.$message.success('删除数据字典成功！')
       this.getDataDictionaryList()
+    },
+    // 获取数据项
+    async getText (dataForm) {
+      this.$router.push({
+        path: '/data-dict-edit',
+        query: {
+          itemname: dataForm.dictName,
+          idemname: dataForm.dictDescription
+        }
+      })
     }
   }
 }

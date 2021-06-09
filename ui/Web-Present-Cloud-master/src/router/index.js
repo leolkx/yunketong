@@ -8,6 +8,7 @@ import Users from '@/components/Users/users.vue'
 import Authority from '@/components/Authority/authority.vue'
 import dataDictionaryManage from '@/components/DataDictionary/dataDictionaryManage.vue'
 import dataDictionaryInput from '@/components/DataDictionary/dataDictionaryInput'
+import dataDictionaryEdit from '@/components/DataDictionary/dataDictionaryEdit'
 import parameterSet from '@/components/ParameterSet/parameterSet'
 import Courses from '@/components/Courses/courses.vue'
 import CourseInfo from '@/components/Courses/courseinfo.vue'
@@ -88,6 +89,11 @@ const router = new Router({
           component: dataDictionaryInput
         },
         {
+          name: 'dataDictionaryEdit',
+          path: '/data-dict-edit',
+          component: dataDictionaryEdit
+        },
+        {
           name: 'parameterSet',
           path: '/parameterSet',
           component: parameterSet
@@ -134,17 +140,17 @@ const router = new Router({
 })
 
 // 挂载路由导航守卫
-router.beforeEach((to, from, next) => {
-  // to 将要访问的路径
-  // from 代表从哪个路径跳转而来
-  // next 是一个函数 表示方放行
-  // next() 放行 next('/login') 强制跳转
-
-  if (to.path === '/login' || to.path === '/Forgetpasword' || to.path === '/Register') { return next() }
-  // 获取token
-  const tokenStr = window.localStorage.getItem('token')
-  if (!tokenStr) { return next('/login') }
-  next()
-})
+// router.beforeEach((to, from, next) => {
+//   // to 将要访问的路径
+//   // from 代表从哪个路径跳转而来
+//   // next 是一个函数 表示方放行
+//   // next() 放行 next('/login') 强制跳转
+//
+//   if (to.path === '/login' || to.path === '/Forgetpasword' || to.path === '/Register') { return next() }
+//   // 获取token
+//   const tokenStr = window.localStorage.getItem('token')
+//   if (!tokenStr) { return next('/login') }
+//   next()
+// })
 
 export default router

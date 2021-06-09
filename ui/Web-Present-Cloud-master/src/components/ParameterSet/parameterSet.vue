@@ -10,7 +10,7 @@
       <!-- 搜索框 -->
       <el-row class="searchRow" :gutter="20">
         <el-col :span="8">
-          <el-input placeholder="请输入搜索内容" class="inputSearch" clearable>
+          <el-input placeholder="请输入搜索内容" class="inputSearch">
             <el-button slot="append" icon="el-icon-search"></el-button>
           </el-input>
         </el-col>
@@ -20,11 +20,11 @@
       </el-row>
       <el-table :data="params">
         <el-table-column type="index" label="#" fixed></el-table-column>
-        <el-table-column label="orgCode" prop="orgCode"></el-table-column>
-        <el-table-column label="paramCode" prop="paramCode"></el-table-column>
-        <el-table-column label="paramName" prop="paramName"></el-table-column>
-        <el-table-column label="paramDesc" prop="paramDesc"></el-table-column>
-        <el-table-column label="other" prop="other">
+<!--        <el-table-column label="orgCode" prop="orgCode"></el-table-column>-->
+        <el-table-column label="参数编码" prop="paramCode"></el-table-column>
+        <el-table-column label="参数名称" prop="paramName"></el-table-column>
+        <el-table-column label="参数信息" prop="paramDesc"></el-table-column>
+        <el-table-column label="操作" prop="other">
           <template slot-scope="scope">
             <!-- 修改参数按钮 -->
             <el-button
@@ -46,7 +46,7 @@
     </el-card>
 
     <!-- 添加参数的对话框 -->
-    <el-dialog title="添加用户" :visible.sync="addDialogVisible" width="50%" @close="addDialogClosed">
+    <el-dialog title="添加参数" :visible.sync="addDialogVisible" width="50%" @close="addDialogClosed">
       <!-- 内容主体区域 -->
       <el-form :model="addForm" :rules="addFormRules" ref="addFormRef" label-width="80px">
         <el-form-item label="org码" prop="orgCode">
@@ -129,12 +129,9 @@ export default {
       },
       // 添加表单的验证规则对象
       addFormRules: {
-        orgCode: [
-          { required: true, message: '请输入orgCode', trigger: 'blur' }
-        ],
         paramCode: [
           { required: true, message: '请输入paramCode', trigger: 'blur' },
-          { min: 2, max: 15, message: '用户名长度在2-15之间', trigger: 'blur' }
+          { min: 1, max: 15, message: '用户名长度在1-15之间', trigger: 'blur' }
         ],
         paramName: [
           { required: true, message: '请输入paramName', trigger: 'blur' },
@@ -153,11 +150,11 @@ export default {
         paramDesc: ''
       },
       editDialogVisible: false,
-      // 添加参数表单的验证规则对象
+      // 编辑参数表单的验证规则对象
       editParmFormRules: {
         paramCode: [
           { required: true, message: '请输入paramCode', trigger: 'blur' },
-          { min: 2, max: 15, message: '用户名长度在2-15之间', trigger: 'blur' }
+          { min: 1, max: 15, message: '用户名长度在1-15之间', trigger: 'blur' }
         ],
         paramName: [
           { required: true, message: '请输入paramName', trigger: 'blur' },
