@@ -35,15 +35,13 @@ public interface OrgnizationMapper extends BaseMapper<Orgnization> {
     @Select( "SELECT id FROM org WHERE org_code = #{orgCode} limit 1 ")
     Long getOrgIdByOrgCode(Long orgCode);
 
-//    @Select( "SELECT IFNULL ( (SELECT org_code FROM org order by org_id DESC limit 1)  , 0)" )
-
     @Select( "SELECT org_code FROM org order by id DESC limit 1" )
     Long getLastOrgCode();
 
     @Select( "SELECT id FROM org order by id DESC limit 1" )
     Long getLastOrgId();
 
-//    select * from table order by id DESC limit 1
+
 
     //获得创建者用户名
     @Select("SELECT creator FROM org WHERE id = #{orgId}")

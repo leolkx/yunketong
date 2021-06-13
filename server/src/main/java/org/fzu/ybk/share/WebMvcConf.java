@@ -35,11 +35,12 @@ public class WebMvcConf implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-//        registry.addInterceptor(securityInterceptor).addPathPatterns("/**");//配置登录拦截器拦截路径
         registry.addInterceptor(securityInterceptor)
                 .excludePathPatterns("/**");
 //                .addPathPatterns("/**")
 //                .excludePathPatterns("/signin")
+//                .excludePathPatterns("/fastsignup")
+//                .excludePathPatterns("/signinbyphone")
 //                .excludePathPatterns("/signup")
 //                .excludePathPatterns("/verification/**")
 //                .excludePathPatterns("/signup/users")

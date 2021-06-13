@@ -7,6 +7,7 @@ import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
+import org.fzu.ybk.GlobalConstant;
 import org.fzu.ybk.StatusCode;
 import org.fzu.ybk.entity.User;
 import org.fzu.ybk.exception.SignInException;
@@ -144,6 +145,7 @@ public class SignInService {
         loginResult.put("username", username);
 
         tokenMapUtils.updateToken(userId,token, request);
+        GlobalConstant.Username = username;
 
         return responseService.responseFactory(StatusCode.RESPONSE_OK,"登录成功",loginResult);
     }
@@ -221,6 +223,7 @@ public class SignInService {
         loginResult.put("username", username);
 
         tokenMapUtils.updateToken(userId,token, request);
+        GlobalConstant.Username = username;
 
         return responseService.responseFactory(StatusCode.RESPONSE_OK,"登录成功",loginResult);
     }

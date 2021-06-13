@@ -44,6 +44,16 @@ public class CloudClassController {
         }
     }
 
+//    @GetMapping(value = "/cloudAllClass")
+//    public String getAllCloudClassInfo(
+//            HttpServletRequest request){
+//        try{
+//            return cloudClassService.getOrglist(request);
+//        } catch (Exception e) {
+//            return responseService.responseFactory(StatusCode.RESPONSE_ERR,e.toString());
+//        }
+//    }
+
     @PutMapping(value = "/cloudClass")
     public String updateCloudClassInfo(
             @RequestParam(value = "orgCode" ,required = true) Long orgCode,

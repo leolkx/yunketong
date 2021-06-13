@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.fzu.ybk.GlobalConstant;
 import org.fzu.ybk.StatusCode;
 
 import org.fzu.ybk.exception.UserInfoException;
@@ -52,23 +53,17 @@ public class UserInfoService {
     private final Logger logger = LoggerFactory.getLogger(UserInfoService.class);
 
     public String getUserJoinedClass(HttpServletRequest request) throws Exception {
-//        String userName = request.getSession().getAttribute(GlobalConstant.sessionUser).toString();
-        String username = SystemParams.username;
-        Long userId = SystemParams.userId;
-
-
-//        List<Orgnization> res = userMapper.getUserJoinedOrgnization(userId);
-        // 仅返回用户加入的群组（排除用户创建的群组)
+        String username = GlobalConstant.Username;
+        Long userId = userMapper.getUserIdByUserName(username);
         List<Orgnization> res = userMapper.getUserJoinedOrgnizationExcludeCreated(userId, username);
         JSONArray jsonArray = richTextService.objectListPlusRichText(res,"cloudClass");
         return responseService.responseFactory(StatusCode.RESPONSE_OK,"",jsonArray);
     }
 
     public String getUserCreatedClass(HttpServletRequest request) throws Exception {
-//        String userName = request.getSession().getAttribute(GlobalConstant.sessionUser).toString();
-        String username = SystemParams.username;
-        Long userId = SystemParams.userId;
 
+        String username = GlobalConstant.Username;
+        Long userId = userMapper.getUserIdByUserName(username);
         List<Orgnization> res = userMapper.getUserCreatedOrgnization(userId,username);
         System.out.println(res.size());
         JSONArray jsonArray = richTextService.objectListPlusRichText(res,"cloudClass");
@@ -82,10 +77,9 @@ public class UserInfoService {
         if (userUpdate == null){
             throw new UserInfoException("提交的用户信息为空");
         }
+        String username = GlobalConstant.Username;
+        Long userId = userMapper.getUserIdByUserName(username);
 
-//        String userName = request.getSession().getAttribute(GlobalConstant.sessionUser).toString();
-        String username = SystemParams.username;
-        Long userId = SystemParams.userId;
 
 
         if (userId == null){
@@ -141,17 +135,7 @@ public class UserInfoService {
         if (userPassword.getPassword() == null){
             throw new UserInfoException("新的密码不能为空");
         }
-//        if (userPassword.getEmail() == null){
-//            throw new UserInfoException("邮箱不能为空");
-//        }
-//        if (userPassword.getMailVerificationCode() == null){
-//            throw new UserInfoException("请先获取邮箱验证码");
-//        }
 
-
-//        mailVerificationService.verify(date,userPassword.getEmail(),userPassword.getMailVerificationCode(),request.getSession());
-//        if (userPassword.getOldPassword() is not legal)
-//            throw new UserInfoException("新密码不符合要求");
 
         Long id = userMapper.getUserIdByPhone(phone);
         User currUserInfo = userMapper.selectById(id);
@@ -159,7 +143,6 @@ public class UserInfoService {
 
         User tempUser = new User();
         tempUser.setId(id);
-//        tempUser.setPassword(userPassword.getNewPassword());
 
         // 随机生成新盐值
         String newSalt = RandomStringUtils.randomAlphanumeric(20);
@@ -182,9 +165,8 @@ public class UserInfoService {
     }
 
     public String getAllUserInfo(HttpServletRequest request) throws Exception{
-//        String userName = request.getSession().getAttribute(GlobalConstant.sessionUser).toString();
-        String username = SystemParams.username;
-        Long userId = SystemParams.userId;
+        String username = GlobalConstant.Username;
+        Long userId = userMapper.getUserIdByUserName(username);
 
         AllUserInfo allUserInfo = userMapper.getAllUserInfoByUserId(userId);
         return responseService.responseFactory(StatusCode.RESPONSE_OK,"查询成功",allUserInfo);

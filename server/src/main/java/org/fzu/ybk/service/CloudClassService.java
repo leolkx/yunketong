@@ -2,6 +2,7 @@ package org.fzu.ybk.service;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import org.fzu.ybk.GlobalConstant;
 import org.fzu.ybk.StatusCode;
 import org.fzu.ybk.entity.CloudClass;
 import org.fzu.ybk.entity.Orgnization;
@@ -54,7 +55,8 @@ public class CloudClassService {
         Date date = new Date();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String dateStr = format.format(date);
-        String creator = SystemParams.username;
+//        String creator = SystemParams.username;
+        String creator = GlobalConstant.Username;
 
         if(creator==null) creator = cloudClass.getTeacherName();
         Long userId = userMapper.getUserIdByUserName(creator);
@@ -91,9 +93,7 @@ public class CloudClassService {
         }
         Orgnization orgnization = orgnizationMapper.getOrgInfoByOrgCode(orgCode);
         JSONObject jsonObject = richTextService.objectPlusRichText(orgnization,"classCloud");
-//        String classInfo = richTextService.getRichText(orgnization.getRichTextId());
-//        JSONObject jsonObject = (JSONObject) JSON.toJSON(orgnization);
-//        jsonObject.put("classCloud",JSON.parseObject(classInfo));
+
         return responseService.responseFactory(StatusCode.RESPONSE_OK,"",jsonObject);
     }
 
@@ -112,18 +112,6 @@ public class CloudClassService {
         Long richTextId = orgnizationMapper.geRichTextIdByOrgCode(orgCode);
         richTextService.updateRichText(richTextId,updateInfo);
 
-//        String classInfo = richTextService.getRichText(richTextId);
-//        JSONObject readJsonObject = JSON.parseObject(classInfo);
-//        JSONObject updateJsonObject = (JSONObject) JSON.toJSON(updateInfo);
-//
-//        for(Map.Entry<String, Object> entry: updateJsonObject.entrySet()){
-//            if (entry.getValue() != null)
-//                readJsonObject.put(entry.getKey(),entry.getValue());
-//        }
-//        richTextMapper.updateText(orgInfoId,JSON.toJSONString(readJsonObject));
-
-
-        //懒得改了……直接这样加在屁股后面……(为了结构性，增加三个参数school_id,college_id,major_id)
         Orgnization orgnization = orgnizationMapper.selectById(orgId);
         orgnization.setSchoolId(updateInfo.getSchoolId());
         orgnization.setCollegeId(updateInfo.getCollegeId());
