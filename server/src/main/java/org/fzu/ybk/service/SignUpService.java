@@ -125,7 +125,7 @@ public class SignUpService {
             // 进行加密
             String password =  user.getPassword();
             user.setPassword(SHA256Util.sha256(password, user.getSalt()));
-            phoneService.verify(date, user.getPhone(), user.getVerificationCode(), session);
+//            phoneService.verify(date, user.getPhone(), user.getVerificationCode(), session);
             userMapper.createAccount(Role.ORDINARY_USER,user.getUsername(),user.getPassword(),user.getSalt(),user.getState(),user.getEmail(),user.getPhone(),dateStr,true,false );
 
         } catch (Exception e) {

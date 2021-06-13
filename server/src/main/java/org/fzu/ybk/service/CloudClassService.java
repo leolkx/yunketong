@@ -55,12 +55,13 @@ public class CloudClassService {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String dateStr = format.format(date);
         String creator = SystemParams.username;
-        String orgName = creator + " 创建的班级";
 
+        if(creator==null) creator = cloudClass.getTeacherName();
         Long userId = userMapper.getUserIdByUserName(creator);
+        if(userId == null) userId = userMapper.getUserIdByPhone(creator);
         if (userId == null)
             throw new CloudClassException("创建班级失败，创建者账户异常");
-
+        String orgName = creator + " 创建的班级";
         String cloudClassDetail = JSON.toJSONString(cloudClass);
         Long richTextId = richTextService.createRichText(cloudClassDetail);
         //创建班课

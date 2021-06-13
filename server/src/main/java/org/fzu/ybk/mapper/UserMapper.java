@@ -44,6 +44,9 @@ public interface UserMapper extends BaseMapper<User> {
     @Select("SELECT id FROM user WHERE username = #{userName} limit 1")
     Long getUserIdByUserName(String userName);
 
+    @Select("SELECT id FROM user WHERE phone = #{Phone} limit 1")
+    Long getUserIdByPhone(String Phone);
+
     @Select("SELECT username FROM user WHERE id = #{id} limit 1")
     String getUsernameById(Long id);
 

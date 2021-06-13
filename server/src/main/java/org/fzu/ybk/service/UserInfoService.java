@@ -128,20 +128,17 @@ public class UserInfoService {
 
     public String updateUserPassword(UserPassword userPassword, HttpServletRequest request) throws Exception{
         Date date = new Date();
+        String phone = userPassword.getPhone();
 //        phoneService.verify(date, userPassword.getPhone(), userPassword.getVerificationCode(), request.getSession());
         if (userPassword == null){
             throw new UserInfoException("错误的参数提交(更新密码)");
         }
 
-        if (userPassword.getId() == null){
-            throw new UserInfoException("错误的用户id");
+        if (userPassword.getPhone() == null){
+            throw new UserInfoException("错误的用户手机号");
         }
 
-        if (userPassword.getOldPassword() == null){
-            throw new UserInfoException("旧的密码不能为空");
-        }
-
-        if (userPassword.getNewPassword() == null){
+        if (userPassword.getPassword() == null){
             throw new UserInfoException("新的密码不能为空");
         }
 //        if (userPassword.getEmail() == null){
@@ -156,28 +153,19 @@ public class UserInfoService {
 //        if (userPassword.getOldPassword() is not legal)
 //            throw new UserInfoException("新密码不符合要求");
 
-
-        User currUserInfo = userMapper.selectById(userPassword.getId());
-        String oldPasswordSalt = currUserInfo.getSalt(); //获取数据库里用户存的盐值
-        //用数据库里的盐值对用户当前提交的旧密码进行加密
-        String oldEncryptedPassword = SHA256Util.sha256(userPassword.getOldPassword(), oldPasswordSalt);
-        //把用户提交的旧密码设置为用数据库盐值加密后的密文密码
-        userPassword.setOldPassword(oldEncryptedPassword);
-
-
-        if (!currUserInfo.getPassword().equals(userPassword.getOldPassword()))
-            throw new UserInfoException("密码错误,验证失败");
+        Long id = userMapper.getUserIdByPhone(phone);
+        User currUserInfo = userMapper.selectById(id);
 
 
         User tempUser = new User();
-        tempUser.setId(userPassword.getId());
+        tempUser.setId(id);
 //        tempUser.setPassword(userPassword.getNewPassword());
 
         // 随机生成新盐值
         String newSalt = RandomStringUtils.randomAlphanumeric(20);
         tempUser.setSalt(newSalt);
         // 进行加密
-        tempUser.setPassword(SHA256Util.sha256(userPassword.getNewPassword(), tempUser.getSalt()));
+        tempUser.setPassword(SHA256Util.sha256(userPassword.getPassword(), tempUser.getSalt()));
         userMapper.updateById(tempUser);
 
         return responseService.responseFactory(StatusCode.RESPONSE_OK,"修改用户密码成功");

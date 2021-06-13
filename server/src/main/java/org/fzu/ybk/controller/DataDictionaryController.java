@@ -43,16 +43,19 @@ public class DataDictionaryController {
             if (dataDictionaryUpdate.getDictName() == null)
                 return responseService.responseFactory(StatusCode.RESPONSE_ERR,"字典名，数据名不可为空");
 
-            if( dataDictionaryUpdate.getDataName()!=null &&
-                    dataDictionaryUpdate.getNewDataName() != null)
-                dataDictionaryService.updateValue(dataDictionaryUpdate);
+            if(dataDictionaryUpdate.getTextDefault() != null)
+                dataDictionaryService.updateTextValue(dataDictionaryUpdate);
 
 //            if( dataDictionaryUpdate.getDataName()!=null &&
 //                    dataDictionaryUpdate.getDataOrder() != null)
 //                dataDictionaryService.updateValueOrder(dataDictionaryUpdate);
 
-            if(dataDictionaryUpdate.getNewDictName() != null)
-                dataDictionaryService.updateKey(dataDictionaryUpdate);
+            if( dataDictionaryUpdate.getDataName()!=null &&
+                    dataDictionaryUpdate.getNewDataName() != null)
+                dataDictionaryService.updateValue(dataDictionaryUpdate);
+
+//            if(dataDictionaryUpdate.getNewDictName() != null)
+//                dataDictionaryService.updateKey(dataDictionaryUpdate);
 
             return responseService.responseFactory(StatusCode.RESPONSE_OK,"更新成功");
         } catch (Exception e) {

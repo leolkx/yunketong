@@ -22,11 +22,7 @@ import java.util.Date;
 
 @TableName(value = "user")
 public class UserPassword {
-    private Long id;
-    private String newPassword;
-
-    @TableField(exist = false)
-    private String oldPassword;
+    private String password;
 
     private String phone;
 

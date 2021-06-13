@@ -31,4 +31,5 @@ public class CloudClass {
     private String orgImage;
 
 
+
 }

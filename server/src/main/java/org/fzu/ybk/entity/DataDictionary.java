@@ -6,12 +6,12 @@ import org.springframework.stereotype.Component;
 public class DataDictionary {
     private Long id;
     private String dictName;
+    private String dictDescription;
     private String dataName;
     private Long dataOrder;
     private Boolean deleted;
     private String textValue;
     private String textDefault;
-    private String textName;
 
     public void setId(Long id) {
         this.id = id;
@@ -20,6 +20,8 @@ public class DataDictionary {
     public void setDictName(String dictName) {
         this.dictName = dictName;
     }
+
+    private void setDictDescription(String dictDescription) {this.dictDescription = dictDescription;}
 
     public void setDataName(String dataName) {
         this.dataName = dataName;
@@ -34,8 +36,6 @@ public class DataDictionary {
     }
 
     public void setTextValue(String textValue) { this.textValue = textValue; }
-
-    public void setTextName(String textName) { this.textName = textName; }
 
     public void setTextDefault(String textDefault) { this.textDefault = textDefault; }
 
@@ -62,8 +62,8 @@ public class DataDictionary {
 
     public String getTextValue() { return textValue; }
 
-    public String  getTextName() { return textName; }
-
     public String getTextDefault() { return textDefault; }
+
+    public String getDictDescription() {return dictDescription;}
 
 }

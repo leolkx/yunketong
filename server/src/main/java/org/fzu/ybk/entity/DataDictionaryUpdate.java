@@ -9,7 +9,6 @@ public class DataDictionaryUpdate {
     private String newDataName;
     private String textValue;
     private String textDefault;
-    private String textName;
 
 
     public String getDictName() {
@@ -34,8 +33,6 @@ public class DataDictionaryUpdate {
 
     public void setTextValue(String textValue) { this.textValue = textValue; }
 
-    public void setTextName(String textName) { this.textName = textName; }
-
     public void setTextDefault(String textDefault) { this.textDefault = textDefault; }
 
     public void setDictName(String dictName) {
@@ -59,8 +56,6 @@ public class DataDictionaryUpdate {
     }
 
     public String getTextValue() { return textValue; }
-
-    public String  getTextName() { return textName; }
 
     public String getTextDefault() { return textDefault; }
 

@@ -64,11 +64,10 @@ public class PhoneService {
 
 
 
-//            System.out.println(code);
-//                System.out.println(code);
-            String res = this.sendMycode(phone);
+            System.out.println(code);
+//            String res = this.sendMycode(phone);
 
-            return responseService.responseFactory(StatusCode.RESPONSE_OK,"send sucess");
+            return responseService.responseFactory(StatusCode.RESPONSE_OK,"send sucess and code=" + code);
         }
         else throw new PhoneVerficationException("请求手机验证码太频繁");
 
