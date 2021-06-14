@@ -14,11 +14,11 @@ export class GetPassComponent implements OnInit {
   public timer:any;
   public tab = 'tab1';  
   public phonecodeapi="/phonecode?phone=";
+  public passwordapi="/user/password";
   public user:any={
-    type:'',
-    phone:'',
     password:'',
-    checkCode:''
+    phone:'',
+    verificationCode:''
   }  
   public type:any=1;
   public timelimit:any=60;
@@ -40,15 +40,28 @@ export class GetPassComponent implements OnInit {
   {
     this.outer.emit(3);
   }
-  changepass()
-  {
-    
-  }
+
   //登录
   newpass(){ 
     this.type=2;
     //提交
   }
+
+  // 点击确认修改按钮时调用
+  changepass(){
+    //提交数据
+    console.log(this.user) 
+    this.httpclient.upDataNotoken(this.passwordapi,this.user).then((response)=>{
+      if(response['msg']=='register success'){
+        alert('修改成功')
+        this.outer.emit(1);
+      }else{
+        alert(response['msg'].split(':')[1])
+      }
+      console.log(response)
+    })
+  }
+
 /*   // 获取验证码
   get_check_code() {
     var api="http://localhost:8080/test";
@@ -108,7 +121,7 @@ export class GetPassComponent implements OnInit {
   clear(){
     this.user.phone='';
     this.user.password='';
-    this.user.checkCode='';
+    this.user.verificationCode='';
     this.timelimit=60;
     this.flag=true;
     clearInterval(this.timer);

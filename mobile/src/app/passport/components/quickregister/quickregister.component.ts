@@ -24,7 +24,7 @@ export class QuickregisterComponent implements OnInit {
     /* mailVerificationCode:"", */
   }  
  
-  public timelimit:any=60;
+  public timelimit:any=10;
   public flag:any = true;
   public nums:any=5; 
   constructor(public ref : ChangeDetectorRef, public httpclient:HttpserviceService, private alertController: AlertController) { }
@@ -98,7 +98,7 @@ dismiss(){
       this.timelimit--;
       if(this.timelimit==0)
       {
-        this.timelimit=60;
+        this.timelimit=10;
         this.flag=true;
         clearInterval(this.timer);
       }

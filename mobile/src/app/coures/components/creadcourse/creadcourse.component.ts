@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { ModalController, ToastController } from '@ionic/angular';
 import { PopoverController } from '@ionic/angular';
 import { NavController, NavParams } from '@ionic/angular';
 import { GetschoolComponent } from '../getschool/getschool.component';
@@ -34,7 +34,7 @@ export class CreadcourseComponent implements OnInit {
   public getmajorsapi = '/structure/orgs/majors?collegeId=';
   public schoolid: any;
   public collegeid: any;
-  constructor(public modalCtrl: ModalController, public navCtrl: NavController, public popoverController: PopoverController, public httpclient: HttpserviceService) { }
+  constructor(public modalCtrl: ModalController, public navCtrl: NavController, public popoverController: PopoverController, public httpclient: HttpserviceService,private toastController: ToastController) { }
 
   formatDate = (time: any) => {
     // 格式化日期，获取今天的日期
@@ -56,26 +56,38 @@ export class CreadcourseComponent implements OnInit {
     })
   }
 
-  createcourse() {
+  async createcourse() {
+    let toast: any;
+    toast = await this.toastController.create({
+      duration: 1000,
+      position: 'middle',
+      message: ''
+    });
+    
     this.course['grade'] = this.formatyear(this.course['grade']);
     this.course['lessonStartDate'] = this.formatDate(this.course['lessonStartDate']);
     this.course['lessonEndDate'] = this.formatDate(this.course['lessonEndDate']);
 
-    console.log(this.course);
+    // console.log(this.course);
     this.httpclient.upData(this.createcourseapi, this.course).then((response) => {
       if (response['state'] == 'success') {
         //对跳转  附带参数
         // this.navCtrl.navigateForward('/tabs');
+        toast.message =  '创建成功';
+        toast.present();
         location.reload();
       } else {
         //这里会出什么错
+        toast.message =  '创建失败';
+        toast.present();
       }
-      console.log(response)
+      // console.log(response)
     })
     // this.modalCtrl.dismiss({
     //   'dismissed': true
     // }) 
   }
+
   // async presentPopover(ev: any) {
   //   const popover = await this.popoverController.create({
   //     component: GetschoolComponent,
@@ -99,7 +111,7 @@ export class CreadcourseComponent implements OnInit {
 
     await modal.present();
     const { data } = await modal.onDidDismiss();
-    console.log(data);
+    // console.log(data);
     // await modal.onDidDismiss().then(()=>{
     //   this.popoverController.dismiss();
     // }
@@ -116,7 +128,7 @@ export class CreadcourseComponent implements OnInit {
     }
     this.httpclient.get(this.getcollegesapi + this.schoolid + '&page=1&pageSize=100').then((response) => {
       this.collegeslist = response['result']
-      console.log(this.collegeslist);
+      // console.log(this.collegeslist);
     })
   }
 
@@ -130,7 +142,7 @@ export class CreadcourseComponent implements OnInit {
     }
     this.httpclient.get(this.getmajorsapi + this.collegeid + '&page=1&pageSize=100').then((response) => {
       this.majorslist = response['result']
-      console.log(this.majorslist);
+      // console.log(this.majorslist);
     })
   }
 }

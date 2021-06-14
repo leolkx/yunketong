@@ -31,6 +31,9 @@ export class CouresPage implements OnInit {
   public getmyentercourseapi:any='/user/joinedClass';
   public createlist:any=[];
   public addlist:any=[];
+
+  classList = []
+
   constructor( 
     public barcodeScanner: BarcodeScanner,
     public geolocation:Geolocation,
@@ -123,13 +126,22 @@ export class CouresPage implements OnInit {
     if(type==1)
     {
       //获取我创建的课程
+      // this.initClassList(true)
+      /* this.httpclient.get('/cloudClass').then((response)=>{
+        console.log(response) 
+        this.initClassList(true)
+      }) */
+      // this.httpclient.get('/cloudClass').then(async (res:any)=>{
+      //   //this.classList = res
+      // })
     }
     else if(type==2)
     {
      // 这个要开放
-      this.httpclient.get('/user/joinedClass').then((response)=>{
-        console.log(response) 
-      })
+     //const id = this.localStorageService.get(USER_KEY, '').id
+     this.httpclient.get('/user/joinedClass').then(async (res:any)=>{
+      this.classList = res
+    })
      // 获取我加入的课程 
     }
   }
@@ -137,6 +149,20 @@ export class CouresPage implements OnInit {
     console.log(id);
     //通过路由传参，跳转到课程详情页面
   } 
+
+  async initClassList(isCreater){
+    /* let api='/mobileApp/course/'
+    const id = this.localStorageService.get(USER_KEY, '').id
+    if(isCreater){
+      api += 'belong'
+    }else{
+      api += 'join'
+    }
+    api += '?id=' + id */
+    this.httpclient.get('/user/joinedClass').then(async (res:any)=>{
+      this.classList = res
+    })
+  }
 
   async presentPopover(ev: any) {
     const popover = await this.popoverController.create({
@@ -149,7 +175,7 @@ export class CouresPage implements OnInit {
      
     await popover.present();
     await popover.onDidDismiss().then((response)=>{
-        console.log(111)
+        // console.log(111)
         //这里到时候刷新页面
     })
   } 

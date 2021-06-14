@@ -32,10 +32,20 @@
     </div>
   </form>
   
-  <ion-item padding>
+  <!-- <ion-item padding>
     <ion-label>手机</ion-label>
     <ion-input type="text" placeholder="请输入手机" [(ngModel)]="user.phone" ></ion-input>
-  </ion-item>
+  </ion-item> -->
+  <form #phoneForm="ngForm" novalidate style="width:100%">
+    <ion-item padding >
+      <ion-label>手机</ion-label>
+      <ion-input type="text" name="phone" placeholder="请输入手机号码" required  pattern="^((13[0-9])|(14[5|7])|(15([0-3]|[5-9]))|(18[0,3,5-9]))\d{8}$" [(ngModel)]="user.phone" #phone="ngModel"></ion-input>
+    </ion-item>
+    <ion-text class="ion-text-left" color="danger" *ngIf="phone.invalid && phone.touched">
+      <p [hidden]="!phone.errors?.required" class="padding-start">请输入手机号码</p>
+      <p [hidden]="!phone.errors?.pattern" class="padding-start">您输入的手机号格式不正确</p>
+    </ion-text>
+  </form>
   <form #emailForm="ngForm" novalidate style="width:100%">
     <ion-item padding>
       <ion-label>邮箱</ion-label>

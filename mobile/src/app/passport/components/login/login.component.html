@@ -15,14 +15,40 @@
   <div [ngSwitch]="tab" style="margin:30px auto;">
     <div *ngSwitchCase="'tab1'">
       <ion-list class="inp" style="margin-top:30px auto;">
-        <ion-item padding >
+        <!-- <ion-item padding >
           <ion-label>用户名</ion-label>
           <ion-input type="text" placeholder="请输入账号" [(ngModel)]="user.username"></ion-input>
         </ion-item> 
         <ion-item>
           <ion-label>密码</ion-label>
           <ion-input type="password" placeholder="请输入密码" [(ngModel)]="user.password"></ion-input>
-        </ion-item>  
+        </ion-item>   -->
+        <form #userNameForm="ngForm" novalidate style="width:100%">
+          <ion-item padding>
+            <ion-label>用户名</ion-label>
+            <ion-input type="text" name="userName" placeholder="请输入用户名" [(ngModel)]="user.username" required
+              pattern="^[a-zA-Z0-9_-]{4,16}$" #userName="ngModel"></ion-input>
+          </ion-item>
+          <div class="signup_warn">
+            <ion-text text-left color="danger" *ngIf="(userName.invalid && userName.touched) || submited">
+              <p class="warn" [hidden]="!userName.errors?.required" padding-start>请输入用户名</p>
+              <p class="warn" [hidden]="!userName.errors?.pattern" padding-start>格式不正确，请输入4-16位数字或字母组成的用户名</p>
+            </ion-text>
+          </div>
+        </form>
+        <form #passwordForm="ngForm" novalidate style="width:100%">
+          <ion-item padding>
+            <ion-label>密码</ion-label>
+            <ion-input type="password" placeholder="请输入密码" [(ngModel)]="user.password" name="password" required
+              pattern="^[a-zA-Z0-9]{6,18}$" #password="ngModel"></ion-input>
+          </ion-item>
+          <div class="signup_warn">
+            <ion-text text-left color="danger" *ngIf="(password.invalid && password.touched) || submited">
+              <p class="warn" [hidden]="!password.errors?.required" padding-start>请输入密码</p>
+              <p class="warn" [hidden]="!password.errors?.pattern" padding-start>格式不正确，请输入6至18位密码包含数字或字母且不包含特殊字符的密码</p>
+            </ion-text>
+          </div>
+        </form>
       </ion-list>
     </div>
   

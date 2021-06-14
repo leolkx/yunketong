@@ -1,6 +1,7 @@
 import { Component, OnInit,ChangeDetectionStrategy, ChangeDetectorRef,OnDestroy,Input,Output,EventEmitter} from '@angular/core';
+import { NgForm } from '@angular/forms';
 
-import { AlertController, NavController , NavParams } from '@ionic/angular';
+import { AlertController, NavController , NavParams, ToastController } from '@ionic/angular';
 import { HttpserviceService } from '../../../service/httpservice.service'; 
 import { LocalStorageService } from '../../../service/local-storage.service'; 
 //import {Md5} from 'ts-md5';
@@ -33,7 +34,7 @@ export class LoginComponent implements OnInit {
   } 
   public timelimit:any=60;
   public flag:any = true; 
-  constructor(public localStorage:LocalStorageService, public ref : ChangeDetectorRef,public usermsg:UsermsgserviceService,public httpclient:HttpserviceService,public navCtrl: NavController,private alertController: AlertController ) { }
+  constructor(public localStorage:LocalStorageService, public ref : ChangeDetectorRef,public usermsg:UsermsgserviceService,public httpclient:HttpserviceService,public navCtrl: NavController,private alertController: AlertController,private toastController: ToastController ) { }
 
   ngOnInit() {
     console.log(this.verimage)
@@ -58,8 +59,15 @@ export class LoginComponent implements OnInit {
   //登录
   public wrongMsg:any;
   public logUser:any;
-  login(){ 
-    console.log(this.tab)
+
+  async login(form: NgForm){ 
+    let toast: any;
+    toast = await this.toastController.create({
+      duration: 3000,
+      message: ''
+    });
+    
+    // console.log(this.tab)
     //验证提交的数据
     this.wrong=0;
     //提交数据
@@ -73,14 +81,14 @@ export class LoginComponent implements OnInit {
       signinapi = this.loginapi;
     }
     // this.logUser['verificationCode']=this.verificationCode;
-    console.log(this.logUser)
+    // console.log(this.logUser)
    // this.user['password'] = Md5.hashStr(this.user["password"]).toString()
     this.httpclient.upDataNotoken(signinapi,this.logUser).then((response)=>{
       //判断返回结果
-      console.log(response)
+      // console.log(response)
       if(response['state']=='success')
       {
-      console.log(response);
+      // console.log(response);
         //保存token
         this.localStorage.set("token",response['result']['token'])
         //保存userName 需要改
@@ -94,11 +102,15 @@ export class LoginComponent implements OnInit {
        this.navCtrl.navigateForward('/tabs/coures');
       }else{
         if(response['msg']=='用户不存在或者密码错误'){
-          this.wrongMsg='密码错误'
+          // this.wrongMsg='密码错误'
+          toast.message =  '用户不存在或者密码错误';
+          toast.present();
         }else{ 
-          this.wrongMsg=response['msg'].split(':')[1]
+          // this.wrongMsg=response['msg'].split(':')[1]
+          toast.message =  response['msg'].split(':')[1];
+          toast.present();
         }
-        console.log(response)
+        // console.log(response)
         //提示登录信息错误
         this.wrong=1;
       }
@@ -134,8 +146,8 @@ export class LoginComponent implements OnInit {
          
       
       //let cookie =response.headers['Set-Cookie']
-      console.log(response)
-      console.log(this.user['username'])
+      // console.log(response)
+      // console.log(this.user['username'])
       })
       
       //倒计时

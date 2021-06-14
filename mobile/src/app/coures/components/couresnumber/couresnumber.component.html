@@ -8,14 +8,22 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-list class="inp" *ngIf="type==1" >
+<ion-list class="inp" *ngIf="type==1"  style="top:0">
   <ion-item>
     <ion-label>班课号</ion-label>
     <ion-input type="text" placeholder="请输入班课号" [(ngModel)]="orgCode"></ion-input>
   </ion-item>
+
+  <ion-button (click)="nextadd()" *ngIf="type==1" color="primary" expand="block" style="height:30px;width:60%;margin:10px auto;font-size:17px"  shape="round">
+    下&nbsp;&nbsp;一&nbsp;&nbsp;步
+  </ion-button>
+  <ion-button (click)="concel_1()"  color="primary" expand="block" style="height:30px;width:60%;margin:0 auto;font-size:17px"  shape="round">
+    取&nbsp;&nbsp;&nbsp;&nbsp;消
+  </ion-button>
 </ion-list>
- <ion-list *ngIf="type==2"> 
-  <img src="../../../../assets/icon/favicon.png" style="display: block;height:30%;margin: 10px auto;"/>
+
+<ion-list *ngIf="type==2" style="top:0"> 
+  <!-- <img src="../../../../assets/icon/favicon.png" style="display: block;height:30%;margin: 10px auto;"/> -->
   <ion-item>
     <ion-label>课程名</ion-label>
     <ion-label>{{coursemsg.className}}</ion-label>
@@ -32,15 +40,15 @@
       <ion-label>介绍</ion-label>
       <ion-label>{{coursemsg.introduction}}</ion-label>
     </ion-item> 
-</ion-list>
-<ion-button (click)="nextadd()" *ngIf="type==1" color="primary" expand="block" style="height:30px;width:60%;margin:10px auto;font-size:17px"  shape="round">
-  下&nbsp;&nbsp;一&nbsp;&nbsp;步
-</ion-button>
-<ion-button (click)="addcourse()" *ngIf="type==2" color="primary" expand="block" style="height:30px;width:60%;margin:5px auto;font-size:17px"  shape="round">
-  确认加入
-</ion-button>
-<ion-button (click)="concel()"  color="primary" expand="block" style="height:30px;width:60%;margin:0 auto;font-size:17px"  shape="round">
-  取&nbsp;&nbsp;&nbsp;&nbsp;消
-</ion-button>
 
+    <ion-button (click)="addcourse()" *ngIf="type==2" color="primary" expand="block" style="height:30px;width:60%;margin:5px auto;font-size:17px"  shape="round">
+      确认加入
+    </ion-button>
+    <ion-button (click)="concel_2()"  color="primary" expand="block" style="height:30px;width:60%;margin:0 auto;font-size:17px"  shape="round">
+      取&nbsp;&nbsp;&nbsp;&nbsp;消
+    </ion-button>
+</ion-list>
+
+<ion-button *ngIf="type==1" color="white" expand="block" style="height:30px;width:60%;margin:10px auto;font-size:17px"  shape="round"></ion-button>
+<ion-button *ngIf="type==2" color="white" expand="block" style="height:30px;width:60%;margin:10px auto;font-size:17px"  shape="round"> </ion-button>
 

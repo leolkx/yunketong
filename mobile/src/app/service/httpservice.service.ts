@@ -8,7 +8,7 @@ import { LocalStorageService } from '../service/local-storage.service';
 })
 export class HttpserviceService {
 
-  public ip:any = 'http://219.229.153.200:8081';//"http://localhost:8080"//"http://47.95.120.250:8081/verification/code";
+  public ip:any = 'http://172.20.86.137:8081';//"http://localhost:8080"//"http://47.95.120.250:8081/verification/code";
   constructor(public navCtrl: NavController,public localStorage:LocalStorageService,public http:HttpClient) { }
   public headers:any;
   upData(api:any,data:any){ 
@@ -69,12 +69,12 @@ export class HttpserviceService {
       console.log(this.headers)
     return new Promise((resolve,reject)=>{
       this.http.get(this.ip+api,{withCredentials:true,headers:this.headers}).subscribe((response)=>{
-        console.log(1111);
-        console.log(response);
+        // console.log(1111);
+        // console.log(response);
         if(response['msg']=='未登录'){
           this.navCtrl.navigateForward('/login');
         }
-        console.log('0000');
+        // console.log('0000');
         resolve(response);
       },(err)=>{
         this.navCtrl.navigateForward('/login');
@@ -164,7 +164,7 @@ export class HttpserviceService {
       'Content-Type':'application/json'})
       console.log(this.headers)
     return new Promise((resolve,reject)=>{
-      this.http.get(this.ip+api,{withCredentials:true}).subscribe((response)=>{
+      this.http.post(this.ip+api,{withCredentials:true}).subscribe((response)=>{
         // console.log(1111);
         console.log(response);
         if(response['msg']=='未登录'){

@@ -73,6 +73,7 @@ export class RegisterComponent implements OnInit {
       //判断成功才可以跳去登录
     })
   }
+  
   forgetPass()
   {
     this.outer.emit(3);
@@ -90,8 +91,7 @@ export class RegisterComponent implements OnInit {
   // 获取验证码
   get_check_code() {
     this.httpclient.getNotoken(this.phonecodeapi+this.user['phone']).then((response)=>{
-       
-    
+
     //let cookie =response.headers['Set-Cookie']
     console.log(response)
     })

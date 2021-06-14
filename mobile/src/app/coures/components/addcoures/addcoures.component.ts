@@ -71,7 +71,7 @@ export class AddcouresComponent implements OnInit {
      
     await popover.present();
     await popover.onDidDismiss().then((response)=>{
-        console.log(111)
+        // console.log(111)
         //这里到时候刷新页面
     })
   } 
