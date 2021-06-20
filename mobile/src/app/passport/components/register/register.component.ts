@@ -1,4 +1,5 @@
 import { Component, OnInit,ChangeDetectionStrategy, ChangeDetectorRef,OnDestroy,Input,Output,EventEmitter} from '@angular/core';
+import { ToastController } from '@ionic/angular';
 import { HttpserviceService } from '../../../service/httpservice.service';
 //import {Md5} from 'ts-md5';
 @Component({
@@ -27,7 +28,7 @@ export class RegisterComponent implements OnInit {
   public timelimit:any=60;
   public flag:any = true;
   public nums:any=5; 
-  constructor(public ref : ChangeDetectorRef,public httpclient:HttpserviceService) { }
+  constructor(public ref : ChangeDetectorRef,public httpclient:HttpserviceService, private toastController: ToastController) { }
 
   ngOnInit() {
     console.log(this.verimage)
@@ -56,17 +57,27 @@ export class RegisterComponent implements OnInit {
   dismiss(){ 
     this.outer.emit(1);
   }
-  register(){
+  async register(){
+    let toast: any;
+    toast = await this.toastController.create({
+      duration: 500,
+      position: 'middle',
+      message: ''
+    });
     //提交数据 注册
     //加密用户数据
    // this.user['password'] = Md5.hashStr(this.user["password"]).toString()
     console.log(this.user) 
     this.httpclient.upDataNotoken(this.signupapi,this.user).then((response)=>{
       if(response['msg']=='register success'){
-        alert('注册成功')
+        // alert('注册成功')
+        toast.message =  '注册成功';
+        toast.present();
         this.outer.emit(1);
       }else{
-        alert(response['msg'].split(':')[1])
+        // alert(response['msg'].split(':')[1])
+        toast.message =  response['msg'].split(':')[1];
+        toast.present();
       }
       console.log(response)
       //注册完去登录  这里没提示 后面再优化体验

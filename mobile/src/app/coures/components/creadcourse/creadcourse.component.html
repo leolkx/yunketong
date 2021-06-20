@@ -1,5 +1,6 @@
 <ion-header >
   <ion-toolbar >
+    <a (click)="addcourse()"> 《返回 </a> 
     <ion-title style="text-align: center;">创建班课</ion-title>
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
@@ -22,7 +23,7 @@
         <ion-datetime displayFormat="YYYY" min="2015-03-14"  [(ngModel)]="course.grade" max="2030-12-09" value="2020-09-23T15:03:46.789"></ion-datetime>
       </ion-item>
       <ion-item padding >
-        <ion-label>教材</ion-label>
+        <ion-label>班级名称</ion-label>
         <ion-input type="text"  [(ngModel)]="course.teachingMateria"></ion-input>
       </ion-item>
       <ion-item>
@@ -57,6 +58,11 @@
       <ion-item padding >
         <ion-label>结课时间</ion-label>
         <ion-datetime displayFormat="YYYY/MM/DD" [(ngModel)]="course.lessonEndDate" min="2015-03-14" max="2030-12-09" value="2020-09-23T15:03:46.789"></ion-datetime>
+      </ion-item>
+      <ion-item padding >
+        <ion-label>学期</ion-label>
+        <ion-input type="text" [(ngModel)]="course.term"></ion-input>
+        <!-- <ion-datetime displayFormat="YYYY-YYYY-DD" [(ngModel)]="course.term" min="2015-2016-01" max="2030-2031-02"></ion-datetime> -->
       </ion-item>
       <ion-item padding >
         <ion-label>介绍</ion-label>

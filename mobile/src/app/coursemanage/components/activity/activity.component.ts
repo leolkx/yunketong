@@ -30,8 +30,8 @@ export class ActivityComponent implements OnInit {
     public tmpScore:any=0;
     ngOnInit() {
       this.httpservice.get(this.getActivityapi+this.localstorage.get('orgCode','xxx')).then((response)=>{
-        console.log("有返回分数嘛？")
-        console.log(response)
+        // console.log("有返回分数嘛？")
+        // console.log(response)
         if(response['msg']=='查询成功')
         {
           for (let activity of response['result']) { 

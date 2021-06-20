@@ -1,6 +1,6 @@
 import { Component, OnInit,ChangeDetectionStrategy, ChangeDetectorRef,OnDestroy,Input,Output,EventEmitter} from '@angular/core';
 
-import { ModalController } from '@ionic/angular'; 
+import { ModalController, ToastController } from '@ionic/angular'; 
 import { PopoverController } from '@ionic/angular';
 import { AddcouresComponent } from './components/addcoures/addcoures.component';
 
@@ -43,6 +43,7 @@ export class CouresPage implements OnInit {
     public httpclient:HttpserviceService,
     public modalController: ModalController,
     public popoverController: PopoverController,
+    private toastController: ToastController,
     public navCtrl: NavController) {}
   public coures:any={
     id:11611
@@ -57,20 +58,20 @@ export class CouresPage implements OnInit {
     // t.mean()
     // consol/e.log(Test())
      //以下要放开
-    console.log(this.localStorageService.get('token',null));
+    // console.log(this.localStorageService.get('token',null));
     this.httpclient.get(this.getcreatecourseapi).then((response)=>{
       this.createlist=response['result'] 
-      console.log('getright---')
-      console.log(this.createlist);
-      console.log('getright----')
+      // console.log('getright---')
+      // console.log(this.createlist);
+      // console.log('getright----')
     }).catch((err)=>{
-      console.log('get err')
-      console.log(JSON.stringify(err))
-      console.log('get err----')
+      // console.log('get err')
+      // console.log(JSON.stringify(err))
+      // console.log('get err----')
     })
     this.httpclient.get(this.getmyentercourseapi).then((response)=>{
       this.addlist=response['result']
-      console.log(this.addlist);
+      // console.log(this.addlist);
     })
   }
     
@@ -113,11 +114,11 @@ export class CouresPage implements OnInit {
     //这个要开放
     this.httpclient.get(this.getcreatecourseapi).then((response)=>{
       this.createlist=response['result'] 
-      console.log(this.createlist);
+      // console.log(this.createlist);
     })
     this.httpclient.get(this.getmyentercourseapi).then((response)=>{
       this.addlist=response['result']
-      console.log(this.addlist);
+      // console.log(this.addlist);
     })
   }
   typechang(type:any)
@@ -139,14 +140,14 @@ export class CouresPage implements OnInit {
     {
      // 这个要开放
      //const id = this.localStorageService.get(USER_KEY, '').id
-     this.httpclient.get('/user/joinedClass').then(async (res:any)=>{
-      this.classList = res
-    })
+    //  this.httpclient.get('/user/joinedClass').then(async (res:any)=>{
+    //   this.classList = res
+    // })
      // 获取我加入的课程 
     }
   }
   gocourse(id:any){
-    console.log(id);
+    // console.log(id);
     //通过路由传参，跳转到课程详情页面
   } 
 
@@ -191,24 +192,24 @@ export class CouresPage implements OnInit {
      
     await popover.present();
     await popover.onDidDismiss().then((response)=>{
-        console.log(111)
+        // console.log(111)
         //这里到时候刷新页面
     })
   } 
 
   goteacher(orgCode:any,className:any)
   {
-    console.log(orgCode) 
+    // console.log(orgCode) 
     this.localStorageService.set('orgCode',orgCode);
     this.localStorageService.set('orgName',className);
     this.navCtrl.navigateForward('/teachercourse');
   }
   coursedetail(orgCode:any,className:any){
     //this.userserivce.setorgCode(orgCode);
-    console.log(orgCode) 
+    // console.log(orgCode) 
     this.localStorageService.set('orgCode',orgCode);
     this.localStorageService.set('orgName',className);
-     this.navCtrl.navigateForward('/coursemanage');
+    this.navCtrl.navigateForward('/coursemanage');
   } 
   upload(){
     
@@ -219,13 +220,28 @@ export class CouresPage implements OnInit {
   // createCode(orgcode:any) {
   //   this.Code = orgcode;
   // }
- doBSFun() {
+ async doBSFun() {
+    let toast: any;
+    toast = await this.toastController.create({
+      duration: 1000,
+      position: 'middle',
+      message: ''
+    });
     this.barcodeScanner.scan().then(async barcodeData => {
-      alert(barcodeData['text'])
-      this.localStorageService.set('scanText',barcodeData['text']);
+      // alert(barcodeData['text'])
+      this.localStorageService.get('scanText',barcodeData['text']);
+
+      if (this.localStorageService.get('scanText',barcodeData['text'].length>5)){
+        toast.message =  '班课不存在';
+        toast.present();
+      }
 
       const modal = await this.modalController.create({
-        component: CouresnumberComponent
+        component: CouresnumberComponent,
+        componentProps: {
+          "type": 2,
+          "orgCode": this.localStorageService.get('scanText',barcodeData['text'])
+        },
       });
       
       await modal.present();
@@ -233,7 +249,7 @@ export class CouresPage implements OnInit {
         this.popoverController.dismiss();
       }
       )
-     // alert(JSON.stringify(barcodeData));
+    //  alert(JSON.stringify(barcodeData));
     }).catch(err => {
       alert(err);
     });

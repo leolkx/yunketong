@@ -2,6 +2,7 @@ import { Component, OnInit,ChangeDetectionStrategy, ChangeDetectorRef,OnDestroy,
 
 import {HttpClient} from '@angular/common/http';
 import { HttpserviceService } from '../../../service/httpservice.service';
+import { ToastController } from '@ionic/angular';
 @Component({
   selector: 'app-get-pass',
   templateUrl: './get-pass.component.html',
@@ -24,7 +25,7 @@ export class GetPassComponent implements OnInit {
   public timelimit:any=60;
   public flag:any = true;
 /*   constructor(public ref : ChangeDetectorRef,public http:HttpClient) { } */
-  constructor(public ref : ChangeDetectorRef,public httpclient:HttpserviceService) { }
+  constructor(public ref : ChangeDetectorRef,public httpclient:HttpserviceService, private toastController: ToastController) { }
 
   ngOnInit() {
   }
@@ -48,17 +49,28 @@ export class GetPassComponent implements OnInit {
   }
 
   // 点击确认修改按钮时调用
-  changepass(){
+  async changepass(){
+    let toast: any;
+    toast = await this.toastController.create({
+      duration: 500,
+      position: 'middle',
+      message: ''
+    });
+    
     //提交数据
     console.log(this.user) 
     this.httpclient.upDataNotoken(this.passwordapi,this.user).then((response)=>{
       if(response['msg']=='register success'){
-        alert('修改成功')
+        // alert('修改成功')
+        toast.message =  '修改成功';
+        toast.present();
         this.outer.emit(1);
       }else{
-        alert(response['msg'].split(':')[1])
+        // alert(response['msg'].split(':')[1])
+        toast.message =  response['msg'].split(':')[1];
+        toast.present();
       }
-      console.log(response)
+      // console.log(response)
     })
   }
 
@@ -92,7 +104,7 @@ export class GetPassComponent implements OnInit {
          
       
       //let cookie =response.headers['Set-Cookie']
-      console.log(response)
+      // console.log(response)
       })
       
       //倒计时
@@ -101,7 +113,7 @@ export class GetPassComponent implements OnInit {
         this.timelimit--;
         if(this.timelimit==0)
         {
-          this.timelimit=10;
+          this.timelimit=60;
           this.flag=true;
           clearInterval(this.timer);
         }

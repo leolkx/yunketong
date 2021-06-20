@@ -3,7 +3,7 @@
   <ion-list class="inp" *ngIf="type==1" style="margin-top:30px auto;">
     <ion-item padding >
       <ion-label>课程名</ion-label> 
-      <ion-input type="text" [(ngModel)]="coursemsg.classCloud.className"  ></ion-input>
+      <ion-input type="text" [(ngModel)]="coursemsg.className"  ></ion-input>
     </ion-item> 
      <ion-item padding *ngIf="type==0" >
       <ion-label>班课号</ion-label> 
@@ -11,43 +11,43 @@
     </ion-item> 
     <ion-item padding >
       <ion-label>教师</ion-label> 
-      <ion-input type="text"  [(ngModel)]="coursemsg.classCloud.teacherName" ></ion-input>
+      <ion-input type="text"  [(ngModel)]="coursemsg.teacherName" ></ion-input>
     </ion-item>  
     <ion-item padding >
       <ion-label>年级</ion-label> 
-      <ion-datetime displayFormat="YYYY" [(ngModel)]="coursemsg.classCloud.grade" min="2015-03-14" max="2030-12-09" value="2020-09-23T15:03:46.789"></ion-datetime>
+      <ion-datetime displayFormat="YYYY" [(ngModel)]="coursemsg.grade" min="2015-03-14" max="2030-12-09" value="2020-09-23T15:03:46.789"></ion-datetime>
     </ion-item>
     <ion-item padding >
-      <ion-label>教材</ion-label>  
-      <ion-input type="text"   [(ngModel)]="coursemsg.classCloud.teachingMateria"></ion-input>
+      <ion-label>班级名称</ion-label>  
+      <ion-input type="text"   [(ngModel)]="coursemsg.teachingMateria"></ion-input>
    
     </ion-item>
     <ion-item padding >
       <ion-label>学校</ion-label> 
-      <ion-input type="text"    [(ngModel)]="coursemsg.classCloud.school"></ion-input>
+      <ion-input type="text"    [(ngModel)]="coursemsg.school"></ion-input>
     </ion-item> 
     <ion-item padding >
       <ion-label>专业</ion-label> 
-      <ion-input type="text"   [(ngModel)]="coursemsg.classCloud.college"></ion-input>
+      <ion-input type="text"   [(ngModel)]="coursemsg.college"></ion-input>
     </ion-item> 
     <ion-item padding >
       <ion-label>开课时间</ion-label> 
-      <ion-datetime displayFormat="YYYY/MM/DD" [(ngModel)]="coursemsg.classCloud.lessonStartDate" min="2015-03-14" max="2030-12-09" value="2020-09-23T15:03:46.789"></ion-datetime>
+      <ion-datetime displayFormat="YYYY/MM/DD" [(ngModel)]="coursemsg.lessonStartDate" min="2015-03-14" max="2030-12-09" value="2020-09-23T15:03:46.789"></ion-datetime>
     </ion-item>
     <ion-item padding >
       <ion-label>结课时间</ion-label> 
-      <ion-datetime displayFormat="YYYY/MM/DD" [(ngModel)]="coursemsg.classCloud.lessonEndDate" min="2015-03-14" max="2030-12-09" value="2020-09-23T15:03:46.789"></ion-datetime>
+      <ion-datetime displayFormat="YYYY/MM/DD" [(ngModel)]="coursemsg.lessonEndDate" min="2015-03-14" max="2030-12-09" value="2020-09-23T15:03:46.789"></ion-datetime>
      
     </ion-item>
     <ion-item padding >
       <ion-label>介绍</ion-label> 
-      <ion-textarea  [(ngModel)]="coursemsg.classCloud.introduction"></ion-textarea>
+      <ion-textarea  [(ngModel)]="coursemsg.introduction"></ion-textarea>
     </ion-item> 
   </ion-list>
     <ion-list class="inp" style="margin-top:30px auto;" *ngIf="type==0">
       <ion-item padding >
         <ion-label>课程名</ion-label>
-        <ion-label >{{coursemsg.classCloud.className}}</ion-label> 
+        <ion-label >{{coursemsg.className}}</ion-label> 
       </ion-item> 
        <ion-item padding   >
         <ion-label>班课号</ion-label> 
@@ -55,35 +55,35 @@
       </ion-item> 
       <ion-item padding >
         <ion-label>教师</ion-label>
-        <ion-label   >{{coursemsg.classCloud.teacherName}}</ion-label> 
+        <ion-label   >{{coursemsg.teacherName}}</ion-label> 
       </ion-item>  
       <ion-item padding >
         <ion-label>年级</ion-label>
-        <ion-label >{{coursemsg.classCloud.grade}}</ion-label>
+        <ion-label >{{coursemsg.grade}}</ion-label>
        </ion-item>
       <ion-item padding >
-        <ion-label>教材</ion-label> 
-        <ion-label >{{coursemsg.classCloud.teachingMateria}}</ion-label>
+        <ion-label>班级名称</ion-label> 
+        <ion-label >{{coursemsg.teachingMateria}}</ion-label>
        </ion-item>
       <ion-item padding >
         <ion-label>学校</ion-label>
-        <ion-label  >{{coursemsg.classCloud.school}}</ion-label>
+        <ion-label  >{{coursemsg.school}}</ion-label>
       </ion-item> 
       <ion-item padding >
         <ion-label>专业</ion-label>
-        <ion-label >{{coursemsg.classCloud.college}}</ion-label>
+        <ion-label >{{coursemsg.college}}</ion-label>
      </ion-item> 
       <ion-item padding >
         <ion-label>开课时间</ion-label>
-       <ion-label>{{coursemsg.classCloud.lessonStartDate}}</ion-label>
+       <ion-label>{{coursemsg.lessonStartDate}}</ion-label>
       </ion-item>
       <ion-item padding >
         <ion-label>结课时间</ion-label>
-        <ion-label>{{coursemsg.classCloud.lessonEndDate}}</ion-label>
+        <ion-label>{{coursemsg.lessonEndDate}}</ion-label>
       </ion-item>
       <ion-item padding >
         <ion-label>介绍</ion-label>
-        <ion-label >{{coursemsg.classCloud.introduction}}</ion-label>
+        <ion-label >{{coursemsg.introduction}}</ion-label>
       </ion-item> 
     </ion-list>
     <ion-button (click)="edit(1)" *ngIf="type==0" color="primary" expand="block" style="height:40px;width:60%;margin:40px auto;font-size:20px"  shape="round">

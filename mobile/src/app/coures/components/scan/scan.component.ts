@@ -17,8 +17,13 @@ export class ScanComponent implements OnInit {
     public localStorageService:LocalStorageService) {
 
   }
-  public Code:any=this.localStorageService.get('scanId','xxx');
+  
+  public Code:any;
   ngOnInit() { 
+      this.barcodeScanner.scan().then(async barcodeData => {
+      // alert(barcodeData['text'])
+      this.localStorageService.get('scanText',barcodeData['text']);
+      this.localStorageService.get('scanId',this.localStorageService.get('scanText',barcodeData['text']))
+  })
   }
-
 }

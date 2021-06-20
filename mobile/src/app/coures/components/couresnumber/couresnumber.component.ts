@@ -7,6 +7,7 @@ import { NavController , NavParams } from '@ionic/angular';
 import { LocalStorageService } from '../../../service/local-storage.service';
 import { HttpserviceService } from '../../../service/httpservice.service';
 import { ToastController} from '@ionic/angular';
+import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
 
 @Component({
   selector: 'app-couresnumber',
@@ -19,27 +20,83 @@ export class CouresnumberComponent implements OnInit {
   public couresnumbe:any='';
   public addcourseapi:any='/cloudClass?orgCode=';
   public enterclassapi:any='/cloudClass/members?orgCode='
-  constructor(public localStorageService:LocalStorageService,public modalCtrl:ModalController,public httpservice:HttpserviceService, private toastController: ToastController,) { }
+  constructor(public localStorageService:LocalStorageService,public modalCtrl:ModalController,public httpservice:HttpserviceService,public barcodeScanner: BarcodeScanner,private toastController: ToastController) { }
   public orgCode:any='';
-  public coursemsg:any;
-  ngOnInit() {
+
+  public coursemsg:any={
+    className: "",
+    orgCode: "",
+    college: "",
+    grade: "",
+    introduction: "",
+    lessonEndDate: "",
+    lessonStartDate: "",
+    school: "",
+    teacherName: "",
+    teachingMateria: ""
+  };
+
+  public course:any={
+    className: "",
+    orgCode: "",
+    college: "",
+    grade: "",
+    introduction: "",
+    lessonEndDate: "",
+    lessonStartDate: "",
+    school: "",
+    teacherName: "",
+    teachingMateria: ""
+  }
+  async ngOnInit() {
+      let toast: any;
+      toast = await this.toastController.create({
+      duration: 500,
+      position: 'middle',
+      message: ''
+    });
     //通过扫描进来的
-    if(this.localStorageService.get('scanText','xxx')!='xxx'){ 
-      this.type=2;
-      this.orgCode=this.localStorageService.get('scanText','xxx');
-      this.localStorageService.remove('scanText')
+      // this.type=1;
+      // this.orgCode=this.localStorageService.get('scanText','xxx');
+      // this.localStorageService.remove('scanText')
+      // this.barcodeScanner.scan().then(async barcodeData => {
+      //   // alert(barcodeData['text'])
+      //   this.localStorageService.get('scanText',barcodeData['text']);
+      //   this.orgCode = this.localStorageService.get('scanId',this.localStorageService.get('scanText',barcodeData['text']))
+      // }),
       this.httpservice.get(this.addcourseapi+this.orgCode).then((response)=>{
         // console.log(response)
         if(response['state']=='success')
         {
-          this.coursemsg=response['result']['classCloud'];
+          this.course=response['result']['classCloud'];
+          // toast.message =  this.course;
+          // toast.present();
         }else{
           //后面优化
-          alert('没有该课程');
+          // alert('没有该课程');
+          // toast.message =  '班课不存在';
+          // toast.present();
         }
-      })
-    }
+      });
+    // if(this.localStorageService.get('scanText','xxx')!='xxx'){ 
+    //   this.type=2;
+    //   this.orgCode=this.localStorageService.get('scanText','xxx');
+    //   this.localStorageService.remove('scanText')
+    //   this.httpservice.get(this.addcourseapi+this.orgCode).then((response)=>{
+    //     // console.log(response)
+    //     if(response['state']=='success')
+    //     {
+    //       this.coursemsg=response['result']['classCloud'];
+    //     }else{
+    //       //后面优化
+    //       // alert('没有该课程');
+    //       toast.message =  '班课不存在';
+    //       toast.present();
+    //     }
+    //   })
+    // }
   }
+  
   async nextadd(){
     let toast: any;
     toast = await this.toastController.create({
@@ -57,7 +114,7 @@ export class CouresnumberComponent implements OnInit {
       }else{
         //后面优化
         // alert('没有该课程');
-        toast.message =  '没有该课程';
+        toast.message =  '班课不存在';
         toast.present();
       }
     })
@@ -72,15 +129,24 @@ export class CouresnumberComponent implements OnInit {
     });
     
     this.httpservice.upData(this.enterclassapi+this.orgCode,'').then((response)=>{
-      console.log(response)
+      // console.log(response)
       //alert(JSON.stringify(response))
       if(response['state']=='success')
       {
-        toast.message =  '成功添加';
+        toast.message =  '成功加入';
         toast.present();
         location.reload();
+      }else if(response['state']=='教师不能加入自己创建的班课'){
+        toast.message =  '教师不能加入自己创建的班课';
+        toast.present();
+      }else if(response['state']=='班课已结课'){
+        toast.message =  '班课已结课';
+        toast.present();
+      }else if(response['state']=='用户已经存在于该班课中'){
+        toast.message =  '用户已经存在于该班课中';
+        toast.present();
       }else{
-        alert(response['msg'])
+        // alert(response['msg'])
         toast.message =  response['msg'];
         toast.present();
         

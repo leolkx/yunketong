@@ -17,6 +17,7 @@ export class CoursemsgComponent implements OnInit {
   public type:any=0;
   public course:any={
     className: "",
+    orgCode: "",
     college: "",
     grade: "",
     introduction: "",
@@ -26,7 +27,18 @@ export class CoursemsgComponent implements OnInit {
     teacherName: "",
     teachingMateria: ""
   }
-  public coursemsg:any;
+  public coursemsg:any={
+    className: "",
+    orgCode: "",
+    college: "",
+    grade: "",
+    introduction: "",
+    lessonEndDate: "",
+    lessonStartDate: "",
+    school: "",
+    teacherName: "",
+    teachingMateria: ""
+  }
   constructor(
     public localstorage:LocalStorageService,
     public navCtrl: NavController, 
@@ -46,10 +58,11 @@ export class CoursemsgComponent implements OnInit {
   };
   ngOnInit() {
     this.httpservice.get(this.coursemshapi+this.localstorage.get('orgCode','xxx')).then((response)=>{
-      console.log(response);
+      
       if(response['state']=='success')
       {
-        this.coursemsg=response['result'];
+        this.coursemsg=response['result']['classCloud'];
+        this.coursemsg['orgCode']=response['result']['orgCode'];
       }
     })
   } 
@@ -57,14 +70,14 @@ export class CoursemsgComponent implements OnInit {
     this.type=type;
     if(type==2)
     {
-      if(this.coursemsg['classCloud']['lessonStartDate'].length>15){
-        this.coursemsg['classCloud']['lessonStartDate']=this.formatDate(this.coursemsg['classCloud']['lessonStartDate'])
+      if(this.coursemsg['lessonStartDate'].length>15){
+        this.coursemsg['lessonStartDate']=this.formatDate(this.coursemsg['lessonStartDate'])
       } 
-      if(this.coursemsg['classCloud']['lessonEndDate'].length>15){
-        this.coursemsg['classCloud']['lessonEndDate']=this.formatDate(this.coursemsg['classCloud']['lessonEndDate'])
+      if(this.coursemsg['lessonEndDate'].length>15){
+        this.coursemsg['lessonEndDate']=this.formatDate(this.coursemsg['lessonEndDate'])
       }
       //提交编辑数据
-      this.httpservice.put(this.coursemshapi+this.localstorage.get('orgCode','xxx'),this.coursemsg['classCloud']).then((response)=>{
+      this.httpservice.put(this.coursemshapi+this.localstorage.get('orgCode','xxx'),this.coursemsg).then((response)=>{
         if(response['state']=='success')
         { 
           this.type=0;

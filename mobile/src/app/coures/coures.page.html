@@ -15,9 +15,9 @@
         <img src="../../assets/icon/favicon.png">
       </ion-avatar>
       <ion-label  (click)="goteacher(item.orgCode,item.cloudClass.className)">
-        <h2>{{item.cloudClass.className}}</h2>
+        <h3>{{item.cloudClass.className}}</h3>
         <h3>{{item.cloudClass.school}}</h3>
-        <p>{{item.cloudClass.grade}} {{item.orgCode}}</p>
+        <h3>课程号：{{item.orgCode}}</h3>
       </ion-label>
       <ion-label (click)="createCode(item.orgCode)"><ion-button >生成二维码</ion-button></ion-label>
     </ion-item> 
@@ -29,12 +29,12 @@
       <ion-avatar slot="start"  (click)="coursedetail(item.orgCode,item.cloudClass.className)" >
         <img src="../../assets/icon/favicon.png">
       </ion-avatar>
-      <ion-label   (click)="coursedetail(item.orgCode,item.cloudClass.className)" >
-        <h2>{{item.cloudClass.className}}</h2>
-        <h3>{{item.cloudClass.teacherName}}</h3>
-        <p>{{item.cloudClass.grade}}</p>
+      <ion-label (click)="coursedetail(item.orgCode,item.cloudClass.className)" >
+        <h3>课程名：{{item.cloudClass.className}}</h3>
+        <h3>教师：{{item.cloudClass.teacherName}}</h3>
+        <h3>班课号：{{item.orgCode}}</h3>
       </ion-label>
-      <ion-label (click)="createCode(item.orgCode)"><ion-button >生成二维码</ion-button></ion-label>
+      <ion-label (click)="createCode(item.orgCode)"><ion-button>生成二维码</ion-button></ion-label>
     </ion-item> 
    
   </ion-list>

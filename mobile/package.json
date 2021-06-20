@@ -40,7 +40,6 @@
     "cordova-plugin-filechooser": "^1.2.0",
     "cordova-plugin-filepath": "^1.5.8",
     "cordova-plugin-gaodelocation": "git+https://github.com/DaiHuaXieHuaKai/GaoDeLocation.git",
-    "cordova-plugin-gaodelocation-chenyu": "^2.0.5",
     "cordova-plugin-geolocation": "^4.0.2",
     "cordova-plugin-whitelist": "^1.3.4",
     "core-js": "^2.5.4",
@@ -62,8 +61,10 @@
     "@types/jasmine": "~3.3.8",
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "~8.9.4",
+    "android": "0.0.8",
     "codelyzer": "^5.0.0",
     "cordova-plugin-device": "^2.0.2",
+    "cordova-plugin-gaodelocation-chenyu": "git+https://github.com/liangzhanyong/cordova-plugin-gaodelocation-chenyu.git",
     "cordova-plugin-ionic-keyboard": "^2.2.0",
     "cordova-plugin-ionic-webview": "^4.2.1",
     "cordova-plugin-splashscreen": "^5.0.2",
@@ -110,11 +111,14 @@
       "phonegap-plugin-barcodescanner": {
         "ANDROID_SUPPORT_V4_VERSION": "27.+"
       },
-      "cordova-plugin-whitelist": {}
+      "cordova-plugin-whitelist": {},
+      "cordova-plugin-gaodelocation-chenyu": {
+        "ANDROID_API_KEY": "your",
+        "IOS_API_KEY": "your"
+      }
     },
     "platforms": [
       "android"
     ]
   }
 }
-

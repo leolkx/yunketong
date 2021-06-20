@@ -63,7 +63,8 @@ export class LoginComponent implements OnInit {
   async login(form: NgForm){ 
     let toast: any;
     toast = await this.toastController.create({
-      duration: 3000,
+      duration: 500,
+      position: 'middle',
       message: ''
     });
     
@@ -107,7 +108,7 @@ export class LoginComponent implements OnInit {
           toast.present();
         }else{ 
           // this.wrongMsg=response['msg'].split(':')[1]
-          toast.message =  response['msg'].split(':')[1];
+          toast.message =  response['msg'];
           toast.present();
         }
         // console.log(response)

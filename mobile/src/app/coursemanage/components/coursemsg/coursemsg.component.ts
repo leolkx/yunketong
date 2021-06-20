@@ -50,12 +50,13 @@ export class CoursemsgComponent implements OnInit {
 
   ngOnInit() {
     this.httpservice.get(this.coursemshapi+this.localstorage.get('orgCode','xxx')).then((response)=>{
-      console.log(response);
+      // console.log(response);
       if(response['state']=='success')
       {
         this.course=response['result']['classCloud'];
+        // console.log(this.course)
         this.course['orgCode']=this.localstorage.get('orgCode','xxx')
-        console.log(this.course)
+        // console.log(this.course)
       }
     })
 
@@ -71,7 +72,7 @@ export class CoursemsgComponent implements OnInit {
           role: 'cancel',
           cssClass: 'secondary',
           handler: (blah) => {
-            console.log('Confirm Cancel: blah');
+            // console.log('Confirm Cancel: blah');
           }
         }, {
           text: '确定',

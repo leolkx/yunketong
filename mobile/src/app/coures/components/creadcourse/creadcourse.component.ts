@@ -1,8 +1,10 @@
+import { CouresPage } from './../../coures.page';
 import { Component, OnInit } from '@angular/core';
 import { ModalController, ToastController } from '@ionic/angular';
 import { PopoverController } from '@ionic/angular';
 import { NavController, NavParams } from '@ionic/angular';
 import { GetschoolComponent } from '../getschool/getschool.component';
+import { AddcouresComponent } from '../addcoures/addcoures.component';
 
 import { HttpserviceService } from '../../../service/httpservice.service';
 @Component({
@@ -24,6 +26,7 @@ export class CreadcourseComponent implements OnInit {
     college: '',
     lessonStartDate: '',
     lessonEndDate: '',
+    term: '2021-2022-1',
     introduction: '',
   };
   public schoolslist: any = [];
@@ -37,19 +40,28 @@ export class CreadcourseComponent implements OnInit {
   constructor(public modalCtrl: ModalController, public navCtrl: NavController, public popoverController: PopoverController, public httpclient: HttpserviceService,private toastController: ToastController) { }
 
   formatDate = (time: any) => {
-    // 格式化日期，获取今天的日期
+    // 获取今天的日期
     const Dates = new Date(time);
     const year: number = Dates.getFullYear();
     const month: any = (Dates.getMonth() + 1) < 10 ? '0' + (Dates.getMonth() + 1) : (Dates.getMonth() + 1);
     const day: any = Dates.getDate() < 10 ? '0' + Dates.getDate() : Dates.getDate();
     return year + '-' + month + '-' + day;
   };
+  formatterm = (time: any) => {
+    // 获取今天的日期
+    const Dates = new Date(time);
+    const year: number = Dates.getFullYear();
+    const month: any = Dates.getFullYear() + 1;
+    const day: any = '0' + Dates.getDate();
+    return year + '-' + month + '-' + day;
+  };
   formatyear = (time: any) => {
-    // 格式化日期，获取今天的日期
+    // 获取今天的年份
     const Dates = new Date(time);
     const year: number = Dates.getFullYear();
     return year;
   };
+
   ngOnInit() {
     this.httpclient.get(this.getschoolsapi).then((response) => {
       this.schoolslist = response['result']
@@ -67,6 +79,7 @@ export class CreadcourseComponent implements OnInit {
     this.course['grade'] = this.formatyear(this.course['grade']);
     this.course['lessonStartDate'] = this.formatDate(this.course['lessonStartDate']);
     this.course['lessonEndDate'] = this.formatDate(this.course['lessonEndDate']);
+
 
     // console.log(this.course);
     this.httpclient.upData(this.createcourseapi, this.course).then((response) => {
@@ -86,6 +99,21 @@ export class CreadcourseComponent implements OnInit {
     // this.modalCtrl.dismiss({
     //   'dismissed': true
     // }) 
+  }
+
+  async addcourse() {
+    // const modal = await this.modalCtrl.create({
+    //   component: AddcouresComponent
+    // });
+    
+    // await modal.present();
+    // await modal.onDidDismiss().then(()=>{
+    //   // this.popoverController.dismiss();
+    // }
+    // )
+    this.modalCtrl.dismiss({
+      'dismissed': true
+    })
   }
 
   // async presentPopover(ev: any) {
