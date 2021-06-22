@@ -5,14 +5,19 @@ import org.apache.ibatis.annotations.*;
 import org.fzu.ybk.entity.Orgnization;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
+
 @Repository
 public interface OrgnizationMapper extends BaseMapper<Orgnization> {
 
-    @Insert("INSERT INTO org (org_code, org_name, extend_json, creation_date, creator, is_deleted) VALUES (#{ordCode}, #{orgName}, #{richTextId},  #{createDate}, #{creator}, #{isDeleted} )")
-    void cerateOrgnization(Long ordCode, String orgName,  Long richTextId, String createDate, String creator, boolean isDeleted);
+    @Insert("INSERT INTO org (org_code, org_name, extend_json, creation_date, creator, is_deleted, lesson_enddate) VALUES (#{ordCode}, #{orgName}, #{richTextId},  #{createDate}, #{creator}, #{isDeleted}, #{lessonEndDate} )")
+    void cerateOrgnization(Long ordCode, String orgName,  Long richTextId, String createDate, String creator, boolean isDeleted, Date lessonEndDate);
 
     @Select("SELECT count(id) FROM org WHERE org_code = #{orgCode} limit 1")
     boolean OrgExistByOrgCode(Long orgCode);
+
+    @Select("SELECT lesson_enddate FROM org WHERE org_code = #{orgCode}")
+    Date lessonEndDatebyOrgCode(Long orgCode);
 
     @Select("SELECT count(id) FROM org WHERE id = #{orgId} limit 1")
     boolean OrgExistByOrgId(Long orgId);

@@ -70,7 +70,6 @@ public class ClassMemberService {
         classMemberUpdate.setUserClassSchool(classSchool);
         classMemberUpdate.setUserClassNickName(nickName);
         classMemberUpdate.setUserClassNumber(classNumber);
-
         String json = JSON.toJSONString(classMemberUpdate);
         return json;
     }
@@ -78,13 +77,21 @@ public class ClassMemberService {
     public String userJoinClass(Long orgCode,  HttpServletRequest request) throws Exception{
         String username = GlobalConstant.Username;
         Long userId = userMapper.getUserIdByUserName(username);
+        Long roleId = userMapper.getRoleidByUserid(userId);
         System.out.println("username:" + username);
         Long orgId = orgnizationMapper.getOrgIdByOrgCode(orgCode);
         System.out.println("orgid" + orgId.toString());
+        if (roleId==2)
+            throw new OrgMemberException("教师不能加入自己创建的班课");
         if (orgId == null)
             throw new OrgMemberException("班课不存在");
         if (Boolean.TRUE == this.userInOrgnization(userId,orgId))
             throw new OrgMemberException("用户已经存在于该班课中");
+
+        Date date = new Date();
+        Date lessonEndDate = orgnizationMapper.lessonEndDatebyOrgCode(orgCode);
+        if (date.compareTo(lessonEndDate) == 1)
+            throw new OrgMemberException("班课已结课");
         this.addUserToClass(userId,orgId);
         return responseService.responseFactory(StatusCode.RESPONSE_OK,"加入成功");
     }

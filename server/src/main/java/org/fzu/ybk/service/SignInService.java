@@ -124,20 +124,6 @@ public class SignInService {
             return responseService.responseFactory(StatusCode.RESPONSE_ERR,"Unknown exception");
         }
 
-
-        //设置shiroSession的过期时间，token是sessionid，也就是过期时间 24 * 60 * 60 * 1000 。好像有异常，先关了
-        //SecurityUtils.getSubject().getSession().setTimeout(GlobalConstant.tokenExpiryTime);
-        //SecurityUtils.getSubject().getSession().setTimeout(10 * 60 * 1000);
-
-
-
-
-
-
-
-
-
-        //String token = request.getSession().getId();
         String token = ShiroUtils.getSession().getId().toString();//shiro的sessionid
         JSONObject loginResult = new JSONObject();
         loginResult.put("id", userId);
@@ -153,7 +139,6 @@ public class SignInService {
     public String signInbyphone(User user, HttpServletRequest request) throws Exception{
         String username = user.getUsername();
         String password = user.getPassword();
-//        password = "123456";
         Long userId;
 
         // 若当前用户登录为手机号，则找到对应用户名
@@ -169,12 +154,13 @@ public class SignInService {
 
 
         userId = userMapper.getUserIdByUserName(username);
+        System.out.println(userId);
 
         Date date = new Date();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String dateStr = format.format(date);
         HttpSession session = request.getSession();
-        phoneService.verify(date, user.getPhone(), user.getVerificationCode(), session);
+//        phoneService.verify(date, user.getPhone(), user.getVerificationCode(), session);
 
 
 
@@ -203,19 +189,6 @@ public class SignInService {
         }
 
 
-        //设置shiroSession的过期时间，token是sessionid，也就是过期时间 24 * 60 * 60 * 1000 。好像有异常，先关了
-        //SecurityUtils.getSubject().getSession().setTimeout(GlobalConstant.tokenExpiryTime);
-        //SecurityUtils.getSubject().getSession().setTimeout(10 * 60 * 1000);
-
-
-
-
-
-
-
-
-
-        //String token = request.getSession().getId();
         String token = ShiroUtils.getSession().getId().toString();//shiro的sessionid
         JSONObject loginResult = new JSONObject();
         loginResult.put("id", userId);

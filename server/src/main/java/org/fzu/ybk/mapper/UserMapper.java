@@ -23,6 +23,9 @@ public interface UserMapper extends BaseMapper<User> {
     @Select("SELECT * FROM user WHERE id= #{id} ")
     List<User> getUser(Long id);
 
+    @Select("SELECT role_id FROM user WHERE id = #{userId}")
+    Long getRoleidByUserid(Long userId);
+
     @Select("SELECT count(id) FROM user WHERE (username = #{userName} or phone = #{userName}) and (is_deleted = 0 or id = 1) limit 1")
     boolean userExist(String userName);
 

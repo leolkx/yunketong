@@ -55,7 +55,14 @@ public class CloudClassService {
         Date date = new Date();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String dateStr = format.format(date);
-//        String creator = SystemParams.username;
+        SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
+        String lessonEndDate = cloudClass.getLessonEndDate();
+        Date lessonenddate = f.parse(lessonEndDate);
+
+        System.out.println(lessonenddate);
+        System.out.println(lessonenddate);
+
+
         String creator = GlobalConstant.Username;
 
         if(creator==null) creator = cloudClass.getTeacherName();
@@ -67,11 +74,9 @@ public class CloudClassService {
         String cloudClassDetail = JSON.toJSONString(cloudClass);
         Long richTextId = richTextService.createRichText(cloudClassDetail);
         //创建班课
-        orgnizationMapper.cerateOrgnization(orgCode,orgName,richTextId,dateStr,creator,false);
+        orgnizationMapper.cerateOrgnization(orgCode,orgName,richTextId,dateStr,creator,false, lessonenddate);
         Long orgId = orgnizationMapper.getOrgIdByOrgCode(orgCode);
-        //创建者与组织的关系
-//        String userName = request.getSession().getAttribute(GlobalConstant.sessionUser).toString();
-        String username = SystemParams.username;
+
 
         classMemberService.addUserToClass(userId,orgId);
 
@@ -99,9 +104,8 @@ public class CloudClassService {
 
 
     public String updateClassInfoByOrgCode(Long orgCode, CloudClass updateInfo,  HttpServletRequest request) throws Exception{
-//        String userName = request.getSession().getAttribute(GlobalConstant.sessionUser).toString();
-        String username = SystemParams.username;
-        Long userId = SystemParams.userId;
+        String username = GlobalConstant.Username;
+        Long userId = userMapper.getUserIdByUserName(username);
 
         Long orgId = orgnizationMapper.getOrgIdByOrgCode(orgCode);
         if (orgId == null)
@@ -124,9 +128,9 @@ public class CloudClassService {
 
 
     public String deleteCloudClassAndMembers(Long orgCode,  HttpServletRequest request) throws Exception{
-//        String userName = request.getSession().getAttribute(GlobalConstant.sessionUser).toString();
-        String username = SystemParams.username;
-        Long userId = SystemParams.userId;
+        String username = GlobalConstant.Username;
+        Long userId = userMapper.getUserIdByUserName(username);
+
 
         Long orgId = orgnizationMapper.getOrgIdByOrgCode(orgCode);
         if ( ! orgnizationMapper.OrgExistByOrgId(orgId))
