@@ -79,6 +79,13 @@ export class CouresPage implements OnInit {
   
     public positionRes: PositionRes;
     async loc1(){
+      let toast: any;
+      toast = await this.toastController.create({
+        duration: 500,
+        position: 'middle',
+        message: ''
+      });
+
       let  positionOptions: PositionOptions = {
         androidOption: {
          locationMode: LocationModeEnum.Hight_Accuracy,
@@ -102,7 +109,9 @@ export class CouresPage implements OnInit {
       };  
     
      let positionRes: PositionRes = await this.gaoDeLocation.getCurrentPosition(positionOptions).catch((e: any) => {
-      console.log(e);
+      // console.log(e);
+      toast.message =  e;
+      toast.present();
     }) || null;
 
     alert(JSON.stringify(positionRes))
