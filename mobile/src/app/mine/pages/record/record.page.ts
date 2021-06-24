@@ -32,7 +32,7 @@ export class RecordPage implements OnInit {
       for (let n = 0; n < this.addlist.length; n++) {
         this.httpclient.get(this.getrecordmsgapi + this.addlist[n].orgCode).then((response) => {
           this.recordslist = response['result']
-          console.log(this.recordslist)
+          // console.log(this.recordslist)
 
           for (let activity of response['result']) {
             //签到才添加
@@ -48,12 +48,12 @@ export class RecordPage implements OnInit {
           }
         })
       }
-      console.log(this.addlist)
+      // console.log(this.addlist)
     })
   }
   recorddetail(org: any) {
     this.userserivce.setorgCode(org)
-    console.log(org)
+    // console.log(org)
     this.navCtrl.navigateForward('/mine/recorddetil');
   }
   ngAfterViewInit() {

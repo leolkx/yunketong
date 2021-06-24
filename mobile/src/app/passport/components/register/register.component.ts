@@ -31,7 +31,7 @@ export class RegisterComponent implements OnInit {
   constructor(public ref : ChangeDetectorRef,public httpclient:HttpserviceService, private toastController: ToastController) { }
 
   ngOnInit() {
-    console.log(this.verimage)
+    // console.log(this.verimage)
     /* document.getElementById('vericode').setAttribute('src',this.verimage+'?'+this.nums);
     this.nums++; */
   }
@@ -67,7 +67,7 @@ export class RegisterComponent implements OnInit {
     //提交数据 注册
     //加密用户数据
    // this.user['password'] = Md5.hashStr(this.user["password"]).toString()
-    console.log(this.user) 
+    // console.log(this.user) 
     this.httpclient.upDataNotoken(this.signupapi,this.user).then((response)=>{
       if(response['msg']=='register success'){
         // alert('注册成功')
@@ -79,7 +79,7 @@ export class RegisterComponent implements OnInit {
         toast.message =  response['msg'].split(':')[1];
         toast.present();
       }
-      console.log(response)
+      // console.log(response)
       //注册完去登录  这里没提示 后面再优化体验
       //判断成功才可以跳去登录
     })
@@ -97,14 +97,14 @@ export class RegisterComponent implements OnInit {
     }else{
       this.user.type=2;
     }
-    console.log(this.user)
+    // console.log(this.user)
   }
   // 获取验证码
   get_check_code() {
     this.httpclient.getNotoken(this.phonecodeapi+this.user['phone']).then((response)=>{
 
     //let cookie =response.headers['Set-Cookie']
-    console.log(response)
+    // console.log(response)
     })
     
     //倒计时

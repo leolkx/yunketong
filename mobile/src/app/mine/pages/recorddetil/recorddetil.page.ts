@@ -26,14 +26,14 @@ export class RecorddetilPage implements OnInit {
       for (let n = 0; n < this.addlist.length; n++) {
         if (this.addlist[n].orgCode == this.usermsg.getorgCode()) {
           this.orgmsg = this.addlist[n].cloudClass
-          console.log(this.orgmsg)
+          // console.log(this.orgmsg)
         }
       }
     })
     this.orgCode = this.usermsg.getorgCode()
     this.httpclient.get(this.getrecordmsgapi + this.orgCode).then((response) => {
       this.recordslist = response['result']
-      console.log(this.recordslist)
+      // console.log(this.recordslist)
       for (let activity of response['result']) {
         //签到才添加
         if (activity['activityTypeId'] == 1) {

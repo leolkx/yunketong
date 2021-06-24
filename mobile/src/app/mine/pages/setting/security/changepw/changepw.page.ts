@@ -34,7 +34,7 @@ export class ChangepwPage implements OnInit {
       this.getusermsg = response['result']
     })
     this.userpassword.id=this.localStorage.get("userId",0);
-    console.log(this.userpassword.id)
+    // console.log(this.userpassword.id)
   }
 
   async presentAlertConfirm() {
@@ -47,13 +47,13 @@ export class ChangepwPage implements OnInit {
           role: 'cancel',
           cssClass: 'secondary',
           handler: (blah) => {
-            console.log('Confirm Cancel: blah');
+            // console.log('Confirm Cancel: blah');
           }
         }, {
           text: '确定',
           handler: () => {
             this.changepw();
-            console.log('Confirm Okay');
+            // console.log('Confirm Okay');
           }
         }
       ]
@@ -86,8 +86,8 @@ export class ChangepwPage implements OnInit {
     console.log(this.userpassword)
     this.httpclient.put(this.changepasswordapi, this.userpassword).then((response) => {
       this.failedmsg=response['msg']
-      console.log(this.failedmsg)
-      console.log(response)
+      // console.log(this.failedmsg)
+      // console.log(response)
       if (response['state'] == 'success') {
         this.presentToast_suc()
         this.navCtrl.navigateForward('/tabs');
@@ -101,7 +101,7 @@ export class ChangepwPage implements OnInit {
   get_check_code() {
     this.httpclient.get(this.mailcodeapi+this.getusermsg.email).then((response)=>{
     //let cookie =response.headers['Set-Cookie']
-    console.log(response)
+    // console.log(response)
     })
     //倒计时
     this.flag=false;

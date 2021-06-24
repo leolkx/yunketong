@@ -33,7 +33,7 @@ export class FeedbackPage implements OnInit {
   public submit() {
     this.user.fbinfo = ''
     this.user.time = new Date(new Date().getTime() + 8 * 60 * 60 * 1000).toISOString();
-    console.log(this.user.time);
+    // console.log(this.user.time);
 
     this.presentAlert();
   }

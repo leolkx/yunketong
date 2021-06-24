@@ -71,9 +71,9 @@ formatDate = ( time: any ) => {
     if(type==1)
     {
       this.activity['endDate'] = this.formatDate(this.activity['endDate'])
-      console.log(this.activity) 
+      // console.log(this.activity) 
         this.httpserviceService.upData(this.createactivityapi,this.activity).then((response)=>{
-          console.log(response)
+          // console.log(response)
           this.modalController.dismiss({
             result:'ok'
           });

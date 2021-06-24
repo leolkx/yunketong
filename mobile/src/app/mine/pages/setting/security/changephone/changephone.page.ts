@@ -21,7 +21,7 @@ export class ChangephonePage implements OnInit {
   constructor(public ref : ChangeDetectorRef,public httpclient:HttpserviceService,public navCtrl: NavController ) { }
 
   ngOnInit() {
-    console.log(this.verimage)
+    // console.log(this.verimage)
   }
   ngAfterViewInit(){
     

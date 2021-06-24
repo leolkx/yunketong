@@ -37,7 +37,7 @@ export class ScorePage implements OnInit {
             }
           }
         }
-        console.log(this.addlist)
+        // console.log(this.addlist)
       })
     })
     /*this.httpclient.get(this.getmyentercourseapi).then((response) => {
@@ -87,7 +87,7 @@ export class ScorePage implements OnInit {
   }
   scoredetail(org: any) {
     this.userserivce.setorgCode(org)
-    console.log(org)
+    // console.log(org)
     this.navCtrl.navigateForward('/mine/scoredetil');
   }
 

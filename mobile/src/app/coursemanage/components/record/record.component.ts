@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular'; 
+import { ModalController, ToastController } from '@ionic/angular'; 
 import { PopoverController } from '@ionic/angular';
 import { HttpserviceService } from '../../../service/httpservice.service';  
 import {Geolocation} from "@ionic-native/geolocation/ngx";  
@@ -20,6 +20,7 @@ export class RecordComponent implements OnInit {
     public gaoDeLocation: GaoDeLocation, 
     public httpservice:HttpserviceService,
     public modalController: ModalController,
+    private toastController: ToastController,
     public popoverController: PopoverController ) {}
 
   public getRecord:any='/activities/class/self?page=1&pageSize=1000&orgCode=';
@@ -27,12 +28,17 @@ export class RecordComponent implements OnInit {
   public dao:any=0;
   public arrList:any=[]
   public isAnswerArrive:any=0;
-  ngOnInit() {
+  async ngOnInit() {
+    let toast: any;
+      toast = await this.toastController.create({
+        duration: 500,
+        position: 'middle',
+        message: ''
+      });
     this.httpservice.get(this.getRecord+this.localstorage.get('orgCode','xxx')).then((response)=>{
-      console.log(response)
+      // console.log(response)
       if(response['msg']=='查询成功')
       {
-         
         for (let activity of response['result']) {
           //签到才添加
           if(activity['activityTypeId']==1){
@@ -48,6 +54,9 @@ export class RecordComponent implements OnInit {
             this.arrList.push(activity)
           }
         }
+      }else{
+        toast.message =  '查询失败';
+        toast.present();
       } 
     })
   }
@@ -68,6 +77,13 @@ export class RecordComponent implements OnInit {
   public positionRes: PositionRes; 
 async godao()
   {
+    let toast: any;
+      toast = await this.toastController.create({
+        duration: 500,
+        position: 'middle',
+        message: ''
+      });
+    
     let  positionOptions: PositionOptions = {
       androidOption: {
         locationMode: LocationModeEnum.Hight_Accuracy,
@@ -91,22 +107,26 @@ async godao()
     };  
   
   let positionRes: PositionRes = await this.gaoDeLocation.getCurrentPosition(positionOptions).catch((e: any) => {
-    console.log(e);
+    // console.log(e);
+    toast.message =  e;
+    toast.present();
   }) || null; 
   if(positionRes!=null){
     this.enterActivity['latitude']=positionRes['latitude']
     this.enterActivity['longitude']=positionRes['longitude']
    // alert(JSON.stringify(positionRes))
   }else{
-    alert('未获取到地址')
+    // alert('未获取到地址')
+    toast.message =  '未获取到地址';
+    toast.present();
   }
     //这里有签到方式 
-    console.log(this.getRecord+this.localstorage.get('orgCode','xxx'))
+    // console.log(this.getRecord+this.localstorage.get('orgCode','xxx'))
     this.httpservice.get(this.getRecord+this.localstorage.get('orgCode','xxx')).then((response)=>{
       let mark:any=0;
-      console.log(response)
+      // console.log(response)
       for (let activity of response['result']) {
-        console.log(activity['activityTypeId']); // "0", "1", "2",
+        // console.log(activity['activityTypeId']); // "0", "1", "2",
         //判断是否有签到
         if(activity['activityTypeId']=='1'&&activity['isActive']==1)
         {
@@ -115,26 +135,31 @@ async godao()
           if(activity['answerLength']==0){
             
             this.enterActivity['activityId']=activity['activityId']
-            console.log(activity)
+            // console.log(activity)
             //先用
             this.httpservice.upData(this.enterRecord,this.enterActivity).then((response)=>{
               if(response['msg']=='参与成功'){
-                alert('已成功签到')
+                // alert('已成功签到')
+                toast.message =  '已成功签到';
+                toast.present();
               }else if(response['msg']=='距离活动源距离超出限制')//这里内容可能错
               {
-                alert('超出距离，不能签到')
+                // alert('超出距离，不能签到')
+                toast.message =  '超出距离，不能签到';
+                toast.present();
               }else if(response['msg']=='已经参加过该活动'){
-                alert('已经成功签到')
+                // alert('已经成功签到')
+                toast.message =  '已经参加过该活动';
+                toast.present();
                 //更新签到列表
               } 
             })
             //跟新列表
             this.httpservice.get(this.getRecord+this.localstorage.get('orgCode','xxx')).then((response)=>{
-              console.log(response)
+              // console.log(response)
               this.arrList=[];
               if(response['msg']=='查询成功')
-              {
-                 
+              { 
                 for (let activity of response['result']) {
                   //签到才添加
                   if(activity['activityTypeId']==1){
@@ -157,7 +182,7 @@ async godao()
             //密码签到
             this.isAnswerArrive=1;
             this.enterActivity['activityId']=activity['activityId']
-            console.log(activity) 
+            // console.log(activity) 
           }
            
           mark=1
@@ -165,19 +190,29 @@ async godao()
         } 
      }
         if(mark==0){
-          alert('目前没有签到')
+          // alert('目前没有签到')
+          toast.message =  '目前没有签到';
+          toast.present(); 
         }
-     console.log(this.arrList)
+    //  console.log(this.arrList)
     })
   }
-answerArrive(){
+  async answerArrive(){
+  let toast: any;
+      toast = await this.toastController.create({
+        duration: 500,
+        position: 'middle',
+        message: ''
+      });
   this.httpservice.upData(this.enterRecord,this.enterActivity).then((response)=>{
   //  alert(JSON.stringify(response))
     if(response['msg']=='参与成功'){
-      alert('签到成功')
+      // alert('签到成功')
+      toast.message =  '签到成功';
+      toast.present(); 
        //跟新列表
        this.httpservice.get(this.getRecord+this.localstorage.get('orgCode','xxx')).then((response)=>{
-        console.log(response)
+        // console.log(response)
         this.arrList=[];
         if(response['msg']=='查询成功')
         {
@@ -201,12 +236,18 @@ answerArrive(){
       })
     }else if(response['msg']=='距离活动源距离超出限制')//这里内容可能错
     {
-      alert('超出距离，不能签到')
+      // alert('超出距离，不能签到')
+      toast.message =  '超出距离，不能签到';
+      toast.present();
     }else if(response['msg']=='已经参加过该活动'){
-      alert('已经参加过签到')
+      // alert('已经参加过签到')
+      toast.message =  '已经参加过签到';
+      toast.present();
       //更新签到列表
     } else if(response['msg']=='答案错误'){
-      alert('签到密码错误')
+      // alert('签到密码错误')
+      toast.message =  '签到密码错误';
+      toast.present();
     }
     
     this.isAnswerArrive=0
@@ -214,7 +255,7 @@ answerArrive(){
   })
 }
   dismiss(){
-    console.log(111)
+    // console.log(111)
     this.modalController.dismiss();
     // if(this.type==0)
     //   this.modalController.dismiss();

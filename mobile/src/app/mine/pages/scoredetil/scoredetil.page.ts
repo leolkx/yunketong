@@ -36,7 +36,7 @@ export class ScoredetilPage implements OnInit {
         if (this.scoreslist[n].orgCode == this.usermsg.getorgCode()) {
           this.orgmsg = this.scoreslist[n].className
           this.sumscore = this.scoreslist[n].sumScore
-          console.log(this.orgmsg)
+          // console.log(this.orgmsg)
         }
       }
     })
@@ -52,7 +52,7 @@ export class ScoredetilPage implements OnInit {
     this.orgCode = this.usermsg.getorgCode()
     this.httpclient.get(this.getrecordmsgapi + this.orgCode).then((response) => {
       this.recordslist = response['result']
-      console.log(this.recordslist)
+      // console.log(this.recordslist)
       for (let activity of response['result']) {
         if (activity['activityTypeId'] == 1) {
           this.List[0].sumscore++

@@ -31,7 +31,7 @@ export class HttpserviceService {
     this.headers= new HttpHeaders({
       'myAuthorization':this.localStorage.get('token',"wrong"),
       'Content-Type':'application/json'})
-    console.log(this.ip+api);
+    // console.log(this.ip+api);
     return new Promise((resolve, reject) => {
       this.http.put(this.ip+api,data,{withCredentials:true,headers:this.headers}).subscribe((response) => {
         if(response['msg']=='未登录'){
@@ -66,7 +66,7 @@ export class HttpserviceService {
     this.headers= new HttpHeaders({  
       'myAuthorization':this.localStorage.get('token',"wrong"),
       'Content-Type':'application/json'})
-      console.log(this.headers)
+      // console.log(this.headers)
     return new Promise((resolve,reject)=>{
       this.http.get(this.ip+api,{withCredentials:true,headers:this.headers}).subscribe((response)=>{
         // console.log(1111);
@@ -79,9 +79,9 @@ export class HttpserviceService {
       },(err)=>{
         this.navCtrl.navigateForward('/login');
         reject(err); 
-        console.log('big err')
-        console.log(JSON.stringify(err))
-        console.log('big err------')
+        // console.log('big err')
+        // console.log(JSON.stringify(err))
+        // console.log('big err------')
       })
     })
   }
@@ -128,7 +128,7 @@ export class HttpserviceService {
   putNotoken(api:any,data:any){
     this.headers= new HttpHeaders({ 
       'Content-Type':'application/json'})
-    console.log(this.ip+api);
+    // console.log(this.ip+api);
     return new Promise((resolve, reject) => {
       this.http.put(this.ip+api,data,{withCredentials:true}).subscribe((response) => {
         if(response['msg']=='未登录'){
@@ -162,11 +162,11 @@ export class HttpserviceService {
   {  
     this.headers= new HttpHeaders({   
       'Content-Type':'application/json'})
-      console.log(this.headers)
+      // console.log(this.headers)
     return new Promise((resolve,reject)=>{
       this.http.post(this.ip+api,{withCredentials:true}).subscribe((response)=>{
         // console.log(1111);
-        console.log(response);
+        // console.log(response);
         if(response['msg']=='未登录'){
           this.navCtrl.navigateForward('/login');
         }
@@ -175,9 +175,9 @@ export class HttpserviceService {
       },(err)=>{
         this.navCtrl.navigateForward('/login');
         reject(err); 
-        console.log('big err')
-        console.log(JSON.stringify(err))
-        console.log('big err------')
+        // console.log('big err')
+        // console.log(JSON.stringify(err))
+        // console.log('big err------')
       })
     })
   }

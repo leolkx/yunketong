@@ -101,7 +101,7 @@ export class SetupaccountPage implements OnInit {
     else {
       this.httpclient.get(this.getcollegesapi + this.schoolid + '&page=1&pageSize=100').then((response) => {
         this.collegeslist = response['result']
-        console.log(this.collegeslist);
+        // console.log(this.collegeslist);
       })
     }
 
@@ -119,7 +119,7 @@ export class SetupaccountPage implements OnInit {
     else {
     this.httpclient.get(this.getmajorsapi + this.collegeid + '&page=1&pageSize=100').then((response) => {
       this.majorslist = response['result']
-      console.log(this.majorslist);
+      // console.log(this.majorslist);
     })}
   }
   /*onFocus(){
@@ -132,7 +132,7 @@ export class SetupaccountPage implements OnInit {
     this.username = this.usermsg.getaccount();
     this.httpclient.get(this.getusermsgapi).then((response) => {
       this.getusermsg = response['result']
-      console.log(this.getusermsg);
+      // console.log(this.getusermsg);
       this.user = this.getusermsg;
     })
   }
@@ -146,13 +146,13 @@ export class SetupaccountPage implements OnInit {
           role: 'cancel',
           cssClass: 'secondary',
           handler: (blah) => {
-            console.log('Confirm Cancel: blah');
+            // console.log('Confirm Cancel: blah');
           }
         }, {
           text: '确定',
           handler: () => {
             this.save();
-            console.log('Confirm Okay');
+            // console.log('Confirm Okay');
           }
         }
       ]
@@ -196,9 +196,9 @@ export class SetupaccountPage implements OnInit {
   }
   save() {
     this.user['birthDate'] = this.formatDate(this.user['birthDate']);
-    console.log(this.user);
+    // console.log(this.user);
     this.httpclient.put(this.saveusermsgapi, this.user).then((response) => {
-      console.log(response)
+      // console.log(response)
       if (response['state'] == 'success') {
         this.usermsg.setmod("yes");
         this.navCtrl.navigateForward('/tabs');

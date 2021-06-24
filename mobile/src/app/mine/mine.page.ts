@@ -42,7 +42,7 @@ export class MinePage implements OnInit {
       else{
         this.picadd="assets/image/Q.png"
       }
-      console.log(this.getusermsg);
+      // console.log(this.getusermsg);
     })
   }
 
@@ -67,7 +67,7 @@ export class MinePage implements OnInit {
       else{
         this.picadd="assets/image/Q.png"
       }
-      console.log(this.getusermsg);
+      // console.log(this.getusermsg);
     })
     }
     

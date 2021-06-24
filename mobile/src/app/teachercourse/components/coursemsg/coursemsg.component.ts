@@ -97,7 +97,7 @@ export class CoursemsgComponent implements OnInit {
           role: 'cancel',
           cssClass: 'secondary',
           handler: (blah) => {
-            console.log('Confirm Cancel: blah');
+            // console.log('Confirm Cancel: blah');
           }
         }, {
           text: '删除',

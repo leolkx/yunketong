@@ -148,8 +148,8 @@ export class GesturePage {
     this.render.listen(this.canvas.nativeElement, "touchend", () => {
       if (this.canTouch) {
         this.canTouch = false;
-        console.log(this.selectedPointArray);
-        console.log(this.code);
+        // console.log(this.selectedPointArray);
+        // console.log(this.code);
         this.checkcode();
         setTimeout(function () {
           self.reset();

@@ -17,7 +17,7 @@ export class WelcomePage implements OnInit {
   ngOnInit() {
   }
   onSlideWillChange(event) {
-    console.log(event);
+    // console.log(event);
     this.slides.isEnd().then((end) => {
       this.showSkip = !end;
     });

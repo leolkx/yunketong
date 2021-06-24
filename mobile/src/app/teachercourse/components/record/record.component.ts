@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ElementRef, ViewChild, Renderer2 } from '@angular/core';
-import { NavController,NavParams } from '@ionic/angular';
+import { NavController,NavParams, ToastController } from '@ionic/angular';
 import { AlertController } from '@ionic/angular';
 import { ModalController } from '@ionic/angular'; 
 import { HttpserviceService } from '../../../service/httpservice.service';   
@@ -28,12 +28,13 @@ export class RecordComponent implements OnInit {
     public httpclient:HttpserviceService,
     public localstorageService:LocalStorageService,
     public alertController: AlertController,
-     public navCtrl: NavController,
-     public navParams:NavParams,
-      private render: Renderer2,
-      public modalController: ModalController) {
-        this.type = this.navParams.data.type;
-       }
+    public navCtrl: NavController,
+    private toastController: ToastController,
+    public navParams:NavParams,
+    private render: Renderer2,
+    public modalController: ModalController) {
+      this.type = this.navParams.data.type;
+    }
  // public getRecord:any='/activities/class/self?page=1&pageSize=1000&orgCode=';
   public createactiveapi:any="/activities";
   public endactivitiesapi="/activities?activityId=";
@@ -83,8 +84,8 @@ export class RecordComponent implements OnInit {
   recordetail(id:any,isActive:any,beginDate:any)
   { 
     this.Nowdate=beginDate;
-    console.log( this.Nowdate)
-    console.log(this.getRecordStu+id)
+    // console.log( this.Nowdate)
+    // console.log(this.getRecordStu+id)
     this.arrActivity=isActive;
     this.curActivity = id
     this.httpclient.get(this.getRecordStu+id).then((response)=>{
@@ -100,8 +101,8 @@ export class RecordComponent implements OnInit {
           
         }
       }
-      console.log(response)
-      console.log(id)
+      // console.log(response)
+      // console.log(id)
     })
     //查看记录列表
     this.type=1;
@@ -109,14 +110,14 @@ export class RecordComponent implements OnInit {
   endActivity(type:any){
     //关闭活动
     this.httpclient.put(this.endactivitiesapi+this.curActivity,'').then((response)=>{
-      console.log(response)
+      // console.log(response)
       this.arrActivity=false;
     })
     if(type==1)
     {
       clearInterval(this.timer);
       this.httpclient.get(this.getRecord+this.localstorageService.get('orgCode','wrongxx')).then((response)=>{
-        console.log(response) 
+        // console.log(response) 
         this.arrivals=[]
         for(let activity of response['result']){
           if(activity['activityTypeId']==1){
@@ -128,13 +129,21 @@ export class RecordComponent implements OnInit {
       this.type=0
     }
   }
-  godao()
+  async godao()
   {
     //关闭签到
 
     //这里有签到方式
+    let toast: any;
+      toast = await this.toastController.create({
+        duration: 500,
+        position: 'middle',
+        message: ''
+      });
     this.type=2;
-    console.log('签到成功');
+    // console.log('签到成功');
+    toast.message =  '签到成功';
+    toast.present();
     //
     //签到完去哪里
 
@@ -146,7 +155,7 @@ export class RecordComponent implements OnInit {
     //限时签到
     if(this.arrivetype==1){
       this.httpclient.put(acid,'').then((response)=>{
-        console.log(response)
+        // console.log(response)
         //吧签到id保存到本地 到关闭的时候再删除
         this.localstorageService.set('arriveId','waiting');
       })
@@ -154,7 +163,7 @@ export class RecordComponent implements OnInit {
     //手势签到
     if(this.arrivetype==3){
       this.httpclient.upData(this.createactiveapi,this.activity).then((response)=>{
-        console.log(response)
+        // console.log(response)
         //吧签到id保存到本地 到关闭的时候再删除
         this.localstorageService.set('arriveId','waiting');
       })
@@ -166,6 +175,12 @@ export class RecordComponent implements OnInit {
   //发布签到
   async arrive(type:any)
   {
+    let toast: any;
+      toast = await this.toastController.create({
+        duration: 500,
+        position: 'middle',
+        message: ''
+      });
     this.type=3;
     this.arrivetype=type;
     
@@ -195,7 +210,9 @@ export class RecordComponent implements OnInit {
     };  
   
       let positionRes: PositionRes = await this.gaoDeLocation.getCurrentPosition(positionOptions).catch((e: any) => {
-        console.log(e);
+        // console.log(e);
+        toast.message =  e;
+        toast.present();
       }) || null; 
       if(positionRes!=null){
         this.activity['latitude']=positionRes['latitude']
@@ -219,7 +236,7 @@ export class RecordComponent implements OnInit {
       }
       },1000)  
     this.httpclient.upData(this.createactiveapi,this.activity).then((response)=>{
-      console.log(response)
+      // console.log(response)
       this.curActivity=response['result']
       //吧签到id保存到本地 到关闭的时候再删除
       this.localstorageService.set('arriveId',this.curActivity);
@@ -227,7 +244,7 @@ export class RecordComponent implements OnInit {
     }else if(this.arrivetype==2){//密码签到
      this.type=4
     } else if(this.arrivetype==3){
-        console.log(this.activity)
+        // console.log(this.activity)
     //要把手势也带上
         this.httpclient.upData(this.createactiveapi,this.activity).then((response)=>{
           console.log(response)
@@ -253,14 +270,14 @@ export class RecordComponent implements OnInit {
   } 
 
   dismiss(){
-    console.log(111)
+    // console.log(111)
     if(this.type==0)
       this.modalController.dismiss();
     else {
       
       //获取签到列表 
     this.httpclient.get(this.getRecord+this.localstorageService.get('orgCode','wrongxx')).then((response)=>{
-      console.log(response)
+      // console.log(response)
       this.arrivals=[]
       for(let arr of response['result']){
          if(arr['activityTypeId']==1){

@@ -156,8 +156,8 @@ export class GestureComponent implements OnInit {
     this.render.listen(this.canvas.nativeElement, "touchend", () => {
       if (this.canTouch) {
         this.canTouch = false;
-        console.log(this.selectedPointArray);
-        console.log(this.code);  
+        // console.log(this.selectedPointArray);
+        // console.log(this.code);  
         this.localStorageService.set('gestureCode',this.code)
         this.modalController.dismiss({
           code:this.code

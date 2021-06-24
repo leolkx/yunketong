@@ -33,13 +33,13 @@ export class SettingPage implements OnInit {
           role: 'cancel',
           cssClass: 'secondary',
           handler: (blah) => {
-            console.log('Confirm Cancel: blah');
+            // console.log('Confirm Cancel: blah');
           }
         }, {
           text: '确定',
           handler: () => {
             this.signout();
-            console.log('Confirm Okay');
+            // console.log('Confirm Okay');
           }
         }
       ]
@@ -66,11 +66,11 @@ export class SettingPage implements OnInit {
     toast.present();
   }
   signout() {
-    console.log(this.user)
+    // console.log(this.user)
     this.httpclient.upData(this.signoutapi, this.user).then((response) => {
       this.localStorage.remove("token") 
       this.localStorage.clearAll()
-      console.log(response)
+      // console.log(response)
       if (response['state'] == 'success') {
         this.presentToast_suc()
         this.navCtrl.navigateForward('/login');

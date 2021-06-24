@@ -33,9 +33,9 @@ export class AuthenticationPage implements OnInit {
   ngOnInit() {
     this.httpclient.get(this.getusermsgapi).then((response) => {
       this.getusermsg = response['result']
-      console.log(this.getusermsg);
+      // console.log(this.getusermsg);
     })
-    console.log(this.verimage)
+    // console.log(this.verimage)
   }
 
 
@@ -45,7 +45,7 @@ export class AuthenticationPage implements OnInit {
     // this.httpclient.get(api).then((response)=>{
     //   console.log(response)
     // })
-    console.log('获取验证码' + this.user.phone)
+    // console.log('获取验证码' + this.user.phone)
     //倒计时
     this.flag = false;
     this.timer = setInterval(() => {

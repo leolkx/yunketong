@@ -58,7 +58,7 @@ export class GetPassComponent implements OnInit {
     });
     
     //提交数据
-    console.log(this.user) 
+    // console.log(this.user) 
     this.httpclient.upDataNotoken(this.passwordapi,this.user).then((response)=>{
       if(response['msg']=='register success'){
         // alert('修改成功')
@@ -99,7 +99,7 @@ export class GetPassComponent implements OnInit {
 
     // 获取验证码
     get_check_code() {
-      console.log(this.user['phone'])
+      // console.log(this.user['phone'])
       this.httpclient.getNotoken(this.phonecodeapi+this.user['phone']).then((response)=>{
          
       
