@@ -113,7 +113,7 @@
       },
       "cordova-plugin-whitelist": {},
       "cordova-plugin-gaodelocation-chenyu": {
-        "ANDROID_API_KEY": "your",
+        "ANDROID_API_KEY": "5bc32040dd5dd540b7dfe7ed866a5bbb",
         "IOS_API_KEY": "your"
       }
     },

@@ -69,6 +69,7 @@ export class CouresnumberComponent implements OnInit {
         if(response['state']=='success')
         {
           this.course=response['result']['classCloud'];
+          this.coursemsg=response['result']['classCloud'];
           // toast.message =  this.course;
           // toast.present();
         }else{

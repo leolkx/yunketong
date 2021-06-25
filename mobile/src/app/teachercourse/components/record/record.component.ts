@@ -142,8 +142,8 @@ export class RecordComponent implements OnInit {
       });
     this.type=2;
     // console.log('签到成功');
-    toast.message =  '签到成功';
-    toast.present();
+    // toast.message =  '签到成功';
+    // toast.present();
     //
     //签到完去哪里
 
@@ -170,6 +170,12 @@ export class RecordComponent implements OnInit {
     }
 
   }
+
+  changearrive(type:any)
+  {
+    this.type=4 //密码签到
+  }
+
   //获取当前位置
   public positionRes: PositionRes;
   //发布签到
@@ -187,6 +193,7 @@ export class RecordComponent implements OnInit {
     this.minite=0;
     this.second=0;
     this.hour=0;
+
     let  positionOptions: PositionOptions = {
       androidOption: {
         locationMode: LocationModeEnum.Hight_Accuracy,
@@ -217,6 +224,8 @@ export class RecordComponent implements OnInit {
       if(positionRes!=null){
         this.activity['latitude']=positionRes['latitude']
         this.activity['longitude']=positionRes['longitude']
+        toast.message =  'latitude'+positionRes['latitude']+'longitude'+positionRes['longitude'];
+        toast.present();
       // alert(JSON.stringify(positionRes))
       }
     //一键签到
@@ -241,11 +250,13 @@ export class RecordComponent implements OnInit {
       //吧签到id保存到本地 到关闭的时候再删除
       this.localstorageService.set('arriveId',this.curActivity);
     })
-    }else if(this.arrivetype==2){//密码签到
-     this.type=4
-    } else if(this.arrivetype==3){
+    }
+    // else if(this.arrivetype==2){//密码签到
+    //  this.type=4
+    // } 
+    else if(this.arrivetype==3){
         // console.log(this.activity)
-    //要把手势也带上
+        //要把手势也带上
         this.httpclient.upData(this.createactiveapi,this.activity).then((response)=>{
           console.log(response)
           this.curActivity=response['result']

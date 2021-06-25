@@ -26,7 +26,7 @@ export class RecorddetilPage implements OnInit {
       for (let n = 0; n < this.addlist.length; n++) {
         if (this.addlist[n].orgCode == this.usermsg.getorgCode()) {
           this.orgmsg = this.addlist[n].cloudClass
-          // console.log(this.orgmsg)
+          console.log(this.orgmsg)
         }
       }
     })

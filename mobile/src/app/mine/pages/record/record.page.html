@@ -13,9 +13,12 @@
       <img src="../../assets/icon/favicon.png">
     </ion-avatar>
     <ion-label>
-      <h2>{{item.cloudClass.className}}</h2>
+      <!-- <h2>{{item.cloudClass.className}}</h2>
       <h3>{{item.cloudClass.teacherName}}</h3>
-      <p>{{item.cloudClass.grade}}</p>
+      <p>{{item.cloudClass.grade}}</p> -->
+      <h3>课程名：{{item.cloudClass.className}}</h3>
+      <h3>教师：{{item.cloudClass.teacherName}}</h3>
+      <h3>班课号：{{item.orgCode}}</h3>
     </ion-label>
     <ion-label style="text-align:right " slot="end">
       <h2>{{item.s}}/{{item.l}}</h2>
