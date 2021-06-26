@@ -68,7 +68,7 @@ dismiss(){
         toast.present();
         this.outer.emit(1);
       }else{
-        alert(response['msg'].split(':')[1])
+        // alert(response['msg'].split(':')[1])
         toast.message =  response['msg'].split(':')[1];
         toast.present();
       }

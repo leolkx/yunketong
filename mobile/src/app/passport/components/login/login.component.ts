@@ -108,7 +108,7 @@ export class LoginComponent implements OnInit {
           toast.present();
         }else{ 
           // this.wrongMsg=response['msg'].split(':')[1]
-          toast.message =  response['msg'];
+          toast.message =  '登录失败';
           toast.present();
         }
         // console.log(response)

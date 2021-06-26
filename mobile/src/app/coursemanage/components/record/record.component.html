@@ -29,10 +29,10 @@
        <p *ngIf="arr.isActive==0">已结束</p>
        <!-- <p>手势签到 星期六</p> -->
       </ion-label>   
-      <ion-label *ngIf="arr.type==1"> 
+      <ion-label *ngIf="arr.type==1" slot="end"> 
           成功签到
        </ion-label> 
-       <ion-label *ngIf="arr.type==0"> 
+       <ion-label *ngIf="arr.type==0" slot="end"> 
         未签到
      </ion-label>
     </ion-item>

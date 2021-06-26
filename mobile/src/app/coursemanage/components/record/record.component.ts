@@ -155,6 +155,14 @@ async godao()
                   toast.message =  '已经参加过该活动';
                   toast.present();
                   //更新签到列表
+                }else if(response['msg']=='已经结束的活动'){
+                  // alert('已经成功签到')
+                  toast.message =  '限时签到已结束';
+                  toast.present();
+                  //更新签到列表
+                }else{
+                  toast.message =  '签到失败';
+                  toast.present();
                 } 
               })
               //跟新列表
