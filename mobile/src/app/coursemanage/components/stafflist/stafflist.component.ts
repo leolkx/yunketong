@@ -23,9 +23,17 @@ export class StafflistComponent implements OnInit {
   ngOnInit() {
     this.httpservice.get(this.getstuandscore+this.localStorageService.get('orgCode','xxxx')).then((response)=>{
       // console.log('有返回分数？？？？')
-      // console.log(response)
-      this.members=response['result']
-        this.size=this.members.length
+      // console.log(response['result'])
+      let i = 0
+      for (let stu of response['result']) {
+        if (stu['username'] != '15900000002') {
+          this.members[i] = stu
+          i = i + 1
+        }
+      }
+      this.size=i
+      // this.members=response['result']
+      // this.size=this.members.length
     })
     // this.httpservice.get(this.membersapi+this.localStorageService.get('orgCode','xxx')).then((response)=>{
     //   if(response['state']=='success')

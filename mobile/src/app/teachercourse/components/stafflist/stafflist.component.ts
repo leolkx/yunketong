@@ -30,8 +30,16 @@ export class StafflistComponent implements OnInit {
     this.httpservice.get(this.getstuandscore+this.localstorage.get('orgCode','xxxx')).then((response)=>{
       // console.log('有返回分数？？？？')
       // console.log(response)
-      this.members=response['result']
-        this.size=this.members.length
+      // this.members=response['result']
+      // this.size=this.members.length
+      let i = 0
+      for (let stu of response['result']) {
+        if (stu['username'] != '15900000002') {
+          this.members[i] = stu
+          i = i + 1
+        }
+      }
+      this.size=i
     })
   //  alert(this.membersapi+this.localstorage.get('orgCode','xxxx'))
 //     this.httpservice.get(this.membersapi+this.localstorage.get('orgCode','xxxx')).then((response)=>{

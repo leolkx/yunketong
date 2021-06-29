@@ -79,7 +79,7 @@ async godao()
   {
     let toast: any;
       toast = await this.toastController.create({
-        duration: 500,
+        duration: 2000,
         position: 'middle',
         message: ''
       });
@@ -115,21 +115,18 @@ async godao()
     if(positionRes!=null){
       this.enterActivity['latitude']=positionRes['latitude']
       this.enterActivity['longitude']=positionRes['longitude']
+      // console.log('longitude'+positionRes['longitude'])
+      // alert('longitude'+positionRes['longitude'])
+      toast.message = 'longitude'+positionRes['longitude']
+      toast.present(); 
       // toast.message =  'latitude'+positionRes['latitude']+'longitude'+positionRes['longitude'];
-      if(positionRes['latitude']==''){
+      if(positionRes['latitude']==null){
         toast.message =  '未获取到地址，请稍后重试'
       }
       else{
         toast.message = '定位成功'
-      }
-      toast.present();
-    // alert(JSON.stringify(positionRes))
-    }else{
-      // alert('未获取到地址')
-      toast.message =  '未获取到地址';
-      toast.present();
-    }
-      //这里有签到方式 
+        toast.present();
+        //这里有签到方式 
       // console.log(this.getRecord+this.localstorage.get('orgCode','xxx'))
       this.httpservice.get(this.getRecord+this.localstorage.get('orgCode','xxx')).then((response)=>{
         let mark:any=0;
@@ -213,7 +210,15 @@ async godao()
           }
       //  console.log(this.arrList)
       })
+      }
+    // alert(JSON.stringify(positionRes))
+    }else{
+      // alert('未获取到地址')
+      toast.message =  '未获取到地址，请稍后重试';
+      toast.present();
     }
+      
+  }
 
     async answerArrive(){
     let toast: any;

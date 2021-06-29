@@ -100,10 +100,12 @@ export class RecordComponent implements OnInit {
       this.stuCaseListNoPar=[];
       if(response['msg']=='查询成功'){
         for(let stu of response['result']){
-          if(stu['isPar']=='yes'){
-            this.stuCaseListPar.push(stu)
-          }else{
-            this.stuCaseListNoPar.push(stu)
+          if (stu['username']!='15900000002'){
+            if(stu['isPar']=='yes'){
+              this.stuCaseListPar.push(stu)
+            }else{
+              this.stuCaseListNoPar.push(stu)
+            }
           }
           
         }
@@ -213,7 +215,7 @@ export class RecordComponent implements OnInit {
       });
 
       this.httpclient.get(this.getRecord+this.localstorageService.get('orgCode','wrongxx')).then((response)=>{
-        console.log(response) 
+        // console.log(response) 
         this.canCreate = 1
         for(let activity of response['result']){
           if(activity['isActive']!=0){
@@ -267,52 +269,17 @@ export class RecordComponent implements OnInit {
           this.activity['latitude']=positionRes['latitude']
           this.activity['longitude']=positionRes['longitude']
           // toast.message =  'latitude'+positionRes['latitude']+'longitude'+positionRes['longitude'];
-          if(positionRes['latitude']==''){
+          if(positionRes['latitude']==null){
             toast.message =  '未获取到地址，请稍后重试'
+            toast.present();
           }
           else{
             toast.message = '定位成功'
-          }
-          toast.present();
-        // alert(JSON.stringify(positionRes))
-        }
-      //一键签到
-      if(this.arrivetype==1){
-        //倒计时  
-      this.timer = setInterval(()=>{
-        this.second++;
-        if(this.second==60)
-        {
-          this.second=0;
-          this.minite++;
-          if(this.minite==60)
-          {
-            this.minite=0;
-            this.hour++;
-          } 
-        }
-        },1000)  
-      this.httpclient.upData(this.createactiveapi,this.activity).then((response)=>{
-        // console.log(response)
-        this.curActivity=response['result']
-        //吧签到id保存到本地 到关闭的时候再删除
-        this.localstorageService.set('arriveId',this.curActivity);
-        if(response['msg']=='创建成功'){
-          toast.message =  '一键签到已发布';
-          toast.present();
-        }
-      })
-      }
-      // else if(this.arrivetype==2){//密码签到
-      //  this.type=4
-      // } 
-      // 限时签到
-      else if(this.arrivetype==3){
-          console.log(this.activity)
-          this.httpclient.upData(this.limitedTimeapi,this.activity).then((response)=>{
-            // console.log(response)
-            this.curActivity=response['result']
-            this.type=3
+            toast.present();
+
+            //一键签到
+            if(this.arrivetype==1){
+              //倒计时  
             this.timer = setInterval(()=>{
               this.second++;
               if(this.second==60)
@@ -325,17 +292,59 @@ export class RecordComponent implements OnInit {
                   this.hour++;
                 } 
               }
-              },1000) 
-            //吧签到id保存到本地 到关闭的时候再删除
-            this.localstorageService.set('arriveId',this.curActivity);
-
-            if(response['msg']=='创建成功'){
-              toast.message =  '限时签到已发布';
-              toast.present();
+              },1000)  
+            this.httpclient.upData(this.createactiveapi,this.activity).then((response)=>{
+              // console.log(response)
+              this.curActivity=response['result']
+              //吧签到id保存到本地 到关闭的时候再删除
+              this.localstorageService.set('arriveId',this.curActivity);
+              if(response['msg']=='创建成功'){
+                toast.message =  '一键签到已发布';
+                toast.present();
+              }
+            })
             }
-          }) 
+            // else if(this.arrivetype==2){//密码签到
+            //  this.type=4
+            // } 
+            // 限时签到
+            else if(this.arrivetype==3){
+                console.log(this.activity)
+                this.httpclient.upData(this.limitedTimeapi,this.activity).then((response)=>{
+                  // console.log(response)
+                  this.curActivity=response['result']
+                  this.type=3
+                  this.timer = setInterval(()=>{
+                    this.second++;
+                    if(this.second==60)
+                    {
+                      this.second=0;
+                      this.minite++;
+                      if(this.minite==60)
+                      {
+                        this.minite=0;
+                        this.hour++;
+                      } 
+                    }
+                    },1000) 
+                  //吧签到id保存到本地 到关闭的时候再删除
+                  this.localstorageService.set('arriveId',this.curActivity);
+
+                  if(response['msg']=='创建成功'){
+                    toast.message =  '限时签到已发布';
+                    toast.present();
+                  }
+                }) 
+            }
+            this.activity['duration'] = 1
+          }
+                
+              // alert(JSON.stringify(positionRes))
+      }else{
+        toast.message =  '未获取到地址，请稍后重试'
+        toast.present();
       }
-      this.activity['duration'] = 1
+      
     }
   } 
 
