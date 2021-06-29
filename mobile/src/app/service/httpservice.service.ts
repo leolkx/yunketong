@@ -8,7 +8,7 @@ import { LocalStorageService } from '../service/local-storage.service';
 })
 export class HttpserviceService {
 
-  public ip:any = 'http://172.20.86.137:8081';//"http://localhost:8080"//"http://47.95.120.250:8081/verification/code";
+  public ip:any = 'http://47.106.126.149:9001';//"http://localhost:8080"//"http://47.95.120.250:8081/verification/code";
   constructor(public navCtrl: NavController,public localStorage:LocalStorageService,public http:HttpClient) { }
   public headers:any;
   upData(api:any,data:any){ 
@@ -110,6 +110,7 @@ export class HttpserviceService {
       })
     })
   } 
+
   upDatalogin(api:any,data:any){ 
     this.headers= new HttpHeaders({ 
       'Content-Type':'application/json'})

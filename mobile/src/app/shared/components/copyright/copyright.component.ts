@@ -11,7 +11,7 @@ export class CopyrightComponent implements OnInit {
   text: string;
   constructor() {
     const year = (new Date()).getFullYear();
-    this.text = `2021-${year} 18小组到云移动端`;
+    this.text = `2021-${year} 18小组云课通移动端`;
     this.bottom = '10px';
   }
 

@@ -115,7 +115,13 @@ async godao()
     if(positionRes!=null){
       this.enterActivity['latitude']=positionRes['latitude']
       this.enterActivity['longitude']=positionRes['longitude']
-      toast.message =  'latitude'+positionRes['latitude']+'longitude'+positionRes['longitude'];
+      // toast.message =  'latitude'+positionRes['latitude']+'longitude'+positionRes['longitude'];
+      if(positionRes['latitude']==''){
+        toast.message =  '未获取到地址，请稍后重试'
+      }
+      else{
+        toast.message = '定位成功'
+      }
       toast.present();
     // alert(JSON.stringify(positionRes))
     }else{

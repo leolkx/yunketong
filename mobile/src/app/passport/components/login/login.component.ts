@@ -1,5 +1,6 @@
 import { Component, OnInit,ChangeDetectionStrategy, ChangeDetectorRef,OnDestroy,Input,Output,EventEmitter} from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { Router } from '@angular/router';
 
 import { AlertController, NavController , NavParams, ToastController } from '@ionic/angular';
 import { HttpserviceService } from '../../../service/httpservice.service'; 
@@ -34,7 +35,7 @@ export class LoginComponent implements OnInit {
   } 
   public timelimit:any=60;
   public flag:any = true; 
-  constructor(public localStorage:LocalStorageService, public ref : ChangeDetectorRef,public usermsg:UsermsgserviceService,public httpclient:HttpserviceService,public navCtrl: NavController,private alertController: AlertController,private toastController: ToastController ) { }
+  constructor(private router: Router,public localStorage:LocalStorageService, public ref : ChangeDetectorRef,public usermsg:UsermsgserviceService,public httpclient:HttpserviceService,public navCtrl: NavController,private alertController: AlertController,private toastController: ToastController ) { }
 
   ngOnInit() {
     console.log(this.verimage)
@@ -100,14 +101,16 @@ export class LoginComponent implements OnInit {
         // console.log(this.localStorage.get("token",'xxx'))
         // this.localStorage.clearAll() 
         // console.log(this.localStorage.get("token",'xxx'))
-       this.navCtrl.navigateForward('/tabs/coures');
+      //  this.navCtrl.navigateForward('/tabs/coures');
+        this.router.navigateByUrl('/tabs/coures')
       }else{
-        if(response['msg']=='用户不存在或者密码错误'){
+        if(response['msg']=='The user does not exist or the password is wrong'){
           // this.wrongMsg='密码错误'
           toast.message =  '用户不存在或者密码错误';
           toast.present();
         }else{ 
-          // this.wrongMsg=response['msg'].split(':')[1]
+          console.log(response)
+          this.wrongMsg=response['msg'].split(':')[1]
           toast.message =  '登录失败';
           toast.present();
         }

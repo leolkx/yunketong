@@ -11,8 +11,10 @@ import { AlertController } from '@ionic/angular';
   styleUrls: ['./changepw.page.scss'],
 })
 export class ChangepwPage implements OnInit {
-  public changepasswordapi = '/user/password';
-  public mailcodeapi="/verification/mail?email=";
+  // public changepasswordapi = '/user/password';
+  // public mailcodeapi="/verification/mail?email=";
+  public phonecodeapi="/phonecode?phone=";
+  public passwordapi="/user/password";
   public getusermsg: any = [];
   public timer:any;
   public getusermsgapi = '/user/info';
@@ -21,11 +23,9 @@ export class ChangepwPage implements OnInit {
   public failedmsg:any=[]
   public text='org.fzu.cs03.daoyun.exception.'
   public userpassword:any={
-    id:'',
-    newPassword:'',
-    oldPassword:'',
-    email:'',
-    mailVerificationCode:''
+    phone:'',
+    password:'',
+    verificationCode:''
   } 
 
   constructor(public toastController: ToastController, public localStorage:LocalStorageService, public ref : ChangeDetectorRef,public httpclient:HttpserviceService,public navCtrl: NavController , public alertController: AlertController) { }
@@ -33,7 +33,7 @@ export class ChangepwPage implements OnInit {
     this.httpclient.get(this.getusermsgapi).then((response) => {
       this.getusermsg = response['result']
     })
-    this.userpassword.id=this.localStorage.get("userId",0);
+    // this.userpassword.id=this.localStorage.get("userId",0);
     // console.log(this.userpassword.id)
   }
 
@@ -81,25 +81,43 @@ export class ChangepwPage implements OnInit {
     toast.present();
   }
 
-  changepw(){
-    this.userpassword.email=this.getusermsg.email
-    console.log(this.userpassword)
-    this.httpclient.put(this.changepasswordapi, this.userpassword).then((response) => {
+  async changepw(){
+    let toast: any;
+    toast = await this.toastController.create({
+      duration: 500,
+      position: 'middle',
+      message: ''
+    });
+    this.userpassword.phone=this.getusermsg.phone
+    // console.log(this.userpassword)
+    this.httpclient.upDataNotoken(this.passwordapi, this.userpassword).then((response) => {
       this.failedmsg=response['msg']
-      // console.log(this.failedmsg)
+      console.log(response)
       // console.log(response)
-      if (response['state'] == 'success') {
-        this.presentToast_suc()
+      // if (response['state'] == 'success') {
+      //   this.presentToast_suc()
+      //   this.navCtrl.navigateForward('/tabs');
+      // } else {
+      //   //提示信息错误
+      //   this.presentToast_fla();
+      // }
+      if(response['msg']=='修改用户密码成功'){
+        // alert('修改成功')
+        toast.message =  '修改成功';
+        toast.present();
+        // this.presentToast_suc()
         this.navCtrl.navigateForward('/tabs');
-      } else {
-        //提示信息错误
+      }else{
+        toast.message =  response['msg'].split(':')[1];
+        toast.present();
         this.presentToast_fla();
       }
     })
   }
 
   get_check_code() {
-    this.httpclient.get(this.mailcodeapi+this.getusermsg.email).then((response)=>{
+    console.log(this.getusermsg)
+    this.httpclient.getNotoken(this.phonecodeapi+this.getusermsg.phone).then((response)=>{
     //let cookie =response.headers['Set-Cookie']
     // console.log(response)
     })

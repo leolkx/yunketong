@@ -9,14 +9,14 @@
 
 <ion-content>
   <ion-list class="inp" style="margin-top:30px auto;">
-    <ion-item padding lines="full">
+    <!-- <ion-item padding lines="full">
       <ion-label>旧密码</ion-label>
       <ion-input type="text" placeholder="请输入旧密码" [(ngModel)]="userpassword.oldPassword"></ion-input>
-    </ion-item>
+    </ion-item> -->
     <form #passwordForm="ngForm" novalidate style="width:100%">
       <ion-item padding lines="full">
         <ion-label>新密码</ion-label>
-        <ion-input type="password" placeholder="请输入新密码" [(ngModel)]="userpassword.newPassword" name="password" required
+        <ion-input type="password" placeholder="请输入新密码" [(ngModel)]="userpassword.password" name="password" required
           pattern="^[a-zA-Z0-9]{6,18}$" #password="ngModel"></ion-input>
       </ion-item>
       <div class="signup_warn">
@@ -28,12 +28,12 @@
     </form>
   </ion-list>
   <ion-item padding lines="full">
-    <ion-label>请使用关联邮箱{{getusermsg.email}}进行验证</ion-label>
+    <ion-label>使用关联手机号{{getusermsg.phone}}进行验证</ion-label>
   </ion-item>
   <form #codeForm="ngForm" novalidate style="width:100%">
     <ion-item padding lines="full">
-      <ion-input type="text" name="code" placeholder="请输入验证码" [(ngModel)]="userpassword.mailVerificationCode" required
-        pattern="^\d{6}$" #code="ngModel"></ion-input>
+      <ion-input type="text" name="code" placeholder="请输入验证码" [(ngModel)]="userpassword.verificationCode" required
+        pattern="^\d{4}$" #code="ngModel"></ion-input>
       <ion-button (click)="get_check_code()" expand="block" style="height:30px" *ngIf="flag" > 
         获取验证码
       </ion-button>

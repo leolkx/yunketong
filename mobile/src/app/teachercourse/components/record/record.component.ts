@@ -63,7 +63,8 @@ export class RecordComponent implements OnInit {
   ngOnInit() {
     //获取签到列表
     this.httpclient.get(this.getRecord+this.localstorageService.get('orgCode','wrongxx')).then((response)=>{
-      console.log(response) 
+      // console.log(response) 
+      this.canCreate = 1
       for(let activity of response['result']){
         if(activity['activityTypeId']==1){
           this.arrivals.push(activity)
@@ -113,6 +114,7 @@ export class RecordComponent implements OnInit {
     //查看记录列表
     this.type=1;
   }
+
   endActivity(type:any){
     //关闭活动
     this.httpclient.put(this.endactivitiesapi+this.curActivity,'').then((response)=>{
@@ -124,10 +126,15 @@ export class RecordComponent implements OnInit {
       clearInterval(this.timer);
       this.httpclient.get(this.getRecord+this.localstorageService.get('orgCode','wrongxx')).then((response)=>{
         // console.log(response) 
+        this.canCreate = 1
         this.arrivals=[]
         for(let activity of response['result']){
           if(activity['activityTypeId']==1){
             this.arrivals.push(activity)
+          }
+
+          if(activity['isActive']!=0){
+            this.canCreate = 0
           }
         }
         this.arrSize = this.arrivals.length
@@ -140,12 +147,21 @@ export class RecordComponent implements OnInit {
     //关闭签到
 
     //这里有签到方式
-    let toast: any;
-      toast = await this.toastController.create({
-        duration: 500,
-        position: 'middle',
-        message: ''
-      });
+    this.httpclient.get(this.getRecord+this.localstorageService.get('orgCode','wrongxx')).then((response)=>{
+      // console.log(response) 
+      this.canCreate = 1
+      this.arrivals=[]
+      for(let activity of response['result']){
+        if(activity['activityTypeId']==1){
+          this.arrivals.push(activity)
+        }
+
+        if(activity['isActive']!=0){
+          this.canCreate = 0
+        }
+      }
+      this.arrSize = this.arrivals.length
+    })
     this.type=2;
     // console.log('签到成功');
     // toast.message =  '签到成功';
@@ -189,16 +205,29 @@ export class RecordComponent implements OnInit {
   //发布签到
   async arrive(type:any)
   {
-    if(this.canCreate==0){
-      this.type=2;
-    }
-    else{
-      let toast: any;
+    let toast: any;
       toast = await this.toastController.create({
-        duration: 500,
+        duration: 2000,
         position: 'middle',
         message: ''
       });
+
+      this.httpclient.get(this.getRecord+this.localstorageService.get('orgCode','wrongxx')).then((response)=>{
+        console.log(response) 
+        this.canCreate = 1
+        for(let activity of response['result']){
+          if(activity['isActive']!=0){
+            this.canCreate = 0
+          }
+        }
+      })
+
+    if(this.canCreate==0){
+      this.type=2;
+      toast.message =  '发布失败，已有正在进行中的签到';
+      toast.present();
+    }
+    else if(this.canCreate==1){
       this.type=3;
       this.arrivetype=type;
       this.activity['duration'] = this.activity['duration'] * 60
@@ -237,7 +266,13 @@ export class RecordComponent implements OnInit {
         if(positionRes!=null){
           this.activity['latitude']=positionRes['latitude']
           this.activity['longitude']=positionRes['longitude']
-          toast.message =  'latitude'+positionRes['latitude']+'longitude'+positionRes['longitude'];
+          // toast.message =  'latitude'+positionRes['latitude']+'longitude'+positionRes['longitude'];
+          if(positionRes['latitude']==''){
+            toast.message =  '未获取到地址，请稍后重试'
+          }
+          else{
+            toast.message = '定位成功'
+          }
           toast.present();
         // alert(JSON.stringify(positionRes))
         }
@@ -300,6 +335,7 @@ export class RecordComponent implements OnInit {
             }
           }) 
       }
+      this.activity['duration'] = 1
     }
   } 
 
@@ -313,10 +349,15 @@ export class RecordComponent implements OnInit {
     this.httpclient.get(this.getRecord+this.localstorageService.get('orgCode','wrongxx')).then((response)=>{
       // console.log(response)
       this.arrivals=[]
+      this.canCreate = 1
       for(let arr of response['result']){
          if(arr['activityTypeId']==1){
            this.arrivals.push(arr)
          }
+
+         if(arr['isActive']!=0){
+          this.canCreate = 0
+        }
         }
       this.arrSize = this.arrivals.length
       this.type=0;

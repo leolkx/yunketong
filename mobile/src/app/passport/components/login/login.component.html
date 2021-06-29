@@ -26,7 +26,7 @@
         <form #userNameForm="ngForm" novalidate style="width:100%">
           <ion-item padding>
             <ion-label>用户名</ion-label>
-            <ion-input type="text" name="userName" placeholder="请输入用户名" [(ngModel)]="user.username" required
+            <ion-input type="text" name="userName" placeholder="请输入用户名/手机号" [(ngModel)]="user.username" required
               pattern="^[a-zA-Z0-9_-]{4,16}$" #userName="ngModel"></ion-input>
           </ion-item>
           <div class="signup_warn">

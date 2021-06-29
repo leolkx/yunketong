@@ -130,27 +130,33 @@ export class CouresnumberComponent implements OnInit {
     });
     
     this.httpservice.upData(this.enterclassapi+this.orgCode,'').then((response)=>{
-      // console.log(response)
+      console.log(response['msg'].split(':')[1])
       //alert(JSON.stringify(response))
       if(response['state']=='success')
       {
         toast.message =  '成功加入';
         toast.present();
         location.reload();
-      }else if(response['state']=='教师不能加入自己创建的班课'){
-        toast.message =  '教师不能加入自己创建的班课';
+      }
+      else
+      {
+        toast.message =  response['msg'].split(':')[1];
         toast.present();
-      }else if(response['state']=='班课已结课'){
-        toast.message =  '班课已结课';
-        toast.present();
-      }else if(response['state']=='用户已经存在于该班课中'){
-        toast.message =  '用户已经存在于该班课中';
-        toast.present();
-      }else{
-        // alert(response['msg'])
-        toast.message =  response['msg'];
-        toast.present();
-        
+        // if(response['msg'].split(':')[1]=='教师不能加入自己创建的班课'){
+        //   toast.message =  '教师不能加入自己创建的班课';
+        //   toast.present();
+        // }else if(response['msg'].split(':')[1]=='班课已结课'){
+        //   toast.message =  '班课已结课';
+        //   toast.present();
+        // }else if((response['msg'].split(':')[1]) == '用户已经存在于该班课中'){
+        //   toast.message =  '用户已经存在于该班课中';
+        //   toast.present();
+        // }else{
+        //   // alert(response['msg'])
+        //   toast.message =  '加入失败';
+        //   toast.present();
+          
+        // }
       }
     })
     

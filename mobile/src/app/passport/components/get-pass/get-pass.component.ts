@@ -60,13 +60,13 @@ export class GetPassComponent implements OnInit {
     //提交数据
     // console.log(this.user) 
     this.httpclient.upDataNotoken(this.passwordapi,this.user).then((response)=>{
-      if(response['msg']=='register success'){
+      console.log(response)
+      if(response['msg']=='修改用户密码成功'){
         // alert('修改成功')
         toast.message =  '修改成功';
         toast.present();
         this.outer.emit(1);
       }else{
-        // alert(response['msg'].split(':')[1])
         toast.message =  response['msg'].split(':')[1];
         toast.present();
       }
