@@ -279,6 +279,16 @@
 </template>
 
 <script>
+import {
+  getSholl,
+  addSchools,
+  editSchools,
+  addColleges,
+  editColleges,
+  addMajors,
+  editMajors,
+  requestLogin
+} from '../../api/api'
 export default {
   created () {
     this.getShollInfo()
@@ -384,6 +394,23 @@ export default {
       if (tab.name === 'school') this.getShollInfo()
     },
     async getShollInfo () {
+      // getSholl().then(res => {
+      //   // let { msg, code, user,token } = res;
+      //   if (res.state !== 'success') {
+      //     this.$message.error('获取学校信息失败')
+      //   } else {
+      //     const data = res.result
+      //     for (var i = 0; i < data.length; i++) {
+      //       // eslint-disable-next-line camelcase
+      //       var dict_data = {}
+      //       dict_data['value'] = data[i].id
+      //       dict_data['label'] = data[i].schoolName
+      //       // eslint-disable-next-line camelcase
+      //       this.schoolIDInfo[i] = dict_data
+      //     }
+      //     this.schoolInfo = res.result
+      //   }
+      // })
       const { data: res } = await this.$http.get('structure/orgs/schools?page=1&pageSize=10')
       if (res.state !== 'success') return this.$message.error('获取学校信息失败')
       const data = res.result
@@ -412,6 +439,17 @@ export default {
       this.$refs.addSchoolFormRef.validate(async valid => {
         // 表单预校验失败
         if (!valid) return
+        // const addSchoolParams = {schoolName: this.addSchoolForm.schoolName, schoolDesc: this.addSchoolForm.schoolDesc}
+        // addSchools(addSchoolParams).then(res => {
+        //   // let { msg, code, user,token } = res;
+        //   if (res.state !== 'success') {
+        //     this.$message.error('添加学校失败！')
+        //   } else {
+        //     this.$message.success('添加学校成功！')
+        //     // 隐藏添加对话框
+        //     this.addSchoolDialogVisible = false
+        //   }
+        // })
         const { data: res } = await this.$http.post('structure/orgs/schools', this.addSchoolForm)
         if (res.state !== 'success') {
           this.$message.error('添加学校失败！')
@@ -482,6 +520,19 @@ export default {
       this.$refs.addCollegeFormRef.validate(async valid => {
         // 表单预校验失败
         if (!valid) return
+        // const addCollegeParams = {schoolId: this.addCollegeForm.schoolId,
+        //   collegeName: this.addCollegeForm.collegeName,
+        //   collegeDesc: this.addCollegeForm.collegeDesc}
+        // addColleges(addCollegeParams).then(res => {
+        //   // let { msg, code, user,token } = res;
+        //   if (res.state !== 'success') {
+        //     this.$message.error('添加学院失败！')
+        //   } else {
+        //     this.$message.success('添加学院成功！')
+        //     // 隐藏添加对话框
+        //     this.addCollegeDialogVisible = false
+        //   }
+        // })
         const { data: res } = await this.$http.post('structure/orgs/colleges', this.addCollegeForm)
         if (res.state !== 'success') {
           this.$message.error('添加学院失败！')
@@ -550,6 +601,20 @@ export default {
       this.$refs.addMajorFormRef.validate(async valid => {
         // 表单预校验失败
         if (!valid) return
+        // const addMajorParams = {id: this.addMajorForm.id,
+        //   collegeId: this.addMajorForm.collegeId,
+        //   majorName: this.addMajorForm.majorName,
+        //   majorDesc: this.addMajorForm.majorDesc}
+        // addMajors(addMajorParams).then(res => {
+        //   // let { msg, code, user,token } = res;
+        //   if (res.state !== 'success') {
+        //     this.$message.error('添加专业失败！')
+        //   } else {
+        //     this.$message.success('添加专业成功！')
+        //     // 隐藏添加对话框
+        //     this.addMajorDialogVisible = false
+        //   }
+        // })
         const { data: res } = await this.$http.post('structure/orgs/majors', this.addMajorForm)
         if (res.state !== 'success') {
           this.$message.error('添加专业失败！')

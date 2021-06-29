@@ -50,12 +50,10 @@
               :enterable="false"
             >
               <el-button
-                type="warning"
-                icon="el-icon-setting"
+                type="info"
                 size="mini"
-                circle
                 @click="getCourseInfo(scope.row.orgCode)"
-              ></el-button>
+              >班课信息</el-button>
             </el-tooltip>
           </template>
         </el-table-column>

@@ -80,9 +80,9 @@
         <el-form-item label="原value">
           <el-input v-model="editDDForm.dataName" disabled></el-input>
         </el-form-item>
-        <el-form-item label="排序">
-          <el-input v-model="editDDForm.dataOrder"></el-input>
-        </el-form-item>
+<!--        <el-form-item label="排序">-->
+<!--          <el-input v-model="editDDForm.dataOrder"></el-input>-->
+<!--        </el-form-item>-->
         <el-form-item label="新key" prop="newDictName">
           <el-input v-model="editDDForm.newDictName"></el-input>
         </el-form-item>
@@ -99,6 +99,9 @@
 </template>
 
 <script>
+import {
+  getDicListPage,editDictionary
+} from '../../api/api'
 export default {
   data () {
     return {
@@ -127,11 +130,11 @@ export default {
       // 添加表单的验证规则对象
       editFormRules: {
         newDictName: [
-          { required: true, message: '请输入新key', trigger: 'blur' },
+          // { required: true, message: '请输入新key', trigger: 'blur' },
           { min: 2, max: 15, message: '用户名长度在2-15之间', trigger: 'blur' }
         ],
         newDataName: [
-          { required: true, message: '请输入新value', trigger: 'blur' },
+          // { required: true, message: '请输入新value', trigger: 'blur' },
           { min: 1, max: 15, message: '长度在1-15之间', trigger: 'blur' }
         ]
       }
@@ -145,16 +148,16 @@ export default {
       this.$refs.addFormRef.resetFields()
     },
     async getDataDictionaryList () {
-      const { data: res } = await this.$http.get('/dataDictionary', {
-        params: this.queryInfo
+      getDicListPage(this.queryInfo).then(res => {
+        // let { msg, code, user,token } = res;
+        if (res.state !== 'success') {
+          this.$message.error('获取数据字典列表失败')
+        } else {
+          this.$message.success('获取数据字典列表成功')
+          this.total = res.result.length
+          this.dataDictionaryList = res.result
+        }
       })
-      console.log(res)
-      if (res.state !== 'success') {
-        return this.$message.error('获取数据字典列表失败')
-      }
-      this.$message.success('获取数据字典列表成功')
-      this.total = res.result.length
-      this.dataDictionaryList = res.result
     },
     // 监听 pagesize 改变的事件
     handleSizeChange (newSize) {
@@ -182,9 +185,25 @@ export default {
         // console.log(valid)
         // 表单预校验失败
         if (!valid) return
+        // const editDDParams = {dictName: this.editDDForm.dictName,
+        //   newDictName: this.editDDForm.newDictName,
+        //   dictDescription: this.editDDForm.newDataName}
+        // editDictionary(editDDParams).then(res => {
+        //   // let { msg, code, user,token } = res;
+        //   if (res.state !== 'success') {
+        //     this.$message.error('更新数据字典失败！')
+        //   } else {
+        //     // 隐藏添加用户对话框
+        //     this.editDialogVisible = false
+        //     this.$message.success('更新数据字典成功！')
+        //     this.getDataDictionaryList()
+        //   }
+        // })
+        const editDDParams = {dictName: this.editDDForm.dictName, newDictName: this.editDDForm.newDictName, dictDescription: this.editDDForm.newDataName}
         const { data: res } = await this.$http.put(
           'dataDictionary',
-          this.editDDForm
+          editDDParams
+          // this.editDDForm
         )
         if (res.state !== 'success') {
           this.$message.error('更新数据字典失败！')
@@ -198,7 +217,7 @@ export default {
     // 删除数据字典
     async removeDD (dataForm) {
       const confirmResult = await this.$confirm(
-        '此操作将永久删除该用户, 是否继续?',
+        '此操作将永久删除该字典, 是否继续?',
         '提示',
         {
           confirmButtonText: '确定',
@@ -212,7 +231,7 @@ export default {
         return this.$message.info('已取消删除')
       }
       console.log(dataForm)
-      const { data: res } = await this.$http.delete('dataDictionary?dictName=' + dataForm.dictName + '&dataName=' + dataForm.dataName)
+      const { data: res } = await this.$http.delete('/deleteDict?dictName=' + dataForm.dictName)
       if (res.state !== 'success') return this.$message.error('删除数据字典失败！')
       this.$message.success('删除数据字典成功！')
       this.getDataDictionaryList()

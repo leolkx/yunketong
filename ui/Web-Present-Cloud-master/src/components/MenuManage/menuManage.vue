@@ -24,14 +24,14 @@
               <el-table-column label="排序" prop="orderNum"></el-table-column>
               <el-table-column label="操作">
                 <template slot-scope="scope">
-                <!-- 修改用户按钮 -->
+                <!-- 修改菜单按钮 -->
                   <el-button
                     type="primary"
                     icon="el-icon-edit"
                     size="mini"
                     @click="showEditDialog(scope.row.id)"
                   ></el-button>
-                  <!-- 删除用户按钮 -->
+                  <!-- 删除菜单按钮 -->
                   <el-button
                     type="danger"
                     icon="el-icon-delete"
@@ -91,9 +91,23 @@
         <el-form-item label="路由地址" prop="path">
           <el-input v-model="addForm.path"></el-input>
         </el-form-item>
-        <el-form-item label="类型" prop="path">
-          <el-input v-model="addForm.path"></el-input>
+        <el-form-item label="类型" prop="MType">
+<!--          <el-input v-model="addForm.menuType"></el-input>-->
+          <el-select v-model="addForm.MType" placeholder="请选择菜单类型" filterable allow-create default-first-option>
+            <el-option v-for="item in menuTypeList" :label="item.value" :value="item.id" :key="item.id"></el-option>
+          </el-select>
         </el-form-item>
+        <el-form-item label="显示状态" prop="parentId">
+<!--          <el-input v-model="addForm.visible"></el-input>-->
+          <el-radio v-model="addForm.visible" label="0">显示</el-radio>
+          <el-radio v-model="addForm.visible" label="1">不显示</el-radio>
+        </el-form-item>
+<!--        <el-form-item label="菜单状态" prop="parentId">-->
+<!--          <el-input v-model="addForm.status"></el-input>-->
+<!--        </el-form-item>-->
+<!--        <el-form-item label="是否为外链？" prop="parentId">-->
+<!--          <el-input v-model="addForm.isFrame"></el-input>-->
+<!--        </el-form-item>-->
       </el-form>
       <!-- 底部区域 -->
       <span slot="footer" class="dialog-footer">
@@ -149,6 +163,8 @@
 </template>
 
 <script>
+import {addMenus,editMenus} from '../../api/api'
+
 export default {
   data () {
     return {
@@ -168,7 +184,10 @@ export default {
         parentId: '',
         orderNum: '',
         path: '',
-        MType: ''
+        menuType: 'M',
+        visible: '',
+        status: '0',
+        isFrame: '1'
       },
       addFormRules: {
         id: [
@@ -236,14 +255,31 @@ export default {
       this.$refs.addFormRef.validate(async valid => {
         // 表单预校验失败
         if (!valid) return
-        const { data: res } = await this.$http.post('menuAdd', this.addForm)
-        if (res.state !== 'success') {
-          this.$message.error('添加菜单失败！')
-          return
-        }
-        this.$message.success('添加菜单成功！')
-        // 隐藏添加对话框
-        this.addDialogVisible = false
+        const addMenuParams = {id: this.addForm.id,
+          menuName: this.addForm.menuName,
+          parentName: this.addForm.parentName,
+          parentId: this.addForm.parentId,
+          orderNum: this.addForm.orderNum,
+          path: this.addForm.path,
+          MType: this.addForm.MType}
+        addMenus(addMenuParams).then(res => {
+          // let { msg, code, user,token } = res;
+          if (res.state !== 'success') {
+            this.$message.error('添加菜单失败！')
+          } else {
+            this.$message.success('添加菜单成功！')
+            // 隐藏添加对话框
+            this.addDialogVisible = false
+          }
+        })
+        // const { data: res } = await this.$http.post('menuAdd', this.addForm)
+        // if (res.state !== 'success') {
+        //   this.$message.error('添加菜单失败！')
+        //   return
+        // }
+        // this.$message.success('添加菜单成功！')
+        // // 隐藏添加对话框
+        // this.addDialogVisible = false
       })
     },
     // 监听添加用户对话框关闭事件
@@ -267,7 +303,7 @@ export default {
         return this.$message.info('已取消删除')
       }
       const { data: res } = await this.$http.delete('menuDelete/' + id)
-      if (res.state !== 'success') return this.$message.error('删除菜单失败！')
+      if (res.state !== 'success') return this.$message.error(res.msg)
       this.$message.success('删除菜单成功！')
     },
     showEditDialog (id) {
@@ -280,6 +316,22 @@ export default {
         // console.log(valid)
         // 表单预校验失败
         if (!valid) return
+        // const editMenuParams = {id: this.editMenuForm.id,
+        //   menuName: this.editMenuForm.menuName,
+        //   parentName: this.editMenuForm.parentName,
+        //   parentId: this.editMenuForm.parentId,
+        //   orderNum: this.editMenuForm.orderNum,
+        //   path: this.editMenuForm.path}
+        // editMenus(editMenuParams).then(res => {
+        //   // let { msg, code, user,token } = res;
+        //   this.editDialogVisible = false
+        //   if (res.state !== 'success') {
+        //     this.$message.error('更新菜单信息失败！')
+        //   } else {
+        //     // 隐藏编辑菜单对话框
+        //     this.$message.success('更新菜单信息成功！')
+        //   }
+        // })
         const { data: res } = await this.$http.put(
           'menuEdit',
           this.editMenuForm

@@ -117,6 +117,9 @@
 </template>
 
 <script>
+import {
+  addItems,editDic
+} from '../../api/api'
 export default {
   data () {
     let dataname
@@ -176,7 +179,7 @@ export default {
       //   params: this.queryInfo
       // })
       const { data: res } = await this.$http.get('/dataDictionary?' + 'dictName=' + this.queryInfo.dictName + '&getAll=' + this.queryInfo.getAll + '&page=' + this.queryInfo.page + '&pageSize=' + this.queryInfo.pagesize)
-      console.log("把我刚刚添加进去的数据项全部显示出来")
+      // console.log("把我刚刚添加进去的数据项全部显示出来")
       console.log(this.queryInfo)
       console.log(res)
       if (res.state !== 'success') {
@@ -196,9 +199,15 @@ export default {
         // console.log(valid)
         // 表单预校验失败
         if (!valid) return
-        const { data: res } = await this.$http.put(
-          'updateTextData',
-          this.addItemForm
+        const addItemParams = {dictName: this.addItemForm.dataName,
+          dictDescription: this.addItemForm.dictName,
+          textValue: this.addItemForm.textValue,
+          dataName: this.addItemForm.textName,
+          textDefault: this.addItemForm.textDefault}
+        const { data: res } = await this.$http.post(
+          'insertTextData',
+          addItemParams
+          // this.addItemForm
         )
         if (res.state !== 'success') {
           this.$message.error('新增数据项失败！')
@@ -223,12 +232,15 @@ export default {
     editDD () {
       // 提交请求前，表单预验证
       this.$refs.editDDFormRef.validate(async valid => {
-        // console.log(valid)
         // 表单预校验失败
         if (!valid) return
+        const editParams = {dictName: this.$route.query.itemname,
+          dataName: this.editDDForm.dataName,
+          newDataName: this.editDDForm.newDataName,
+          textDefault: this.editDDForm.textDefault}
         const { data: res } = await this.$http.put(
           'dataDictionary',
-          this.editDDForm
+          editParams
         )
         console.log(this.editDDForm)
         if (res.state !== 'success') {
@@ -257,7 +269,7 @@ export default {
         return this.$message.info('已取消删除')
       }
       console.log(dataName)
-      const { data: res } = await this.$http.delete('dataItem?' + 'textValue=' + dataName.textValue)
+      const { data: res } = await this.$http.delete('/dataDictionary?' + 'dataName=' + dataName.dataName + '&dictName=' + dataName.dictName)
       if (res.state !== 'success') return this.$message.error('删除数据项失败！')
       this.$message.success('删除数据项成功！')
       this.getDataItemList()
@@ -279,38 +291,9 @@ export default {
         this.$message.success('修改数据字典成功！')
       })
     },
-    // submitForm (formName) {
-    //   this.$refs.addForm.validate(async valid => {
-    //     // console.log(valid)
-    //     // 表单预校验失败
-    //     if (!valid) return
-    //     console.log(this.addForm)
-    //     const { data: res } = await this.$http.post(
-    //       '/dataDictionary',
-    //       this.addForm
-    //     )
-    //     console.log(res)
-    //     if (res.state !== 'success') {
-    //       this.$message.error('添加数据字典失败！')
-    //     }
-    //     this.$message.success('添加数据字典成功！')
-    //   })
-    // },
-     resetForm (formName) {
-       this.$refs[formName].resetFields()
-     },
-    // removeDomain (item) {
-    //   var index = this.addForm.dataName.indexOf(item)
-    //   if (index !== -1) {
-    //     this.addForm.dataName.splice(index, 1)
-    //   }
-    // },
-    // addDomain () {
-    //   this.addForm.dataName.push({
-    //     value: '',
-    //     key: Date.now()
-    //   })
-    // }
+    resetForm (formName) {
+      this.$refs[formName].resetFields()
+    }
   }
 }
 </script>

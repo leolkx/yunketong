@@ -219,6 +219,8 @@
 </template>
 
 <script>
+import {getUserListPage, adUser, showRoleSet, saveRoleSet, requestLogin} from '../../api/api'
+
 export default {
   data () {
     // 自定义邮箱规则
@@ -278,7 +280,10 @@ export default {
           { min: 1, max: 15, message: '长度在1-15个字符', trigger: 'blur' }
         ],
         email: [{ validator: checkEmail, trigger: 'blur' }],
-        phone: [{ validator: checkMobile, trigger: 'blur' }]
+        phone: [
+          { validator: checkMobile, trigger: 'blur' },
+          { required: true, message: '请输入手机号', trigger: 'blur' }
+        ]
       },
       // 修改用户
       editDialogVisible: false,
@@ -313,7 +318,7 @@ export default {
     this.getTotal()
   },
   methods: {
-    // 模糊查询
+    // 模糊查询!!没用api分装
     async searchUsers () {
       const { data: res } = await this.$http.get(
         'super/users?username=' + this.queryText
@@ -327,17 +332,18 @@ export default {
       this.total = 1
     },
     async getUserList () {
-      const { data: res } = await this.$http.get('super/users', {
-        params: this.queryInfo
+      // const getuserListParams = {username: this.loginForm.username, password: this.loginForm.password}
+      getUserListPage(this.queryInfo).then(res => {
+        // let { msg, code, user,token } = res;
+        if (res.state !== 'success') {
+          this.$message.error('获取用户列表失败')
+        } else {
+          this.showUsersList = true
+          this.userslist = res.result
+        }
       })
-      console.log(res)
-      if (res.state !== 'success') {
-        return this.$message.error('获取用户列表失败')
-      }
-      this.showUsersList = true
-      this.userslist = res.result
     },
-    // 获取总用户数
+    // 获取总用户数,不分装
     async getTotal () {
       const { data: res } = await this.$http.get('super/users/total')
       this.total = res.result
@@ -364,6 +370,7 @@ export default {
         if (!valid) return
         const { data: res } = await this.$http.post('super/users', this.addForm)
         if (res.state !== 'success') {
+          console.log(res)
           this.$message.error('添加用户失败！')
           return
         }
@@ -374,7 +381,7 @@ export default {
         this.getUserList()
       })
     },
-    // 编辑用户信息
+    // 编辑用户信息,不封
     async showEditDialog (id) {
       const { data: res } = await this.$http.get('super/users?userId=' + id)
       if (res.state !== 'success') {
@@ -390,13 +397,19 @@ export default {
     // 修改用户信息
     editUser () {
       // 提交请求前，表单预验证
+      // console.log(this.editUserForm)
       this.$refs.editUserFormRef.validate(async valid => {
         // console.log(valid)
         // 表单预校验失败
         if (!valid) return
+        const editForm = {
+          password: this.editUserForm.password,
+          phone: this.editUserForm.phone,
+          email: this.editUserForm.email}
         const { data: res } = await this.$http.put(
           'super/users',
-          this.editUserForm
+          editForm
+          // this.editUserForm
         )
         if (res.state !== 'success') {
           this.$message.error('更新用户信息失败！')
@@ -423,7 +436,7 @@ export default {
       if (confirmResult !== 'confirm') {
         return this.$message.info('已取消删除')
       }
-      const { data: res } = await this.$http.delete('super/users?userId=' + id)
+      const { data: res } = await this.$http.delete('super/users?userId=' + id)// 不封
       if (res.state !== 'success') return this.$message.error('删除用户失败！')
       this.$message.success('删除用户成功！')
       this.getUserList()
@@ -432,29 +445,43 @@ export default {
     async showSetRole (role) {
       this.userInfo = role
       // 展示对话框之前，获取所有角色列表
-      const { data: res } = await this.$http.get('role')
-      if (res.state !== 'success') {
-        return this.$message.error('获取角色列表失败！')
-      }
-      this.userForRoleId = this.userInfo.id
-      this.rolesLsit = res.result
-      this.setRoleDialogVisible = true
+      showRoleSet().then(res => {
+        // let { msg, code, user,token } = res;
+        if (res.state !== 'success') {
+          this.$message.error('获取角色列表失败！')
+        } else {
+          this.userForRoleId = this.userInfo.id
+          this.rolesLsit = res.result
+          this.setRoleDialogVisible = true
+        }
+      })
     },
     // 分配角色
     async saveRoleInfo () {
       if (!this.selectRoleId) {
         return this.$message.error('请选择要分配的角色')
       }
-      const { data: res } = await this.$http.put('super/users', {
-        id: this.userForRoleId,
-        roleId: this.selectRoleId
+      const saveRoleParams = {id: this.userForRoleId, roleId: this.selectRoleId}
+      saveRoleSet(saveRoleParams).then(res => {
+        // let { msg, code, user,token } = res;
+        if (res.state !== 'success') {
+          this.$message.error('更新用户角色失败！')
+        } else {
+          this.$message.success('更新角色成功！')
+          this.getUserList()
+          this.setRoleDialogVisible = false
+        }
       })
-      if (res.state !== 'success') {
-        return this.$message.error('更新用户角色失败！')
-      }
-      this.$message.success('更新角色成功！')
-      this.getUserList()
-      this.setRoleDialogVisible = false
+      // const { data: res } = await this.$http.put('super/users', {
+      //   id: this.userForRoleId,
+      //   roleId: this.selectRoleId
+      // })
+      // if (res.state !== 'success') {
+      //   return this.$message.error('更新用户角色失败！')
+      // }
+      // this.$message.success('更新角色成功！')
+      // this.getUserList()
+      // this.setRoleDialogVisible = false
     },
     // 分配角色对话框关闭事件
     setRoleDialogClosed () {

@@ -24,12 +24,6 @@
         <el-form-item label="数据顺序">
           <el-input v-model="addForm.dataOrder"></el-input>
         </el-form-item>
-<!--        <el-form-item align="right">-->
-<!--          <el-button @click="resetForm('addForm')">新增数据项</el-button>-->
-<!--          <el-button type="primary" @click="submitForm('addForm')">提交</el-button>-->
-<!--          &lt;!&ndash;el-button @click="addDomain">新增值名</el-button&ndash;&gt;-->
-<!--          <el-button @click="resetForm('addForm')">重置</el-button>-->
-<!--        </el-form-item>-->
       </el-form>
     </el-card>
     <el-card>
@@ -58,7 +52,6 @@
         </el-table-column>
       </el-table>
 
-<!--      <el-button  @click="addFormVisible=true" class="button">创建数据项</el-button>-->
       <el-form>
         <el-form-item align="right">
 <!--          <el-button @click="resetForm('addForm')">新增数据项</el-button>-->
@@ -93,24 +86,12 @@
       </span>
     </el-dialog>
   </div>
-<!--    <el-card>-->
-<!--      <el-table :data="dataDictionaryList" stripe>-->
-<!--        <el-table-column label="序号" type="index" fixed></el-table-column>-->
-<!--        <el-table-column label="值" prop="value"></el-table-column>-->
-<!--        <el-table-column label="文本" prop="textname"></el-table-column>-->
-<!--        <el-table-column label="默认值"></el-table-column>-->
-<!--        <el-table-column label="操作" width="150" fixed="right">-->
-<!--        </el-table-column>-->
-<!--&lt;!&ndash;        <el-pagination>&ndash;&gt;-->
-<!--&lt;!&ndash;        <el-form-item align="center">&ndash;&gt;-->
-<!--&lt;!&ndash;          <el-button @click="resetForm('addForm')">新增数据项</el-button>&ndash;&gt;-->
-<!--&lt;!&ndash;        </el-form-item>&ndash;&gt;-->
-<!--&lt;!&ndash;        </el-pagination>&ndash;&gt;-->
-<!--      </el-table>-->
-<!--    </el-card>-->
 </template>
 
 <script>
+import {
+  subEditDic
+} from '../../api/api'
 export default {
   data () {
     return {
@@ -260,6 +241,15 @@ export default {
           this.addFormSum[i].dictName = this.addForm.dataName
         }
         console.log(this.addFormSum)
+        // const submitParams = {dictionaries: this.addFormSum}
+        // subEditDic(submitParams).then(res => {
+        //   // let { msg, code, user,token } = res;
+        //   if (res.state !== 'success') {
+        //     this.$message.error('添加数据字典失败！')
+        //   } else {
+        //     this.$message.success('添加数据字典成功！')
+        //   }
+        // })
         const { data: res } = await this.$http.post(
           '/insertAllTextData',
           {

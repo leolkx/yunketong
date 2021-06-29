@@ -3,7 +3,7 @@
     <!-- 头部区域 -->
     <el-header>
       <div class="img-adj">
-        <img src="../assets/logo.jpg" width="7.5%" height="8.5%" />
+        <img src="../assets/到云LOGO.jpg" width="7.5%" height="8.5%" />
         <el-button type="text" @click="goToHome">到云后台管理系统</el-button>
       </div>
       <div>
@@ -320,6 +320,7 @@ export default {
 
 .el-main {
   background-color: #fff;
+  padding: 10px;
 }
 
 .iconfont {

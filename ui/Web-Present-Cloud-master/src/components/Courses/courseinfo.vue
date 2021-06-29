@@ -13,13 +13,7 @@
         <el-tab-pane label="班课信息" name="information">
 <!--          <i class="el-icon-edit iconedit"></i>-->
           <div v-if="showInformation">
-          <el-button
-            type="primary"
-            icon="el-icon-edit"
-            size="big"
-            class="icon-edit"
-            @click="showEditDialog"
-          ></el-button>
+          <el-button type="primary" icon="el-icon-edit-outline" size="big" class="icon-editt" @click="showEditDialog">编辑详情</el-button>
             <span>学校：{{informationTableData.school}}</span><br>
             <span>专业：{{informationTableData.college}}</span><br>
             <span>课程名：{{informationTableData.className}}</span><br>
@@ -98,45 +92,44 @@
                 >
                   <el-button
                     type="warning"
-                    icon="el-icon-setting"
+                    icon="el-icon-more"
                     size="mini"
-                    circle
                     @click="getMembersInfo(scope.row.activityId)"
-                  ></el-button>
+                  >签到情况</el-button>
                 </el-tooltip>
               </template>
             </el-table-column>
           </el-table>
         </el-tab-pane>
-        <el-tab-pane label="作业" name="homework">
-          <el-table :data="homeworkTableData" border stripe>
-            <el-table-column type="index"></el-table-column>
-            <el-table-column label="活动id" prop="activityId"></el-table-column>
-            <el-table-column label="作业名称" prop="activityName"></el-table-column>
-            <el-table-column label="活动开始时间" prop="beginDate"></el-table-column>
-            <el-table-column label="活动结束时间" prop="endDate"></el-table-column>
-            <el-table-column label="状态" prop="isActive" :formatter="stateFormat"></el-table-column>
-            <el-table-column label="操作" width="200" fixed="right">
-              <template slot-scope="scope">
-                <el-tooltip
-                  class="item"
-                  effect="dark"
-                  content="查看参与详情"
-                  placement="top"
-                  :enterable="false"
-                >
-                  <el-button
-                    type="warning"
-                    icon="el-icon-setting"
-                    size="mini"
-                    circle
-                    @click="getMembersInfo(scope.row.activityId)"
-                  ></el-button>
-                </el-tooltip>
-              </template>
-            </el-table-column>
-          </el-table>
-        </el-tab-pane>
+<!--        <el-tab-pane label="作业" name="homework">-->
+<!--          <el-table :data="homeworkTableData" border stripe>-->
+<!--            <el-table-column type="index"></el-table-column>-->
+<!--            <el-table-column label="活动id" prop="activityId"></el-table-column>-->
+<!--            <el-table-column label="作业名称" prop="activityName"></el-table-column>-->
+<!--            <el-table-column label="活动开始时间" prop="beginDate"></el-table-column>-->
+<!--            <el-table-column label="活动结束时间" prop="endDate"></el-table-column>-->
+<!--            <el-table-column label="状态" prop="isActive" :formatter="stateFormat"></el-table-column>-->
+<!--            <el-table-column label="操作" width="200" fixed="right">-->
+<!--              <template slot-scope="scope">-->
+<!--                <el-tooltip-->
+<!--                  class="item"-->
+<!--                  effect="dark"-->
+<!--                  content="查看参与详情"-->
+<!--                  placement="top"-->
+<!--                  :enterable="false"-->
+<!--                >-->
+<!--                  <el-button-->
+<!--                    type="warning"-->
+<!--                    icon="el-icon-setting"-->
+<!--                    size="mini"-->
+<!--                    circle-->
+<!--                    @click="getMembersInfo(scope.row.activityId)"-->
+<!--                  ></el-button>-->
+<!--                </el-tooltip>-->
+<!--              </template>-->
+<!--            </el-table-column>-->
+<!--          </el-table>-->
+<!--        </el-tab-pane>-->
       </el-tabs>
     </el-card>
   </div>
@@ -307,10 +300,10 @@ export default {
     }
   }
 }
-</script>s
+</script>
 
 <style scoped>
-.icon-edit{
+.icon-editt{
   float: right;
   margin-right: 40px;
 }

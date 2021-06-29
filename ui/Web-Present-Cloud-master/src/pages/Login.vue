@@ -1,9 +1,10 @@
 <template>
-  <div class="login_container">
+  <div class="login_container" :style="conTop">
+<!--    <img src="../assets/login.jpg" style="width: auto; height: 40px;">-->
     <div class="text">到云后台管理系统</div>
     <div class="login_box">
       <div class="avatar_box">
-        <img src="../assets/logo.jpg" alt />
+        <img src="../assets/到云LOGO.jpg" alt />
       </div>
       <div class="login_header_title">
         <a href="javascript:;" :class="{on:loginWay}" @click="loginWay=true">密码登录</a>
@@ -89,12 +90,16 @@
 
 <script>
 import SocialSign from '@/components/SocialSignin/socialsignin.vue'
+import {requestLogin} from '../api/api.js'
 export default {
   components: {SocialSign},
   data () {
     return {
       // imgCode: 'http://172.20.86.137:8081/verification/code',
       // 登录表单数据绑定对象
+      conTop: {
+        backgroundImage: 'url(' + require('../assets/login.jpg') + ')'
+      },
       loginForm: {
         username: '',
         password: ''
@@ -200,7 +205,7 @@ export default {
       }
     },
     // 60S倒计时
-    timer() {
+    timer () {
       if (this.time > 0) {
         this.time--
         this.loginForm1.btntxt = this.time + 's后重新获取'
@@ -217,20 +222,34 @@ export default {
         this.$refs.loginFormRef.validate(async valid => {
           if (!valid) return
           this.loginForm.param = true
-          const {data: res} = await this.$http.post('signin', this.loginForm)
-          if (res.state !== 'success') return this.$message.error(res.msg)
-          this.$message.success('登录成功')
+          // const {data: res} = await this.$http.post('signin', this.loginForm)
+          const loginParams = {username: this.loginForm.username, password: this.loginForm.password}
+          requestLogin(loginParams).then(res => {
+            // let { msg, code, user,token } = res;
+            if (res.state !== 'success') {
+              this.$message.error(res.msg)
+            } else {
+              this.$message.success('登录成功')
+              window.localStorage.setItem('username', this.loginForm.username)
+              window.localStorage.setItem('token', res.result.token)
+              this.$router.push({
+                path: '/welcome'
+              })
+            }
+          })
+          // if (res.state !== 'success') return this.$message.error(res.msg)
+          // this.$message.success('登录成功')
           /*
             1.将登录成功之后的token保存到客户端的sessionStorage中
                 项目中除了登录之外的其他API接口，必须在登录之后才能访问
                 token只应在当前网站打开期间有效，所以将token保存在sessionStorage中
             2.通过编程式导航跳转到后台主页，路由地址是 /welcome
         */
-          window.localStorage.setItem('username', this.loginForm.username)
-          window.localStorage.setItem('token', res.result.token)
-          this.$router.push({
-            path: '/welcome'
-          })
+          // window.localStorage.setItem('username', this.loginForm.username)
+          // window.localStorage.setItem('token', res.result.token)
+          // this.$router.push({
+          //   path: '/welcome'
+          // })
         })
       } else {
         this.$refs.loginFormRef1.validate(async valid => {
@@ -264,8 +283,9 @@ export default {
 }
 
 .login_container {
-  background-color: #2d3a4b;
   height: 100%;
+  background: no-repeat center top;
+  background-size: 100% 100%;
 }
 .login_header_title a{
   text-decoration: none;
@@ -284,7 +304,7 @@ export default {
 .login_box {
   width: 450px;
   height: 50%;
-  background-color: #2d3a4b;
+  // background-color: #2d3a4b;
   //background-color: #e7eab4;
   border-radius: 3px;
   position: absolute;
@@ -302,7 +322,7 @@ export default {
     position: absolute;
     left: 50%;
     transform: translate(-50%, -60%);
-    background-color: #00ff80;
+    // background-color: #e8eeee;
     img {
       width: 100%;
       height: 100%;

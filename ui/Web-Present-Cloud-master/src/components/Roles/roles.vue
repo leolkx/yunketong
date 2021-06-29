@@ -160,6 +160,16 @@
 </template>
 
 <script>
+import {
+  requestRolesList,
+  roleMenuDelete,
+  getMenuTree,
+  roleMenuListAdd,
+  adRole,
+  editRole,
+  requestLogin
+} from '../../api/api';
+
 export default {
   data () {
     return {
@@ -232,13 +242,14 @@ export default {
   },
   methods: {
     async getRolesList () {
-      const { data: res } = await this.$http.get('role', {
-        params: this.queryInfo
+      requestRolesList(this.queryInfo).then(res => {
+        // let { msg, code, user,token } = res;
+        if (res.state !== 'success') {
+          this.$message.error('获取角色列表失败！')
+        } else {
+          this.rolesList = res.result
+        }
       })
-      if (res.state !== 'success') {
-        return this.$message.error('获取角色列表失败！')
-      }
-      this.rolesList = res.result
     },
     // 根据ID删除对应的权限
     async removeRightById (rightId) {
@@ -258,21 +269,21 @@ export default {
         this.$message.info('已取消权限删除')
       }
       var param = {'roleId': this.roleId, 'menuId': rightId}
-      const { data: res } = await this.$http.delete(
-        '/roleMenuDelete',
-        {data: param}
-      )
-      if (res.state !== 'success') {
-        return this.$message.error('删除权限失败！')
-      }
-      this.rolesList = res.result
-      //   不建议使用
-      this.getRolesList()
+      roleMenuDelete(param).then(res => {
+        // let { msg, code, user,token } = res;
+        if (res.state !== 'success') {
+          this.$message.error('删除权限失败！')
+        } else {
+          this.rolesList = res.result
+          //   不建议使用
+          this.getRolesList()
+        }
+      })
     },
     // 展示分配权限
     async showSetRightDialog (role) {
       this.roleId = role.id
-      // // 获取角色的所有权限
+      // // 获取角色的所有权限,
       const { data: res1 } = await this.$http.get('/menuPageTreeAllByRole/' + role.id)
       const { data: res } = await this.$http.get('menuTreeAll')
       if (res.state !== 'success') {
@@ -317,8 +328,15 @@ export default {
         ...this.$refs.treeRef.getHalfCheckedKeys()
       ]
       for (const key of keys) {
-        const { data: res } = await this.$http.post('roleMenuAdd', {'roleId': this.roleId, 'menuId': key})
-        if (res.state !== 'success') return this.$message.error('更新权限失败')
+        const roleMenuAddForm = {'roleId': this.roleId, 'menuId': key}
+        roleMenuListAdd(roleMenuAddForm).then(res => {
+          // let { msg, code, user,token } = res;
+          if (res.state !== 'success') {
+            this.$message.error('更新权限失败')
+          }
+        })
+        // const { data: res } = await this.$http.post('roleMenuAdd', {'roleId': this.roleId, 'menuId': key})
+        // if (res.state !== 'success') return this.$message.error('更新权限失败')
       }
       this.$message.success('更新权限成功')
       this.getRolesList()
@@ -343,7 +361,7 @@ export default {
     },
     // 编辑角色
     async showEditDialog (id) {
-      const { data: res } = await this.$http.get('/role?roleId=' + id)
+      const { data: res } = await this.$http.get('/role?roleId=' + id)// bufeng
       if (res.state !== 'success') {
         return this.$message.error('查询角色信息失败！')
       }
@@ -358,14 +376,21 @@ export default {
         // console.log(valid)
         // 表单预校验失败
         if (!valid) return
-        const { data: res } = await this.$http.put('role', this.editRoleForm)
-        if (res.state !== 'success') {
-          this.$message.error('更新角色信息失败！')
-        }
-        // 隐藏编辑角色对话框
-        this.editRoleDialogVisible = false
-        this.$message.success('更新角色信息成功！')
-        this.getRolesList()
+        const editRolesParams = {id: this.editRoleForm.id,
+          roleCode: this.editRoleForm.roleCode,
+          roleName: this.editRoleForm.roleName,
+          roleDescription: this.editRoleForm.roleDescription}
+        editRole(editRolesParams).then(res => {
+          // let { msg, code, user,token } = res;
+          if (res.state !== 'success') {
+            this.$message.error('更新角色信息失败！')
+          } else {
+            // 隐藏编辑角色对话框
+            this.editRoleDialogVisible = false
+            this.$message.success('更新角色信息成功！')
+            this.getRolesList()
+          }
+        })
       })
     },
     // 删除角色
@@ -382,7 +407,7 @@ export default {
       if (confirmResult !== 'confirm') {
         return this.$message.info('已取消删除')
       }
-      const { data: res } = await this.$http.delete('role?roleId=' + id)
+      const { data: res } = await this.$http.delete('role?roleId=' + id)// wufeng
       if (res.state !== 'success') return this.$message.error('删除角色失败！')
       this.$message.success('删除角色成功！')
       this.getRolesList()

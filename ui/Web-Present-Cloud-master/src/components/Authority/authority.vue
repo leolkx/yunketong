@@ -140,6 +140,8 @@
 </template>
 
 <script>
+import {addMenuList, editMenuList} from '../../api/api'
+
 export default {
   data () {
     return {
@@ -217,8 +219,8 @@ export default {
   },
   methods: {
     async getMenuList () {
-      const { data: res1 } = await this.$http.get('/super/users?username=' + this.username)
-      const { data: res } = await this.$http.get('/userMenuTree/' + res1.result.roleId)
+      const { data: res1 } = await this.$http.get('/super/users?username=' + this.username)// 不封
+      const { data: res } = await this.$http.get('/userMenuTree/' + res1.result.roleId)// 不封
       if (res.state !== 'success') return this.$message.error('获取权限信息失败')
       console.log(res.result)
       this.menuInfo = res.result
@@ -259,7 +261,7 @@ export default {
       if (confirmResult !== 'confirm') {
         return this.$message.info('已取消删除')
       }
-      const { data: res } = await this.$http.delete('menuDelete/' + id)
+      const { data: res } = await this.$http.delete('menuDelete/' + id)// 不封
       if (res.state !== 'success') return this.$message.error('删除权限失败！')
       this.$message.success('删除权限成功！')
     },
@@ -273,6 +275,22 @@ export default {
         // console.log(valid)
         // 表单预校验失败
         if (!valid) return
+        // const editMeParams = {id: this.editMenuForm.id,
+        //   menuName: this.editMenuForm.menuName,
+        //   parentName: this.editMenuForm.parentName,
+        //   parentId: this.editMenuForm.parentId,
+        //   orderNum: this.editMenuForm.orderNum,
+        //   path: this.editMenuForm.path}
+        // editMenuList(editMeParams).then(res => {
+        //   // let { msg, code, user,token } = res;
+        //   this.editDialogVisible = false
+        //   if (res.state !== 'success') {
+        //     this.$message.error('更新权限信息失败！')
+        //   } else {
+        //     // 隐藏编辑权限对话框
+        //     this.$message.success('更新权限信息成功！')
+        //   }
+        // })
         const { data: res } = await this.$http.put(
           'menuEdit',
           this.editMenuForm

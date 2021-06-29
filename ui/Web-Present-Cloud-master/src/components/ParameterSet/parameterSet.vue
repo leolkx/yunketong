@@ -106,6 +106,9 @@
 </template>
 
 <script>
+import {
+  getParamsListPage, addParam, editParams, requestLogin
+} from '../../api/api'
 export default {
   data () {
     return {
@@ -172,22 +175,48 @@ export default {
   },
   methods: {
     async getParamsList () {
-      const { data: res } = await this.$http.get('params/class', {
-        params: this.queryInfo
+      getParamsListPage(this.queryInfo).then(res => {
+        // let { msg, code, user,token } = res;
+        if (res.state !== 'success') {
+          this.$message.error('获取参数列表失败')
+        } else {
+          console.log(res)
+          this.showUsersList = true
+          this.params = res.result
+        }
       })
-      if (res.state !== 'success') {
-        return this.$message.error('获取参数列表失败')
-      }
-      console.log(res)
-      this.showUsersList = true
-      this.params = res.result
+      // const { data: res } = await this.$http.get('params/class', {
+      //   params: this.queryInfo
+      // })
+      // if (res.state !== 'success') {
+      //   return this.$message.error('获取参数列表失败')
+      // }
+      // console.log(res)
+      // this.showUsersList = true
+      // this.params = res.result
     },
-    // 新增参数
+    // 新增参数,api失败
     addParms () {
       // 提交请求前，表单预验证
       this.$refs.addFormRef.validate(async valid => {
         // 表单预校验失败
         if (!valid) return
+        // const addParamParams = {orgCode: this.addForm.orgCode,
+        //   paramCode: this.addForm.paramCode,
+        //   paramName: this.addForm.paramName,
+        //   paramDesc: this.addForm.paramDesc}
+        // addParam(addParamParams).then(res => {
+        //   // let { msg, code, user,token } = res;
+        //   if (res.state !== 'success') {
+        //     this.$message.error('添加参数失败！')
+        //   } else {
+        //     this.$message.success('添加参数成功！')
+        //     // 隐藏添加用户对话框
+        //     this.addDialogVisible = false
+        //     // 重新获取用户列表
+        //     this.getParamsList()
+        //   }
+        // })
         const { data: res } = await this.$http.post(
           'params/class',
           this.addForm
@@ -230,18 +259,22 @@ export default {
       this.$refs.editParamFormRef.validate(async valid => {
         // 表单预校验失败
         if (!valid) return
-        const { data: res } = await this.$http.put(
-          'params/class',
-          this.editParamForm
-        )
-        if (res.state !== 'success') {
-          this.$message.error('修改参数失败！')
-        }
-        this.$message.success('修改参数成功！')
-        // 隐藏添加用户对话框
-        this.editDialogVisible = false
-        // 重新获取用户列表
-        this.getParamsList()
+        const editParamParams = {id: this.editParamForm.id,
+          paramCode: this.editParamForm.paramCode,
+          paramName: this.editParamForm.paramName,
+          paramDesc: this.editParamForm.paramDesc}
+        editParams(editParamParams).then(res => {
+          // let { msg, code, user,token } = res;
+          if (res.state !== 'success') {
+            this.$message.error('修改参数失败！')
+          } else {
+            this.$message.success('修改参数成功！')
+            // 隐藏添加用户对话框
+            this.editDialogVisible = false
+            // 重新获取用户列表
+            this.getParamsList()
+          }
+        })
       })
     },
     // 监听修改参数对话框的关闭事件
